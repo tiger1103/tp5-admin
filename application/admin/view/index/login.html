@@ -32,19 +32,19 @@
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
                 <div class="formControls col-xs-8">
-                    <input id="" name="" type="text" placeholder="账户" class="input-text size-L">
+                    <input name="username" type="text" placeholder="账户" datatype="*"  nullmsg="账户不能为空！" class="input-text size-L">
                 </div>
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
                 <div class="formControls col-xs-8">
-                    <input id="" name="" type="password" placeholder="密码" class="input-text size-L">
+                    <input name="password" type="password" placeholder="密码" datatype="*"  nullmsg="密码不能为空！" class="input-text size-L">
                 </div>
             </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
-                    <input class="input-text size-L" type="text" placeholder="验证码" style="width:150px;">
-                    <img id="captcha" src="<{:captcha_src('adminLogin')}>" /> <a id="kanbuq" href="javascript:changeCaptchaImg();">看不清，换一张</a> </div>
+                    <input name="captcha" class="input-text size-L" type="text" placeholder="验证码" datatype="*"  nullmsg="验证码不能为空！" style="width:150px;">
+                    <img id="captcha" src="<{:url('getCaptcheUrl')}>" /> <a id="kanbuq" href="javascript:changeCaptchaImg();">看不清，换一张</a> </div>
             </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
@@ -80,13 +80,26 @@
     $(function(){
         changeCaptchaImg();
         var form=$(".form").Validform({
-            tiptype:3,
-            label:".label",
-            showAllError:true,
-            datatype:{
-                "zh1-6":/^[\u4E00-\u9FA5\uf900-\ufa2d]{1,6}$/
-            },
-            ajaxPost:true
+            ajaxPost:true,
+            tiptype:1,
+            callback:function(data){
+                if(data.status==1){
+                    setTimeout(function(){
+                        $.Hidemsg(); //公用方法关闭信息提示框;显示方法是$.Showmsg("message goes here.");
+                        $.Showmsg(data.mess);
+                    },2000);
+                }else{
+                    setTimeout(function(){
+                        $.Hidemsg(); //公用方法关闭信息提示框;显示方法是$.Showmsg("message goes here.");
+                        $.Showmsg(data.mess);
+                        setTimeout(function(){
+                            $.Hidemsg();
+                            changeCaptchaImg();
+                        },3000);
+                    },2000);
+                }
+            }
+
         });
     });
 </script>
