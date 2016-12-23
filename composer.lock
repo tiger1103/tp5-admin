@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "af82c78cb29f2bd774f5ef0f6161fcc5",
+    "hash": "c045bfd4f24b6459f2320bfd83de09a9",
     "content-hash": "37915d5586d15b1a3686dc3630b5f8d5",
     "packages": [
         {
@@ -46,16 +46,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v5.0.3",
+            "version": "v5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "fd30f090e40dc25a758d99029fa07f669f575580"
+                "reference": "c695397733a707d4434fa8f8c070c9caf1f1f369"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/top-think/framework/fd30f090e40dc25a758d99029fa07f669f575580.zip",
-                "reference": "fd30f090e40dc25a758d99029fa07f669f575580",
+                "url": "https://packagist.phpcomposer.com/files/top-think/framework/c695397733a707d4434fa8f8c070c9caf1f1f369.zip",
+                "reference": "c695397733a707d4434fa8f8c070c9caf1f1f369",
                 "shasum": ""
             },
             "require": {
@@ -94,7 +94,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2016-11-11 09:22:23"
+            "time": "2016-12-20 00:28:50"
         },
         {
             "name": "topthink/think-captcha",
