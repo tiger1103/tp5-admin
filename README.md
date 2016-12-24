@@ -1,3 +1,5 @@
+注意：包括thinkphp框架核心，及扩展类库均采用了composer依赖，请第一次git clone/pull 后通过composer 从packagist或composer中国镜像进行依赖导入。
+
 ThinkPHP 5.0
 ===============
 
