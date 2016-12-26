@@ -1,5 +1,3 @@
-注意：包括thinkphp框架核心，及扩展类库均采用了composer依赖，请第一次git clone/pull 后通过composer 从packagist或composer中国镜像进行依赖导入。
-
 ThinkPHP 5.0
 ===============
 
@@ -8,6 +6,7 @@ ThinkPHP 5.0
 [![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](https://packagist.org/packages/topthink/think)
 [![License](https://poser.pugx.org/topthink/think/license)](https://packagist.org/packages/topthink/think)
 
+注意：包括thinkphp框架核心，及扩展类库均采用了composer依赖，请第一次git clone/pull 后通过composer 进行依赖安装。
 ThinkPHP5在保持快速开发和大道至简的核心理念不变的同时，PHP版本要求提升到5.4，对已有的CBD模式做了更深的强化，优化核心，减少依赖，基于全新的架构思想和命名空间实现，是ThinkPHP突破原有框架思路的颠覆之作，其主要特性包括：
 
  + 基于命名空间和众多PHP新特性
@@ -60,7 +59,7 @@ www  WEB部署目录（或者子目录）
 │  ├─router.php         快速测试文件
 │  └─.htaccess          用于apache的重写
 │
-├─thinkphp              框架系统目录
+├─core		        框架系统目录（此目录中内容不要修改，便于升级框架，包依赖会被覆盖）
 │  ├─lang               语言文件目录
 │  ├─library            框架类库目录
 │  │  ├─think           Think类库包目录
@@ -76,7 +75,7 @@ www  WEB部署目录（或者子目录）
 │
 ├─extend                扩展类库目录
 ├─runtime               应用的运行时目录（可写，可定制）
-├─vendor                第三方类库目录（Composer依赖库）
+├─vendor                第三方类库目录（Composer依赖库）（此目录中内容不要修改包依赖会被覆盖）
 ├─build.php             自动生成定义文件（参考）
 ├─composer.json         composer 定义文件
 ├─LICENSE.txt           授权说明文件

@@ -83,10 +83,13 @@
             ajaxPost:true,
             tiptype:1,
             callback:function(data){
-                if(data.status==1){
+                if(data.status>0){
                     setTimeout(function(){
                         $.Hidemsg(); //公用方法关闭信息提示框;显示方法是$.Showmsg("message goes here.");
                         $.Showmsg(data.mess);
+                        setTimeout(function(){
+                            location.href="<{:url('ok')}>";
+                        },2000);
                     },2000);
                 }else{
                     setTimeout(function(){
@@ -99,7 +102,6 @@
                     },2000);
                 }
             }
-
         });
     });
 </script>
