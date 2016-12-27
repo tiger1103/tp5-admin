@@ -5,26 +5,13 @@ namespace app\admin\controller;
  * 后台默认控制器
  */
 use think\Controller;
+use think\Cookie;
 use think\Loader;
-use think\Request;
 use think\Response;
 
-class Index extends Admin
+class Index extends Controller
 {
     public function index(){
-        //检查登录
-        if(true){
-            //跳转到登录页面
-            $this->redirect('admin/index/login');
-        }
-        return '已经登录';
-    }
-
-    public function ok(){
-        return '后台首页';
-    }
-
-    public function login(){
         if($this->request->isPost()){
             $data = [];//返回数据
             $captcha = $this->request->post('captcha');
@@ -49,10 +36,23 @@ class Index extends Admin
             }
             return Response::create($data, 'json',200,[],[]);
         }
+        if(isLogin()>0){
+            $this->redirect('admin/index');
+            return;
+        }
         return $this->fetch();
+    }
+
+    /**
+     * 退出登录
+     */
+    public function logout(){
+        session('user_auth', null);
+        session('user_auth_sign', null);
     }
 
     public function getCaptcheUrl(){
         return captcha("adminLogin", config('captcha_config'));
     }
+
 }

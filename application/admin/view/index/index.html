@@ -28,7 +28,7 @@
 <div class="header"></div>
 <div class="loginWraper">
     <div id="loginform" class="loginBox">
-        <form class="form form-horizontal" action="<{:url('login')}>" method="post">
+        <form class="form form-horizontal" action="<{:url('index')}>" method="post">
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
                 <div class="formControls col-xs-8">
@@ -88,7 +88,7 @@
                         $.Hidemsg(); //公用方法关闭信息提示框;显示方法是$.Showmsg("message goes here.");
                         $.Showmsg(data.mess);
                         setTimeout(function(){
-                            location.href="<{:url('ok')}>";
+                            location.href="<{:url('admin/index')}>";
                         },2000);
                     },2000);
                 }else{

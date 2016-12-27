@@ -20,7 +20,8 @@
         "topthink/framework": "^5.0",
         "topthink/think-captcha": "^1.0",
         "5ini99/think-auth": "^1.0",
-        "topthink/think-image": "^1.0"
+        "topthink/think-image": "^1.0",
+        "topthink/think-helper": "^1.0"
     },
     "extra": {
         "think-path": "core"

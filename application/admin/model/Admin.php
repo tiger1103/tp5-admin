@@ -9,7 +9,7 @@
 namespace app\admin\model;
 
 use think\Request;
-use think\Session;
+use think\Db;
 
 class Admin extends Base
 {
@@ -60,6 +60,6 @@ class Admin extends Base
             'status'   =>$status,
            'mess'      =>$mess
        ];
-        Db::table('adminloginlog')->insert($data);
+        Db::name('adminloginlog')->insert($data);
     }
 }
