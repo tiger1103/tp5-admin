@@ -32,6 +32,10 @@ class Index extends Controller
                 }else{
                     $online = $this->request->has('online', 'post');
                     $data = $admin->login(['username' => $username], $password);
+                    //保持登录状态
+                    if($online&&$data['status']>0){
+                        cookie(ini_get('session.name'),session_id(),['expire'=>86400*7,'path'=>"/",'prefix'=>'']);
+                    }
                 }
             }
             return Response::create($data, 'json',200,[],[]);
@@ -40,15 +44,16 @@ class Index extends Controller
             $this->redirect('admin/index');
             return;
         }
-        return $this->fetch();
+        return $this->fetch('index');
     }
 
     /**
      * 退出登录
      */
     public function logout(){
-        session('user_auth', null);
-        session('user_auth_sign', null);
+        session(null);//清除session
+        cookie(ini_get('session.name'),session_id(),['expire'=>-1,'path'=>"/",'prefix'=>'']);//清除session 的 cookie
+        $this->success('退出登录成功','index/index');
     }
 
     public function getCaptcheUrl(){

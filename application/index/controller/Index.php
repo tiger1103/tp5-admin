@@ -9,7 +9,7 @@ class Index extends Controller
 {
     public function index($id='')
     {
-        return $this->fetch('index',['name'=>'yxh']);
+        return $this->fetch('index',['name'=>'hello world']);
     }
 
 

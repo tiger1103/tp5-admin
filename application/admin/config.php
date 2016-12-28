@@ -11,7 +11,7 @@ return [
     'default_filter' => 'trim',
     // 视图输出字符串内容替换
     'view_replace_str' =>[
-        '__PUBLIC__' => BASE_URL_PATH . '/static/admin',
+        '__ADMIN__' => BASE_URL_PATH . '/static/admin',
         '__IMG__'    => BASE_URL_PATH . '/static/admin/images',
         '__CSS__'    => BASE_URL_PATH . '/static/admin/css',
         '__JS__'     => BASE_URL_PATH . '/static/admin/js',
@@ -48,7 +48,7 @@ return [
     'session'                => [
         'prefix'         => 'admin',
         'type'           => '',
-        'auto_start'     => true,
+        'auto_start'  => true,
     ],
 
     //cookie配置
