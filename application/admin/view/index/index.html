@@ -89,8 +89,8 @@
                         $.Showmsg(data.mess);
                         setTimeout(function(){
                             location.href="<{:url('admin/index')}>";
-                        },2000);
-                    },2000);
+                        },1000);
+                    },1000);
                 }else{
                     setTimeout(function(){
                         $.Hidemsg(); //公用方法关闭信息提示框;显示方法是$.Showmsg("message goes here.");
@@ -98,8 +98,8 @@
                         setTimeout(function(){
                             $.Hidemsg();
                             changeCaptchaImg();
-                        },3000);
-                    },2000);
+                        },2000);
+                    },1000);
                 }
             }
         });

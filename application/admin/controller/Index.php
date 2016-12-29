@@ -11,6 +11,10 @@ use think\Response;
 
 class Index extends Controller
 {
+    /**
+     * 登录
+     * @return mixed|Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml|void
+     */
     public function index(){
         if($this->request->isPost()){
             $data = [];//返回数据
@@ -44,7 +48,7 @@ class Index extends Controller
             $this->redirect('admin/index');
             return;
         }
-        return $this->fetch('index');
+        return $this->fetch();
     }
 
     /**
@@ -56,6 +60,10 @@ class Index extends Controller
         $this->success('退出登录成功','index/index');
     }
 
+    /**
+     * 获取验证码图片地址
+     * @return Response
+     */
     public function getCaptcheUrl(){
         return captcha("adminLogin", config('captcha_config'));
     }
