@@ -23,13 +23,13 @@ class Admin extends Base
         $res = $this->where($map)->find();
         if(is_null($res)||$res->status==0){
             $data = ['status'=>-1,'mess'=>'用户名不存在或被禁用'];//用户名不存在或被禁用
-            $this->updateLog($map['username'],0,$data['mess']); //更新用户登录信息
+            $this->updateLog($map['username'],0); //更新用户登录信息
             return $data;
         }
         //验证密码是否相等
         if(md5(md5($password).$res->salt) === $res->password){
             $data = ['status'=>$res->id,'mess'=>'登录成功,正在跳转后台首页...']; //登录成功，返回用户ID
-            $this->updateLog($map['username'],1,$data['mess']); //更新用户登录信息
+            $this->updateLog($map['username'],1); //更新用户登录信息
             /* 记录登录SESSION */
             $auth = array(
                 'id'                   => $res->id,
@@ -41,7 +41,7 @@ class Admin extends Base
             return $data;
         } else {
             $data = ['status'=>-2,'mess'=>'用户名或密码错误']; //密码错误
-            $this->updateLog($map['username'],0,$data['mess']); //更新用户登录信息
+            $this->updateLog($map['username'],0); //更新用户登录信息
             return $data;
         }
     }
@@ -52,13 +52,13 @@ class Admin extends Base
      * @param $status
      * @param $mess
      */
-    private function updateLog($username,$status,$mess){
+    private function updateLog($username,$status){
        $data = [
            'username' =>$username,
            'logintime' =>time(),
-            'loginip'   =>Request::instance()->ip(),
-            'status'   =>$status,
-           'mess'      =>$mess
+           'loginip'   =>Request::instance()->ip(),
+           'status'   =>$status,
+           'mess'      =>$status>0?'登陆成功':'登陆失败'
        ];
         Db::name('adminloginlog')->insert($data);
     }
