@@ -32,7 +32,7 @@ class Index extends Controller
                 $result = $validate->scene('login')->check($map);
                 if(!$result){
                     $data['status'] =0;
-                    $data['mess']=$result->getError();
+                    $data['mess']=$validate->getError();
                 }else{
                     $online = $this->request->has('online', 'post');
                     $data = $admin->login(['username' => $username], $password);

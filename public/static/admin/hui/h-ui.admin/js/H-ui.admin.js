@@ -95,7 +95,7 @@ function creatIframe(href,titleName){
 	var taballwidth=0;
 		
 	show_nav.find('li').removeClass("active");	
-	show_nav.append('<li class="active"><span data-href="'+href+'">'+titleName+'</span><i></i><em></em></li>');	
+	show_nav.append('<li class="active"><span data-href="'+href+'">'+titleName+'</span><i></i><em></em></li>');
 	var $tabNavitem = topWindow.find(".acrossTab li");
 	if (!$tabNav[0]){return}
 	$tabNavitem.each(function(index, element) {
@@ -116,6 +116,63 @@ function creatIframe(href,titleName){
 	showBox.find('iframe').load(function(){
 		showBox.find('.loading').hide();
 	});
+	addTabContextMenu();
+}
+
+function addTabContextMenu(){
+    $("#min_title_list").children("li:gt(0)").contextMenu('myMenu1', {
+        bindings: {
+            'close': function(t) {
+                var topWindow = $(window.parent.document),
+                    iframe = topWindow.find('#iframe_box .show_iframe'),
+                    showTab = topWindow.find(".acrossTab li.active"),
+                	$list = $("#min_title_list").children("li"),
+					showTabInd = 0,
+					prevInd = 0;
+                $list.each(function(i,v){
+                	if(v===t){
+                        $(v).remove();
+                        iframe.eq(i).remove();
+                        prevInd = i-1;
+					}
+					if(v!==t&&showTab[0]===v){
+                		showTabInd = i;
+					}
+				});
+                if(showTabInd!=0){
+                    iframe.eq(showTabInd).show();
+				}else{
+                    $($list[prevInd]).addClass('active');
+                    iframe.eq(prevInd).show();
+				}
+            },
+            'closeOther': function(t) {
+                var topWindow = $(window.parent.document),
+                    iframe = topWindow.find('#iframe_box .show_iframe');
+				var $list = $("#min_title_list").children("li:gt(0)");
+				$list.each(function(i,v){
+					if(v!==t){
+						$(v).remove();
+                        iframe.eq(i+1).remove();
+					}else{
+                        $(t).addClass('active');
+                        iframe.eq(i+1).show();
+					}
+				});
+            },
+            'closeAll': function(t) {
+                var topWindow = $(window.parent.document),
+                    iframe = topWindow.find('#iframe_box .show_iframe');
+                var $list = $("#min_title_list").children("li:gt(0)");
+                $list.each(function(i,v){
+				    $(v).remove();
+					iframe.eq(i+1).remove();
+                });
+                $("#min_title_list").children("li:first").addClass('active');
+                iframe.eq(0).show();
+            }
+        }
+    });
 }
 function removeIframe(){
 	var topWindow = $(window.parent.document),
@@ -126,8 +183,8 @@ function removeIframe(){
 		i = showTab.index();
 	tab.eq(i-1).addClass("active");
 	tab.eq(i).remove();
-	iframe.eq(i-1).show();	
-	iframe.eq(i).remove();
+    iframe.eq(i-1).show();
+    iframe.eq(i).remove();
 }
 /*弹出层*/
 /*
