@@ -18,7 +18,7 @@ define('APP_PATH', __DIR__ . '/../application/');
 //定义项目URL根路径
 define('BASE_URL_PATH', substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'],'/')));
 //定义项目默认模块
-defined('DEFAULT_MODULE') or define('DEFAULT_MODULE','index');
+defined('BIND_MODULE') or define('BIND_MODULE','index');
 
 // 加载框架引导文件
 require __DIR__ . '/../core/start.php';

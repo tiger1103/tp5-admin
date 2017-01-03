@@ -16,7 +16,6 @@ return [
         '__CSS__'    => BASE_URL_PATH . '/static/admin/css',
         '__JS__'     => BASE_URL_PATH . '/static/admin/js',
     ],
-
     //验证码配置
     'captcha_config'=>[
         // 验证码加密密钥

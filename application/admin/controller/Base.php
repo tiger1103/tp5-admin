@@ -8,11 +8,11 @@
 
 namespace app\admin\controller;
 
-use think\Controller;
+use app\common\controller\Common;
 
 
 
-class Base extends Controller
+class Base extends Common
 {
 
     public function _initialize(){

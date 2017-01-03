@@ -13,6 +13,8 @@ use think\Db;
 
 class Admin extends Base
 {
+    //模型名称
+    protected $name = 'admin_admin';
     /**
      * 用户登录
      * @param $map
@@ -60,6 +62,6 @@ class Admin extends Base
            'status'   =>$status,
            'mess'      =>$status>0?'登陆成功':'登陆失败'
        ];
-        Db::name('adminloginlog')->insert($data);
+        Db::name('admin_adminloginlog')->insert($data);
     }
 }
