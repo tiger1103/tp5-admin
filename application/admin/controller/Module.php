@@ -22,12 +22,10 @@ class Module extends Base
         $data_list = $module->getAll($moduleId);
         // 使用Builder快速建立列表页面。
         $builder = new \app\Common\Builder\ListBuilder();
-        $builder->setMetaTitle('模块列表')  // 设置页面标题
+        return $builder->setMetaTitle('模块列表')  // 设置页面标题
         ->addTopButton('resume')   // 添加启用按钮
         ->addTopButton('forbid')   // 添加禁用按钮
-        ->setSearch('请输入ID/标题', U('index'));
-
-            /*->addTableColumn('name', '名称')
+        ->setSearch('请输入ID/标题', url('index'))->addTableColumn('name', '名称')
             ->addTableColumn('title', '标题')
             ->addTableColumn('description', '描述')
             ->addTableColumn('developer', '开发者')
@@ -36,7 +34,7 @@ class Module extends Base
             ->addTableColumn('status_icon', '状态', 'text')
             ->addTableColumn('right_button', '操作', 'btn')
             ->setTableDataList($data_list)     // 数据列表
-            ->display();*/
+            ->display();
     }
 
 }

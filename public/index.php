@@ -8,13 +8,12 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
 // [ 应用入口文件 ]
 if(version_compare(PHP_VERSION,'5.4.0','<'))  die('require PHP > 5.4.0 !');
 
 define('BASE_PATH', __DIR__);
 // 定义应用目录
-define('APP_PATH', __DIR__ . '/../application/');
+define('APP_PATH', '../application/');
 //定义项目URL根路径
 define('BASE_URL_PATH', substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'],'/')));
 //定义项目默认模块

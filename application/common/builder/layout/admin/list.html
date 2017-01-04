@@ -1,6 +1,17 @@
-<{extend name="public:base" /}>
-<{block name="content"}>
+<{extend name="$_admin_public_layout"/}>
+<{block name="otherCss"}><{/block}>
 <{block name="title"}><title>用户组管理</title><{/block}>
+<{block name="nav"}>
+<nav class="breadcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i> 首页
+    <span class="c-gray en">&gt;</span> 管理员管理
+    <span class="c-gray en">&gt;</span> 用户组管理
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont">&#xe68f;</i>
+    </a>
+</nav>
+<{/block}>
+<{block name="content"}>
 <div class="page-container">
     <div class="cl pd-5 bg-1 bk-gray">
         <span class="l">
@@ -68,22 +79,22 @@
 <script type="text/javascript" src="__JS__/lib/My97DatePicker/WdatePicker.js"></script>
 <{/block}>
 <{block name="script"}>
-    <script type="text/javascript">
-        /*管理员-角色-添加*/
-        function admin_role_add(title,url,w,h){
-            layer_show(title,url,w,h);
-        }
-        /*管理员-角色-编辑*/
-        function admin_role_edit(title,url,id,w,h){
-            layer_show(title,url,w,h);
-        }
-        /*管理员-角色-删除*/
-        function admin_role_del(obj,id){
-            layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
-                //此处请求后台程序，下方是成功后的前台处理……
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!',{icon:1,time:1000});
-            });
-        }
-    </script>
+<script type="text/javascript">
+    /*管理员-角色-添加*/
+    function admin_role_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    /*管理员-角色-编辑*/
+    function admin_role_edit(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+    /*管理员-角色-删除*/
+    function admin_role_del(obj,id){
+        layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+            //此处请求后台程序，下方是成功后的前台处理……
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!',{icon:1,time:1000});
+        });
+    }
+</script>
 <{/block}>

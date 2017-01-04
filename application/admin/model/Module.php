@@ -9,7 +9,6 @@
 namespace app\admin\model;
 
 
-use lib\Storage;
 
 class Module extends Base
 {
@@ -28,7 +27,7 @@ class Module extends Base
         $module_list = [];
         foreach ($dirs as $dir) {
             $config_file = realpath(APP_PATH.$dir).'/'.$this->install_file();
-            if (Storage::has($config_file)) {
+            if (is_file($config_file)) {
                 $module_dir_list[] = $dir;
                 $temp_arr = include $config_file;
                 $temp_arr['info']['status'] = -1; //未安装

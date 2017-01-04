@@ -14,7 +14,5 @@ use lib\Storage;
 class InitConfig
 {
     public function run(&$params){
-        // 初始化文件存储方式
-        Storage::connect('File');
     }
 }

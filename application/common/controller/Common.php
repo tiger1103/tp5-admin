@@ -26,21 +26,17 @@ class Common extends Controller
      */
     protected function display($template = '', $charset = '', $contentType = '', $content = '', $prefix = '') {
         if (!is_file($template)) {
-            $depr = C('TMPL_FILE_DEPR');
             if ('' == $template) {
                 // 如果模板文件名为空 按照默认规则定位
-                $template = CONTROLLER_NAME . $depr . ACTION_NAME;
-            } elseif (false === strpos($template, $depr)) {
-                $template = CONTROLLER_NAME . $depr . $template;
+                $template = $this->request->controller() . DS . $this->request->action();
+            } elseif (false === strpos($template, DS)) {
+                $template = $this->request->controller() . DS . $template;
             }
-        } else {
-            $file = $template;
         }
-
         // 获取所有模块配置的用户导航
         $mod_con['status'] = 1;
         $_user_nav_main = array();
-        $_user_nav_list = D('Admin/Module')->where($mod_con)->getField('user_nav', true);
+        $_user_nav_list = model('admin/Module')->where($mod_con)->column('user_nav');
         foreach ($_user_nav_list as $key => $val) {
             if ($val) {
                 $val = json_decode($val, true);
@@ -49,23 +45,11 @@ class Common extends Controller
                 }
             }
         }
-
-        $this->assign('meta_keywords', C('WEB_SITE_KEYWORD'));
-        $this->assign('meta_description', C('WEB_SITE_DESCRIPTION'));
-        $this->assign('_new_message', cookie('_new_message'));          // 获取用户未读消息数量
-        $this->assign('_user_auth', session('user_auth'));              // 用户登录信息
-        $this->assign('_user_nav_main', $_user_nav_main);               // 用户导航信息
-        $this->assign('_user_center_side', C('USER_CENTER_SIDE'));      // 用户中心侧边
-        $this->assign('_user_login_modal', C('USER_LOGIN_MODAL'));      // 用户登录弹窗
-        $this->assign('_admin_public_layout', C('ADMIN_PUBLIC_LAYOUT')); // 页面公共继承模版
-        $this->assign('_home_public_layout', C('HOME_PUBLIC_LAYOUT'));  // 页面公共继承模版
-        $this->assign('_listbuilder_layout', C('LISTBUILDER_LAYOUT'));  // ListBuilder继承模版
-        $this->assign('_formbuilder_layout', C('FORMBUILDER_LAYOUT'));  // FormBuilder继承模版
-        $this->assign('_page_name', strtolower(MODULE_NAME . '_' . CONTROLLER_NAME . '_' . ACTION_NAME));
-        if (IS_AJAX) {
+        $this->assign('_admin_public_layout', config('appconfig.ADMIN_PUBLIC_LAYOUT')); // 页面公共继承模版
+        if ($this->request->isAjax()) {
             $this->success('数据获取成功', '', array('data' => $this->view->get(), 'html' => $this->fetch($template)));
         } else {
-            $this->view->display($template);
+            return $this->fetch($template);
         }
     }
 }

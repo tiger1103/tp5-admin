@@ -11,3 +11,13 @@
 
 // 应用公共文件
 
+/**
+ * 时间戳格式化
+ * @param int $time
+ * @return string 完整的时间显示
+ * @author jry <598821125@qq.com>
+ */
+function time_format($time = NULL, $format='Y-m-d H:i') {
+    $time = $time === NULL ? time() : intval($time);
+    return date($format, $time);
+}

@@ -23,7 +23,7 @@ class ListBuilder extends Common {
      * @return $this
      */
     protected function _initialize() {
-        $this->_template = APP_PATH.'Common/Builder/Layout/'.MODULE_MARK.'/list.html';
+        $this->_template = APP_PATH.'common/builder/layout/'.BIND_MODULE.'/list.html';
     }
 
     /**
@@ -72,9 +72,9 @@ class ListBuilder extends Common {
                 $my_attribute['title'] = '启用';
                 $my_attribute['target-form'] = 'ids';
                 $my_attribute['class'] = 'btn btn-success ajax-post confirm';
-                $my_attribute['model'] = $attribute['model'] ? : CONTROLLER_NAME;;  // 要操作的数据模型
-                $my_attribute['href']  = U(
-                    MODULE_NAME.'/'.CONTROLLER_NAME.'/setStatus',
+                $my_attribute['model'] = $attribute['model'] ? : $this->request->controller();  // 要操作的数据模型
+                $my_attribute['href']  = url(
+                    $this->request->module().'/'.$this->request->controller().'/setStatus',
                     array(
                         'status' => 'resume',
                         'model' => $my_attribute['model']
@@ -94,9 +94,9 @@ class ListBuilder extends Common {
                 $my_attribute['title'] = '禁用';
                 $my_attribute['target-form'] = 'ids';
                 $my_attribute['class'] = 'btn btn-warning ajax-post confirm';
-                $my_attribute['model'] = $attribute['model'] ? : CONTROLLER_NAME;
-                $my_attribute['href']  = U(
-                    MODULE_NAME.'/'.CONTROLLER_NAME.'/setStatus',
+                $my_attribute['model'] = $attribute['model'] ? : $this->request->controller();
+                $my_attribute['href']  = url(
+                    $this->request->module().'/'.$this->request->controller().'/setStatus',
                     array(
                         'status' => 'forbid',
                         'model' => $my_attribute['model']
@@ -471,7 +471,7 @@ class ListBuilder extends Common {
     /**
      * 显示页面
      */
-    public function display() {
+    public function display($template = '', $charset = '', $contentType = '', $content = '', $prefix = '') {
         // 编译data_list中的值
         foreach ($this->_table_data_list as &$data) {
             // 编译表格右侧按钮
@@ -584,7 +584,6 @@ class ListBuilder extends Common {
                 $button['attribute'] = $this->compileHtmlAttr($button);
             }
         }
-
         $this->assign('meta_title',          $this->_meta_title);          // 页面标题
         $this->assign('top_button_list',     $this->_top_button_list);     // 顶部工具栏按钮
         $this->assign('search',              $this->_search);              // 搜索配置
@@ -596,7 +595,7 @@ class ListBuilder extends Common {
         $this->assign('right_button_list',   $this->_right_button_list);   // 表格右侧操作按钮
         $this->assign('alter_data_list',     $this->_alter_data_list);     // 表格数据列表重新修改的项目
         $this->assign('extra_html',          $this->_extra_html);          // 额外HTML代码
-        parent::display($this->_template);
+        return parent::display($this->_template);
     }
 
     //编译HTML属性
