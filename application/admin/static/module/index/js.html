@@ -1,0 +1,17 @@
+<script type="text/javascript">
+    $(function(){
+        $('#btn-resume').click(function(){
+            layer.confirm('您确定要开启模块吗?', {icon: 3, title:'提示'}, function(index){
+
+                layer.close(index);
+            });
+        });
+
+        $('#btn-forbid').click(function(){
+            layer.confirm('您确定要禁用模块吗?', {icon: 3, title:'提示'}, function(index){
+
+                layer.close(index);
+            });
+        });
+    });
+</script>

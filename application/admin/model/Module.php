@@ -70,9 +70,9 @@ class Module extends Base
                     $val['right_button']['uninstall_before']['attribute'] = 'class="label label-danger" href="'.url('uninstall_before', array('id' => $val['id'])).'"';
                     break;
                 case '1':  // 正常
-                    $val['status_icon'] = '<i class="fa fa-check text-success"></i>';
+                    $val['status_icon'] = '<i class="Hui-iconfont">&#xe6a7;</i>';
                     $val['right_button']['update_info']['title'] = '更新菜单';
-                    $val['right_button']['update_info']['attribute'] = 'class="label label-info ajax-get" href="'.url('updateInfo', array('id' => $val['id'])).'"';
+                    $val['right_button']['update_info']['attribute'] = 'class="btn btn-success size-MINI radius" href="'.url('updateInfo', array('id' => $val['id'])).'"';
                     if (!$val['is_system']) {
                         $val['right_button']['forbid']['title'] = '禁用';
                         $val['right_button']['forbid']['attribute'] = 'class="label label-warning ajax-get" href="'.url('setStatus', array('status' => 'forbid', 'ids' => $val['id'])).'"';

@@ -46,6 +46,7 @@ class Common extends Controller
             }
         }
         $this->assign('_admin_public_layout', config('appconfig.ADMIN_PUBLIC_LAYOUT')); // 页面公共继承模版
+        $this->assign('_listbuilder_layout', config('appconfig.LISTBUILDER_LAYOUT')); //  ListBuilder继承模版
         if ($this->request->isAjax()) {
             $this->success('数据获取成功', '', array('data' => $this->view->get(), 'html' => $this->fetch($template)));
         } else {

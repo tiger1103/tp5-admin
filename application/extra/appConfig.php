@@ -8,4 +8,5 @@
 
 return [
     'ADMIN_PUBLIC_LAYOUT' => APP_PATH.'admin/view/public/base.html',
+    'LISTBUILDER_LAYOUT'  => APP_PATH.'common/builder/listbuilder.html',
 ];

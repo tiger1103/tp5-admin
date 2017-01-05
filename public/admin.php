@@ -7,5 +7,5 @@
  */
 
 //定义项目默认模块
-define('BIND_MODULE','admin');
+define('DEFAULT_MODULE','admin');
 require_once('index.php');

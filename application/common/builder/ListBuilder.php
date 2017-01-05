@@ -17,13 +17,37 @@ class ListBuilder extends Common {
     private $_alter_data_list = array();   // 表格数据列表重新修改的项目
     private $_extra_html;                  // 额外功能代码
     private $_template;                    // 模版
-
+    private $_js_file;                          //js功能代码文件路径
+    private $_js_other;                   //js外部包含文件路径
+    private $_css_other;                  //css外部包含文件
     /**
      * 初始化方法
      * @return $this
      */
     protected function _initialize() {
-        $this->_template = APP_PATH.'common/builder/layout/'.BIND_MODULE.'/list.html';
+        //模板文件路径
+        $this->_template = APP_PATH.'common/builder/layout'.DS.$this->request->module().DS.'list.html';
+        //js功能和css样式路径
+        $widget = APP_PATH.$this->request->module().DS.'static'.DS.$this->request->controller().DS.$this->request->action().DS;
+        $widgetEmpty = APP_PATH.$this->request->module().DS.'static'.DS.'empty'.DS;
+        $this->_js_file = $widgetEmpty.'js.html';//默认
+        $this->_js_other = $widgetEmpty.'otherJs.html';//默认
+        $this->_css_other =  $widgetEmpty.'otherCss.html';//默认
+        //js功能代码文件路径
+        $jsFile = $widget.'js.html';
+        if(is_file($jsFile)){
+            $this->_js_file = $jsFile;
+        }
+        //js外部包含文件路径
+        $otherJs = $widget.'otherJs.html';
+        if(is_file($otherJs)){
+            $this->_js_other = $otherJs;
+        }
+        //css外部包含文件
+        $otherCss = $widget.'otherCss.html';
+        if(is_file($otherCss)){
+            $this->_css_other = $otherCss;
+        }
     }
 
     /**
@@ -69,16 +93,17 @@ class ListBuilder extends Common {
                 break;
             case 'resume':  // 添加启用按钮(禁用的反操作)
                 //预定义按钮属性以简化使用
+                $my_attribute['id'] = 'btn-resume';
                 $my_attribute['title'] = '启用';
-                $my_attribute['target-form'] = 'ids';
-                $my_attribute['class'] = 'btn btn-success ajax-post confirm';
+                $my_attribute['class'] = 'btn btn-success radius';
                 $my_attribute['model'] = $attribute['model'] ? : $this->request->controller();  // 要操作的数据模型
-                $my_attribute['href']  = url(
-                    $this->request->module().'/'.$this->request->controller().'/setStatus',
-                    array(
-                        'status' => 'resume',
-                        'model' => $my_attribute['model']
-                    )
+                $my_attribute['ico'] = '&#xe615;';
+                $my_attribute['trigger-url'] =url(
+                        $this->request->module().'/'.$this->request->controller().'/setStatus',
+                        array(
+                            'status' => 'resume',
+                            'model' => $my_attribute['model']
+                        )
                 );
 
                 // 如果定义了属性数组则与默认的进行合并，详细使用方法参考上面的新增按钮
@@ -91,11 +116,12 @@ class ListBuilder extends Common {
                 break;
             case 'forbid':  // 添加禁用按钮(启用的反操作)
                 // 预定义按钮属性以简化使用
+                $my_attribute['id'] = 'btn-forbid';
                 $my_attribute['title'] = '禁用';
-                $my_attribute['target-form'] = 'ids';
-                $my_attribute['class'] = 'btn btn-warning ajax-post confirm';
+                $my_attribute['class'] = 'btn btn-warning radius';
                 $my_attribute['model'] = $attribute['model'] ? : $this->request->controller();
-                $my_attribute['href']  = url(
+                $my_attribute['ico'] = '&#xe6e4;';
+                $my_attribute['trigger-url']  = url(
                     $this->request->module().'/'.$this->request->controller().'/setStatus',
                     array(
                         'status' => 'forbid',
@@ -107,7 +133,6 @@ class ListBuilder extends Common {
                 if ($attribute && is_array($attribute)) {
                     $my_attribute = array_merge($my_attribute, $attribute);
                 }
-
                 //这个按钮定义好了把它丢进按钮池里
                 $this->_top_button_list[] = $my_attribute;
                 break;
@@ -281,7 +306,6 @@ class ListBuilder extends Common {
                 * 如果定义了属性数组则与默认的进行合并
                 * 用户定义的同名数组元素会覆盖默认的值
                 * 比如$builder->addRightButton('edit', array('title' => '换个马甲'))
-                * '换个马甲'这个碧池就会使用山东龙潭寺的十二路谭腿第十一式“风摆荷叶腿”
                 * 把'新增'踢走自己霸占title这个位置，其它的属性同样道理
                 */
                 if ($attribute && is_array($attribute)) {
@@ -322,7 +346,6 @@ class ListBuilder extends Common {
                 * 如果定义了属性数组则与默认的进行合并
                 * 用户定义的同名数组元素会覆盖默认的值
                 * 比如$builder->addRightButton('edit', array('title' => '换个马甲'))
-                * '换个马甲'这个碧池就会使用山东龙潭寺的十二路谭腿第十一式“风摆荷叶腿”
                 * 把'新增'踢走自己霸占title这个位置，其它的属性同样道理
                 */
                 if ($attribute['0'] && is_array($attribute['0'])) {
@@ -595,6 +618,9 @@ class ListBuilder extends Common {
         $this->assign('right_button_list',   $this->_right_button_list);   // 表格右侧操作按钮
         $this->assign('alter_data_list',     $this->_alter_data_list);     // 表格数据列表重新修改的项目
         $this->assign('extra_html',          $this->_extra_html);          // 额外HTML代码
+        $this->assign('_js_file',          $this->_js_file);                //js功能代码
+        $this->assign('_js_other',          $this->_js_other);                //js外部引入文件
+        $this->assign('_css_other',          $this->_css_other);                //css外部引入文件
         return parent::display($this->_template);
     }
 

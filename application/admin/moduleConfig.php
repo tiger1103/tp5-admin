@@ -35,7 +35,7 @@ return [
         'pid'   => '2',
         'title' => '系统设置',
         'icon'  => '',
-        'url'   => 'Admin/Config/group',
+        'url'   => 'admin/Config/group',
     ],
     '4' => [
         'pid'   => '1',
@@ -46,6 +46,6 @@ return [
         'pid'   => '4',
         'title' => '功能模块',
         'icon'  => '',
-        'url'   => 'Admin/Module/index',
+        'url'   => 'admin/Module/index',
     ],
 ];
