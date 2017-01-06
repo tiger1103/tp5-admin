@@ -553,7 +553,7 @@ class ListBuilder extends Common {
                         $data[$column['name']] = time_format($data[$column['name']]);
                         break;
                     case 'time':
-                        $data[$column['name']] = time_format($data[$column['name']]);
+                            $data[$column['name']] = isset($data[$column['name']])?time_format($data[$column['name']]):'';
                         break;
                     case 'avatar':
                         $data[$column['name']] = '<img style="width:40px;height:40px;" src="'.get_cover($data[$column['name']]).'">';

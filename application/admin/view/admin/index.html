@@ -164,7 +164,12 @@
         <{volist name="_menu_list" id="_ns"}>
             <?php if(isset($_ns['_child'])&&!empty($_ns['_child'])): ?>
                 <dl id="menu-<{$_ns.name}>">
-                    <dt><i class="Hui-iconfont">&#xe61f;</i> 扩展中心<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                    <dt><i class="Hui-iconfont"><{$_ns.icon}></i> <{$_ns.title}><i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                    <dd>
+                        <ul>
+                            <li><a data-href="" data-title="功能模块" href="javascript:void(0)">功能模块</a></li>
+                        </ul>
+                    </dd>
                 </dl>
             <?php endif; ?>
         <{/volist}>

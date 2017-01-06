@@ -18,9 +18,11 @@
             var url = $(this).attr('target-url');
             $.get(url,function(data){
                 if(data){
-                    layer.msg(data.msg);
+                    layer.msg(data.msg+',正在刷新页面...');
                     if(data.code==1) {
-                        location.reload();
+                        setTimeout(function(){
+                            location.reload();
+                        },2000);
                     }
                 }else{
                     layer.msg('更新出错');
