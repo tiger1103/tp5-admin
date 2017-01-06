@@ -15,7 +15,7 @@ class Admin extends Validate
 {
     //验证规则
     protected $rule = [
-        'username' =>'require|unique:username|regex:^[a-zA-Z\d_]{1,64}$',
+        'username' =>'require|unique:admin_admin|regex:^[a-zA-Z\d_]{1,64}$',
         'password' =>'require',
     ];
 

@@ -7,8 +7,7 @@
  */
 
 namespace app\admin\model;
-
-
+use util\Tree;
 
 class Module extends Base
 {
@@ -17,6 +16,7 @@ class Module extends Base
 
     /**
      * 获取模块列表
+     * @param int moduleId 模块id
      * @return array
      */
     public function getAll($moduleId=1) {
@@ -72,7 +72,7 @@ class Module extends Base
                 case '1':  // 正常
                     $val['status_icon'] = '<i class="Hui-iconfont">&#xe6a7;</i>';
                     $val['right_button']['update_info']['title'] = '更新菜单';
-                    $val['right_button']['update_info']['attribute'] = 'class="btn btn-success size-MINI radius" href="'.url('updateInfo', array('id' => $val['id'])).'"';
+                    $val['right_button']['update_info']['attribute'] = 'class="btn btn-success btn-update size-MINI radius" target-url="'.url('updateInfo', array('id' => $val['id'])).'"';
                     if (!$val['is_system']) {
                         $val['right_button']['forbid']['title'] = '禁用';
                         $val['right_button']['forbid']['attribute'] = 'class="label label-warning ajax-get" href="'.url('setStatus', array('status' => 'forbid', 'ids' => $val['id'])).'"';
@@ -83,13 +83,47 @@ class Module extends Base
             }
         }
         return $module_list;
-    }
+    }    
 
     /**
      * 安装描述文件名
      * @return String
      */
-    private function install_file() {
+    public function install_file() {
         return 'moduleConfig.php';
+    }
+
+    /**
+     * 获取所有模块菜单
+     */
+    public function getAllMenu() {
+        $menu_list = cache('MENU_LIST');
+        if (!$menu_list || config('APP_DEBUG') === true) {
+            $con['status'] = 1;
+            $system_module_list = $this->where($con)->order('sort asc, id asc')->select();
+            $tree = new tree();
+            $menu_list = array();
+            foreach ($system_module_list as $key => &$module) {
+                $module = $module->toArray();
+                $temp = $tree->list_to_tree(json_decode($module['admin_menu'], true));
+                $menu_list[$module['name']] = $temp[0];
+                $menu_list[$module['name']]['id']   = $module['id'];
+                $menu_list[$module['name']]['name'] = $module['name'];
+            }
+            // 如果模块顶级菜单配置了top字段则移动菜单至top所指的模块下边
+            foreach ($menu_list as $key => &$value) {
+                if (isset($value['top'])&&!empty($value['top'])) {
+                    if ($menu_list[$value['top']]) {
+                        $menu_list[$value['top']]['_child'] = array_merge(
+                            $menu_list[$value['top']]['_child'],
+                            $value['_child']
+                        );
+                        unset($menu_list[$key]);
+                    }
+                }
+            }
+            cache('MENU_LIST', $menu_list, null,'menu');  // 缓存配置
+        }
+        return $menu_list;
     }
 }

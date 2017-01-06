@@ -20,6 +20,7 @@ class ListBuilder extends Common {
     private $_js_file;                          //js功能代码文件路径
     private $_js_other;                   //js外部包含文件路径
     private $_css_other;                  //css外部包含文件
+    private $_bread_tree;               //面包树导航
     /**
      * 初始化方法
      * @return $this
@@ -491,6 +492,11 @@ class ListBuilder extends Common {
         return $this;
     }
 
+    public function setBreadTree($treeData){
+        $this->_bread_tree = $treeData;
+        return $this;
+    }
+
     /**
      * 显示页面
      */
@@ -608,6 +614,7 @@ class ListBuilder extends Common {
             }
         }
         $this->assign('meta_title',          $this->_meta_title);          // 页面标题
+        $this->assign('bread_tree',          $this->_bread_tree);          // 面包树
         $this->assign('top_button_list',     $this->_top_button_list);     // 顶部工具栏按钮
         $this->assign('search',              $this->_search);              // 搜索配置
         $this->assign('tab_nav',             $this->_tab_nav);             // 页面Tab导航

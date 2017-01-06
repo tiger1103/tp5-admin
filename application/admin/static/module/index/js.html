@@ -13,5 +13,20 @@
                 layer.close(index);
             });
         });
+
+        $('.btn-update').click(function(){
+            var url = $(this).attr('target-url');
+            $.get(url,function(data){
+                if(data){
+                    layer.msg(data.msg);
+                    if(data.code==1) {
+                        location.reload();
+                    }
+                }else{
+                    layer.msg('更新出错');
+                }
+            });
+        });
+
     });
 </script>
