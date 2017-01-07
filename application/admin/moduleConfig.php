@@ -36,7 +36,7 @@ return [
             'pid'   => '2',
             'title' => '系统设置',
             'icon'  => '',
-            'url'   => 'admin/Config/group',
+            'url'   => 'admin/Config/configSet',
         ],
         '4' => [
             'pid'   => '1',
