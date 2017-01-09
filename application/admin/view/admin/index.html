@@ -77,13 +77,13 @@
             <dt><i class="Hui-iconfont"><{$_ns_first.icon}></i> <{$_ns_first.title}><i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <{present name="$_ns_first._child"}>
             <{notempty name="_ns_first._child"}>
-            <{volist name="_ns_first._child" id="_ns_second" key="skey"}>
             <dd>
                 <ul>
+            <{volist name="_ns_first._child" id="_ns_second" key="skey"}>
                     <li><a data-href="<{:url($_ns_second['url'])}>" data-title="<{$_ns_second.title}>" href="javascript:void(0)"><{$_ns_second.title}></a></li>
+            <{/volist}>
                 </ul>
             </dd>
-            <{/volist}>
             <{/notempty}>
             <{/present}>
         </dl>

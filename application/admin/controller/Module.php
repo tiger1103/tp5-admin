@@ -7,6 +7,7 @@
  */
 
 namespace app\admin\controller;
+use app\common\builder\InstanceBuilder;
 
 /**
  * 模块管理
@@ -25,7 +26,7 @@ class Module extends Base
         $module = model('Module');
         $data_list = $module->getAll($moduleId);
         // 使用Builder快速建立列表页面。
-        $builder = new \app\Common\Builder\ListBuilder();
+        $builder = InstanceBuilder::getInstance('list');
         return $builder->setMetaTitle('模块列表')  // 设置页面标题
             ->setBreadTree(['首页','扩展中心','功能模块'])
             ->addTopButton('resume')   // 添加启用按钮
@@ -40,7 +41,7 @@ class Module extends Base
             ->addTableColumn('status_icon', '状态', 'text')
             ->addTableColumn('right_button', '操作', 'btn')
             ->setTableDataList($data_list)     // 数据列表
-            ->display();
+            ->pluginView();
     }
 
     /**

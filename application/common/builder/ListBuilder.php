@@ -1,10 +1,9 @@
 <?php
 namespace app\common\Builder;
-use app\common\controller\Common;
 /**
  * 数据列表自动生成器
  */
-class ListBuilder extends Common {
+class ListBuilder extends InstanceBuilder {
     private $_meta_title;                  // 页面标题
     private $_top_button_list = array();   // 顶部工具栏按钮组
     private $_search  = array();           // 搜索参数配置
@@ -500,7 +499,7 @@ class ListBuilder extends Common {
     /**
      * 显示页面
      */
-    public function display($template = '', $charset = '', $contentType = '', $content = '', $prefix = '') {
+    public function pluginView() {
         // 编译data_list中的值
         foreach ($this->_table_data_list as &$data) {
             // 编译表格右侧按钮
@@ -628,7 +627,7 @@ class ListBuilder extends Common {
         $this->assign('_js_file',          $this->_js_file);                //js功能代码
         $this->assign('_js_other',          $this->_js_other);                //js外部引入文件
         $this->assign('_css_other',          $this->_css_other);                //css外部引入文件
-        return parent::display($this->_template);
+        return parent::fetch($this->_template);
     }
 
     //编译HTML属性

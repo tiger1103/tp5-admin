@@ -37,11 +37,10 @@ class Module extends Base
         // 获取系统已经安装的模块信息
         $installed_module_list = $this->field(true)
             ->order('sort asc,id asc')
-            ->select();
+            ->column(true);
         if ($installed_module_list) {
             $new_module_list = [];
             foreach ($installed_module_list as &$module) {
-                $module = $module->toArray();//数据对象转为数组
                 $new_module_list[$module['name']] = $module;
                 $new_module_list[$module['name']]['admin_menu'] = json_decode($module['admin_menu'], true);
             }
@@ -100,11 +99,10 @@ class Module extends Base
         $menu_list = cache('MENU_LIST');
         if (!$menu_list || config('APP_DEBUG') === true) {
             $con['status'] = 1;
-            $system_module_list = $this->where($con)->order('sort asc, id asc')->select();
+            $system_module_list = $this->where($con)->order('sort asc, id asc')->column(true);
             $tree = new tree();
             $menu_list = array();
             foreach ($system_module_list as $key => &$module) {
-                $module = $module->toArray();
                 $temp = $tree->list_to_tree(json_decode($module['admin_menu'], true));
                 $menu_list[$module['name']] = $temp[0];
                 $menu_list[$module['name']]['id']   = $module['id'];

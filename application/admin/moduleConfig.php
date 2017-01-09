@@ -52,22 +52,32 @@ return [
         '6' => [
             'pid'   => '5',
             'title' => '安装',
+            'icon'  => '',
             'url'   => 'admin/Module/install',
         ],
         '7' => [
             'pid'   => '5',
             'title' => '卸载',
+            'icon'  => '',
             'url'   => 'admin/Module/uninstall',
         ],
         '8' => [
             'pid'   => '5',
             'title' => '更新信息',
+            'icon'  => '',
             'url'   => 'admin/Module/updateInfo',
         ],
         '9' => [
             'pid'   => '5',
             'title' => '设置状态',
+            'icon'  => '',
             'url'   => 'admin/Module/setStatus',
+        ],
+        '10'=>[
+            'pid'   => '2',
+            'title' => '配置管理',
+            'icon'  => '',
+            'url'   => 'admin/Config/index',
         ],
     ],
 

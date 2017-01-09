@@ -37,3 +37,5 @@ function isLogin(){
         return session('user_auth_sign') == data_auth_sign($admin) ? $admin['id'] : 0;
     }
 }
+
+

@@ -24,7 +24,7 @@ class Common extends Controller
      * @param string $prefix 模板缓存前缀
      * @return void
      */
-    protected function display($template = '', $charset = '', $contentType = '', $content = '', $prefix = '') {
+    protected function fetch($template = '', $vars = [], $replace = [], $config = []) {
         if (!is_file($template)) {
             if ('' == $template) {
                 // 如果模板文件名为空 按照默认规则定位
@@ -48,9 +48,9 @@ class Common extends Controller
         $this->assign('_admin_public_layout', config('appconfig.ADMIN_PUBLIC_LAYOUT')); // 页面公共继承模版
         $this->assign('_listbuilder_layout', config('appconfig.LISTBUILDER_LAYOUT')); //  ListBuilder继承模版
         if ($this->request->isAjax()) {
-            $this->success('数据获取成功', '', array('data' => $this->view->get(), 'html' => $this->fetch($template)));
+            $this->success('数据获取成功', '', array('data' => $this->view->get(), 'html' => $this->fetch($template,$vars,$replace,$config)));
         } else {
-            return $this->fetch($template);
+            return parent::fetch($template,$vars,$replace,$config);
         }
     }
 }

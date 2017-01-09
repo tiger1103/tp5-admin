@@ -1,11 +1,10 @@
 <?php
 namespace app\common\Builder;
-use app\common\controller\Common;
 /**
  * 表单页面自动生成器
  * @author jry <598821125@qq.com>
  */
-class FormBuilder extends Common {
+class FormBuilder extends InstanceBuilder {
     private $_meta_title;            // 页面标题
     private $_tab_nav = array();     // 页面Tab导航
     private $_post_url;              // 表单提交地址
