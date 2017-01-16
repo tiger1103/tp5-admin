@@ -1,13 +1,13 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Administrator
+ * User: yixiaohu
  * Date: 2017/1/3
  * Time: 14:38
  */
 
 namespace app\admin\controller;
-use app\common\builder\InstanceBuilder;
+use app\common\creater\Instance;
 
 /**
  * 模块管理
@@ -25,30 +25,37 @@ class Module extends Base
         $moduleId = $this->request->has('moduleId')?$this->request->get('moduleId'):1;
         $module = model('Module');
         $data_list = $module->getAll($moduleId);
-        // 使用Builder快速建立列表页面。
-        $builder = InstanceBuilder::getInstance('list');
-        return $builder->setMetaTitle('模块列表')  // 设置页面标题
-            ->setBreadTree(['首页','扩展中心','功能模块'])
-            ->addTopButton('resume')   // 添加启用按钮
-            ->addTopButton('forbid')   // 添加禁用按钮
-            ->setSearch('请输入ID/标题', url('index'))
-            ->addTableColumn('name', '名称')
-            ->addTableColumn('title', '标题')
-            ->addTableColumn('description', '描述')
-            ->addTableColumn('developer', '开发者')
-            ->addTableColumn('version', '版本')
-            ->addTableColumn('create_time', '创建时间', 'time')
-            ->addTableColumn('status_icon', '状态', 'text')
-            ->addTableColumn('right_button', '操作', 'btn')
-            ->setTableDataList($data_list)     // 数据列表
-            ->pluginView();
+        // 使用Creater快速建立列表页面。
+        return Instance::getInstance('table','AdminCreater')
+            ->setPageTitle('配置管理') // 设置页面标题
+            ->setBreadTree(['首页','扩展中心','功能模块'])//设置面包树
+            ->setSearch([
+                'name'=>['title'=>'名称','type'=>'text','placeholder'=>'请输入名称'],
+                'title'=>['title'=>'标题','type'=>'text','placeholder'=>'请输入标题']
+            ])//设置搜索
+            ->addColumns([ // 批量添加数据列
+                ['name', '名称'],
+                ['title', '标题'],
+                ['description', '描述'],
+                ['developer', '开发者'],
+                ['version', '版本'],
+                ['create_time', '创建时间', 'datetime'],
+                ['status', '状态'],
+                ['right_button', '操作', 'btn']
+            ])
+            ->addTopButtons(['enable'=>['eve'=>'target'],'disable'=>['eve'=>'target']]) // 批量添加顶部按钮
+            ->addRightButton('update',['title'=>'更新菜单','eve'=>'target'])//添加右部按钮
+            ->extraRightButton(['status'=>0,'is_system'=>0],'disable',['eve'=>'target'])//添加额外禁用按钮
+            ->extraRightButton(['status'=>1,'is_system'=>0],'enable',['eve'=>'target'])//添加额外启用按钮
+            ->setRowList($data_list) // 设置表格数据
+            ->fetch();//渲染模板
     }
 
     /**
      * 更新模块信息
      * @param int $id 模块id
      */
-    public function updateInfo($id){
+    public function update($id){
         $module = model('Module');
         $name = $module->getFieldById($id, 'name');
         $config_file = realpath(APP_PATH.strtolower($name)).'/'
@@ -103,8 +110,17 @@ class Module extends Base
         $data['id'] = $id;
         if(false===$module->allowField(true)->validate('Module')->isUpdate(true)->save($data)){
             $this->result([],0,$module->getError(),'json');
+            $this->error($module->getError());
         }else{
-            $this->result([],1,'更新成功','json');
+            //清除菜单缓存
+            cache(null,'admin_menu');
+            //更新权限规则信息
+            $res = model('AuthRule')->updateRule($config_info['admin_menu'],$config_info['info']['name']);
+            if($res['status']){
+                $this->success($res['msg'],'index');
+            }else{
+                $this->error($res['msg']);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 // [ 应用入口文件 ]
 if(version_compare(PHP_VERSION,'5.4.0','<'))  die('require PHP > 5.4.0 !');
-
+//基目录
 define('BASE_PATH', __DIR__);
 // 定义应用目录
 define('APP_PATH', '../application/');
@@ -18,6 +18,5 @@ define('APP_PATH', '../application/');
 define('BASE_URL_PATH', substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'],'/')));
 //定义项目默认模块
 defined('DEFAULT_MODULE') or define('DEFAULT_MODULE','index');
-
 // 加载框架引导文件
 require __DIR__ . '/../core/start.php';

@@ -28,7 +28,6 @@ class InitConfig
                 $system_config = array_merge($system_config, $module_config);
             }
             // 加载Formbuilder扩展类型
-            $system_config['FORM_ITEM_TYPE'] = include APP_PATH.'/common/builder/config.php';  // 包含Builder配置;
             $formbuilder_extend = explode(',', model('Admin/Hook')->getFieldByName('FormBuilderExtend', 'addons'));
             if (!empty($formbuilder_extend)){
                 $config = model('Admin/Addon')->where(['name'=>['in',$formbuilder_extend]])->column('config');
@@ -40,7 +39,8 @@ class InitConfig
                     }
                 }
             }
-            cache('DB_CONFIG_DATA', $system_config,null,'config');  // 缓存配置
+            cache('DB_CONFIG_DATA', $system_config,null,'admin_config');  // 缓存配置
         }
+        config($system_config);
     }
 }

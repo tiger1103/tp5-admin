@@ -24,6 +24,7 @@ class Common extends Controller
      * @param string $prefix 模板缓存前缀
      * @return void
      */
+    
     protected function fetch($template = '', $vars = [], $replace = [], $config = []) {
         if (!is_file($template)) {
             if ('' == $template) {
@@ -52,5 +53,28 @@ class Common extends Controller
         } else {
             return parent::fetch($template,$vars,$replace,$config);
         }
+    }
+
+    /**
+     * 渲染插件模板
+     * @param string $template 模板名称
+     * @param string $suffix 模板后缀
+     * @return mixed
+     */
+    final protected function fetcher($template = '', $suffix = '', $vars = [], $replace = [], $config = [])
+    {
+        $plugin_name = input('param.plugin_name');
+
+        if ($plugin_name != '') {
+            $plugin = $plugin_name;
+            $action = 'index';
+        } else {
+            $plugin = input('param._plugin');
+            $action = input('param._action');
+        }
+        $suffix = $suffix == '' ? 'html' : $suffix;
+        $template = $template == '' ? $action : $template;
+        $template_path = config('plugin_path'). "{$plugin}/view/{$template}.{$suffix}";
+        return parent::fetch($template_path, $vars, $replace, $config);
     }
 }

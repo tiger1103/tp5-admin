@@ -17,7 +17,9 @@ class Base extends Common
 
     public function _initialize(){
         //判断登录
-        $this->checkLogin();
+        defined('UID') or define('UID',$this->checkLogin());
+        // 后台公共模板
+        $this->assign('_admin_base_layout', config('appconfig.ADMIN_BASE_LAYOUT'));
     }
 
     /**
@@ -32,6 +34,14 @@ class Base extends Common
             $this->redirect('index/index');
             return;
         }
+        return $aid;
+    }
+
+    /**
+     * 设置状态
+     */
+    public function setStatus(){
+
     }
 
 }

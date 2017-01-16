@@ -15,6 +15,7 @@
     <link href="__ADMIN__/hui/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
     <link href="__ADMIN__/hui/h-ui.admin/css/style.css" rel="stylesheet" type="text/css" />
     <link href="__JS__/lib/Hui-iconfont/1.0.7/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="__JS__/lib/layui/1.0.7/css/layui.css" />
     <!--[if IE 6]>
     <script type="text/javascript" src="__JS__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
@@ -27,36 +28,34 @@
 <input type="hidden" id="TenantId" name="TenantId" value="" />
 <div class="header"></div>
 <div class="loginWraper">
-    <div id="loginform" class="loginBox">
+    <div id="loginform" class="loginBox layui-form">
         <form class="form form-horizontal" action="<{:url('index')}>" method="post">
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
                 <div class="formControls col-xs-8">
-                    <input name="username" type="text" placeholder="账户" datatype="*"  nullmsg="账户不能为空！" class="input-text size-L">
+                    <input name="username" type="text" placeholder="账户" lay-verify="required" class="input-text size-L">
                 </div>
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
                 <div class="formControls col-xs-8">
-                    <input name="password" type="password" placeholder="密码" datatype="*"  nullmsg="密码不能为空！" class="input-text size-L">
+                    <input name="password" type="password" placeholder="密码" lay-verify="required" class="input-text size-L">
                 </div>
             </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
-                    <input name="captcha" class="input-text size-L" type="text" placeholder="验证码" datatype="*"  nullmsg="验证码不能为空！" style="width:150px;">
+                    <input name="captcha" class="input-text size-L" type="text" placeholder="验证码" lay-verify="required" style="width:150px;">
                     <img id="captcha" src="<{:url('getCaptcheUrl')}>" /> <a id="kanbuq" href="javascript:changeCaptchaImg();">看不清，换一张</a> </div>
             </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
-                    <label for="online">
-                        <input type="checkbox" name="online" id="online" value="">
-                        使我保持登录状态</label>
+                        <input type="checkbox" name="online" id="online" title="保持登录">
                 </div>
             </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
-                    <input name="" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
-                    <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+                    <input id="gosubmit" type="button" class="btn btn-success radius size-L" lay-submit lay-filter="login" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
+                    <input type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
                 </div>
             </div>
         </form>
@@ -64,8 +63,8 @@
 </div>
 <div class="footer">Copyright 你的公司名称 by H-ui.admin.v2.5</div>
 <script type="text/javascript" src="__JS__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__JS__/lib/layui/1.0.7/layui.js"></script>
 <script type="text/javascript" src="__ADMIN__/hui/h-ui/js/H-ui.js"></script>
-<script type="text/javascript" src="__JS__/lib/Validform/5.3.2/Validform.min.js"></script>
 
 <script type="text/javascript">
     var captchaSrc = '';
@@ -79,28 +78,27 @@
 
     $(function(){
         changeCaptchaImg();
-        var form=$(".form").Validform({
-            ajaxPost:true,
-            tiptype:1,
-            callback:function(data){
-                if(data.status>0){
-                    setTimeout(function(){
-                        $.Hidemsg(); //公用方法关闭信息提示框;显示方法是$.Showmsg("message goes here.");
-                        $.Showmsg(data.mess);
+        layui.use(['layer','form'],function () {
+            var layer = layui.layer;
+            var form = layui.form();
+            form.on('submit(login)', function(data){
+                $.post(data.form.action,data.field,function(d){
+                    if(d.status>0){
+                        layer.msg(d.mess);
                         setTimeout(function(){
                             location.href="<{:url('admin/index')}>";
                         },1000);
-                    },1000);
-                }else{
-                    setTimeout(function(){
-                        $.Hidemsg(); //公用方法关闭信息提示框;显示方法是$.Showmsg("message goes here.");
-                        $.Showmsg(data.mess);
-                        setTimeout(function(){
-                            $.Hidemsg();
-                            changeCaptchaImg();
-                        },2000);
-                    },1000);
-                }
+                    }else{
+                        changeCaptchaImg();
+                        layer.msg(d.mess,{icon:5,shift:6});
+                    }
+                });
+                return false;
+            });
+        });
+        $(document).keydown(function(e){
+            if(e.keyCode==13){
+                $('#gosubmit').click();
             }
         });
     });

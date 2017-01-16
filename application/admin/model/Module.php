@@ -35,12 +35,10 @@ class Module extends Base
             }
         }
         // 获取系统已经安装的模块信息
-        $installed_module_list = $this->field(true)
-            ->order('sort asc,id asc')
-            ->column(true);
-        if ($installed_module_list) {
+        $installed_module_list = $this->order('sort asc,id asc')->column(true);
+        if (!empty($installed_module_list)) {
             $new_module_list = [];
-            foreach ($installed_module_list as &$module) {
+            foreach ($installed_module_list as $module) {
                 $new_module_list[$module['name']] = $module;
                 $new_module_list[$module['name']]['admin_menu'] = json_decode($module['admin_menu'], true);
             }
@@ -50,34 +48,16 @@ class Module extends Base
         foreach ($module_list as &$val) {
             switch($val['status']){
                 case '-2':  // 损坏
-                    $val['status_icon'] = '<i class="Hui-iconfont">&#xe613;</i> 删除记录';
-                    $val['right_button']['damaged']['title'] = '删除记录';
-                    $val['right_button']['damaged']['attribute'] = 'class="label label-danger ajax-get" href="'.url('setStatus', array('status' => 'delete', 'ids' => $val['id'])).'"';
+                    $val['status'] = '<span class="label label-danger radius">已损坏</span>';
                     break;
                 case '-1':  // 未安装
-                    $val['status_icon'] = '<i class="fa fa-download text-success"></i>';
-                    $val['right_button']['install_before']['title'] = '安装';
-                    $val['right_button']['install_before']['attribute'] = 'class="label label-success" href="'.url('install_before', array('name' => $val['name'])).'"';
+                    $val['status'] = '<span class="label label-primary radius">安装</span>';
                     break;
                 case '0':  // 禁用
-                    $val['status_icon'] = '<i class="fa fa-ban text-danger"></i>';
-                    $val['right_button']['update_info']['title'] = '更新菜单';
-                    $val['right_button']['update_info']['attribute'] = 'class="label label-info ajax-get" href="'.url('updateInfo', array('id' => $val['id'])).'"';
-                    $val['right_button']['forbid']['title'] = '启用';
-                    $val['right_button']['forbid']['attribute'] = 'class="label label-success ajax-get" href="'.url('setStatus', array('status' => 'resume', 'ids' => $val['id'])).'"';
-                    $val['right_button']['uninstall_before']['title'] = '卸载';
-                    $val['right_button']['uninstall_before']['attribute'] = 'class="label label-danger" href="'.url('uninstall_before', array('id' => $val['id'])).'"';
+                    $val['status'] = '<span class="label label-warning radius">已禁用</span>';
                     break;
                 case '1':  // 正常
-                    $val['status_icon'] = '<i class="Hui-iconfont">&#xe6a7;</i>';
-                    $val['right_button']['update_info']['title'] = '更新菜单';
-                    $val['right_button']['update_info']['attribute'] = 'class="btn btn-success btn-update size-MINI radius" target-url="'.url('updateInfo', array('id' => $val['id'])).'"';
-                    if (!$val['is_system']) {
-                        $val['right_button']['forbid']['title'] = '禁用';
-                        $val['right_button']['forbid']['attribute'] = 'class="label label-warning ajax-get" href="'.url('setStatus', array('status' => 'forbid', 'ids' => $val['id'])).'"';
-                        $val['right_button']['uninstall_before']['title'] = '卸载';
-                        $val['right_button']['uninstall_before']['attribute'] = 'class="label label-danger" href="'.url('uninstall_before', array('id' => $val['id'])).'"';
-                    }
+                    $val['status'] = '<span class="label label-success radius">已启用</span>';
                     break;
             }
         }
@@ -120,7 +100,7 @@ class Module extends Base
                     }
                 }
             }
-            cache('MENU_LIST', $menu_list, null,'menu');  // 缓存配置
+            cache('MENU_LIST', $menu_list, null,'admin_menu');  // 缓存配置
         }
         return $menu_list;
     }

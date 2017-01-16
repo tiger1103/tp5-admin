@@ -82,6 +82,10 @@ return [
         'expire' => 0,
     ],
 
-    //加密类库驱动
-    'DATA_CRYPT_TYPE'=>'think',
+    //分页配置
+    'paginate'               => [
+        'type'      => '\app\admin\driver\HuiPaginnator',
+        'var_page'  => 'page',
+        'list_rows' => 10,
+    ],
 ];

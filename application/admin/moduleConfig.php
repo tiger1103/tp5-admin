@@ -25,12 +25,14 @@ return [
             'title' => '系统',
             'icon'  => '&#xe62e;',
             'level' => 'system',
+            'url'=>'system'
         ],
 
         '2' => [
-            'pid'   => '1',
+            'pid'  => '1',
             'title' => '系统管理',
-            'icon'  => '&#xe62e;',
+            'icon' => '&#xe62e;',
+            'url'   =>'systemConfig'
         ],
         '3' => [
             'pid'   => '2',
@@ -42,6 +44,7 @@ return [
             'pid'   => '1',
             'title' => '扩展中心',
             'icon'  => '&#xe61f;',
+            'url'   =>'extendCenter'
         ],
         '5' => [
             'pid'   => '4',
@@ -78,6 +81,18 @@ return [
             'title' => '配置管理',
             'icon'  => '',
             'url'   => 'admin/Config/index',
+        ],
+        '11'=>[
+            'pid'   => '10',
+            'title' => '设置状态',
+            'icon'  => '',
+            'url'   => 'admin/Config/setStatus',
+        ],
+        '12'=>[
+            'pid'   => '2',
+            'title' => '日志管理',
+            'icon'  => '',
+            'url'   => 'admin/Log/index',
         ],
     ],
 

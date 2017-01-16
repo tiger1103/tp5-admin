@@ -38,4 +38,17 @@ function isLogin(){
     }
 }
 
+if (!function_exists('format_time')) {
+    /**
+     * 时间戳格式化
+     * @param null $time
+     * @param string $format
+     * @return false|string
+     */
+    function format_time($time = null, $format='Y-m-d H:i') {
+        $time = $time === null ? time() : intval($time);
+        return date($format, $time);
+    }
+}
+
 
