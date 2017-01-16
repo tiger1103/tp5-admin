@@ -66,10 +66,6 @@ class AuthRule extends Base
             }
             $i++;
         }
-        $data_rule = [
-            ['module' => 'admin','name'   => 'sasdasdxxxasdasdasd','title'  => '标题'],
-            ['id'=>2,'module' => 'admin','name'   => 'asdasdasd','title'  => '标题'],
-        ];
         if(false===$this->saveAll($data_rule)){
             return ['status'=>false,'msg'=>'权限规则更新失败：'.$this->getError()];
         }
