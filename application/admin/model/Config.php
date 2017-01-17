@@ -12,9 +12,9 @@ namespace app\admin\model;
 class Config extends Base
 {
     /**
-     * @var string 模型名称
+     * @var string 表名称
      */
-    protected $name = 'admin_config';
+    protected $table = '__ADMIN_CONFIG__';
     /**
      * 获取配置列表与ThinkPHP配置合并
      * @return array 配置数组

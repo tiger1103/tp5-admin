@@ -12,8 +12,8 @@ namespace app\admin\model;
 class Addon extends Base
 {
     /**
-     * @var string 模型名称
+     * @var string 表名称
      */
-    protected $name = 'admin_addon';
+    protected $table = '__ADMIN_ADDON__';
 
 }

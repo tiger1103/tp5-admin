@@ -11,8 +11,10 @@ use util\Tree;
 
 class Module extends Base
 {
-    //模型名称
-    protected $name = 'admin_module';
+    /**
+     * @var string 表名
+     */
+    protected $table = '__ADMIN_MODULE__';
 
     /**
      * 获取模块列表

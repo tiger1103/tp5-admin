@@ -117,6 +117,16 @@ class AdminCreater extends Instance
     }
 
     /**
+     * 隐藏第一列多选框
+     * @return $this
+     */
+    public function hideCheckbox()
+    {
+        $this->_vars['hide_checkbox'] = true;
+        return $this;
+    }
+
+    /**
      * 设置Tab按钮列表
      * @param array $tab_list Tab列表  ['title' => '标题', 'href' => 'http://www.qjit.cn']
      * @param string $curr_tab 当前tab

@@ -12,7 +12,7 @@ namespace app\admin\model;
 class Hook extends Base
 {
     /**
-     * @var string 模型名称
+     * @var string 表名称
      */
-    protected $name = 'admin_hook';
+    protected $table = '__ADMIN_HOOK__';
 }

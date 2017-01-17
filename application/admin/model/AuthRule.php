@@ -12,9 +12,9 @@ namespace app\admin\model;
 class AuthRule extends Base
 {
     /**
-     * @var string 模型名
+     * @var string 表名
      */
-    protected $name = 'admin_auth_rule';
+    protected $table = '__ADMIN_AUTH_RULE__';
 
     /**
      * @var array 自动完成
@@ -39,7 +39,7 @@ class AuthRule extends Base
         return strtolower($value);
     }
     public function setTypeAttr(){
-        return 2;
+        return 1;
     }
     public function setStatusAttr(){
         return 1;

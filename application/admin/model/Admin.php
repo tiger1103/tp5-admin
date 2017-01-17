@@ -13,8 +13,10 @@ use think\Db;
 
 class Admin extends Base
 {
-    //模型名称
-    protected $name = 'admin_admin';
+    /**
+     * @var string 表名
+     */
+    protected $table = '__ADMIN_ADMIN__';
     /**
      * 用户登录
      * @param $map
@@ -35,7 +37,8 @@ class Admin extends Base
             /* 记录登录SESSION */
             $auth = array(
                 'id'                   => $res->id,
-                'username'        => $res->username
+                'username'        => $res->username,
+                'nickname'         =>$res->nickname
             );
 
             session('user_auth', $auth);

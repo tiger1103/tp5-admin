@@ -108,7 +108,7 @@ class Module extends Base
             $data['user_nav'] = '';
         }
         $data['id'] = $id;
-        if(false===$module->allowField(true)->validate('Module')->isUpdate(true)->save($data)){
+        if(false===$module->allowField(true)->validate(true)->isUpdate(true)->save($data)){
             $this->result([],0,$module->getError(),'json');
             $this->error($module->getError());
         }else{
@@ -117,6 +117,8 @@ class Module extends Base
             //更新权限规则信息
             $res = model('AuthRule')->updateRule($config_info['admin_menu'],$config_info['info']['name']);
             if($res['status']){
+                // 记录行为
+                action_log('module_update', 'admin_module', $id, UID,$config_info['info']['title']);
                 $this->success($res['msg'],'index');
             }else{
                 $this->error($res['msg']);

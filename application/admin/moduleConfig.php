@@ -10,7 +10,7 @@ return [
     // 模块信息
     'info' => [
         'name'        => 'admin',
-        'title'       => '系统',
+        'title'       => '系统核心',
         'icon'        => '&#xe62e;',
         'icon_color'  => '#3CA6F1',
         'description' => '核心系统',
