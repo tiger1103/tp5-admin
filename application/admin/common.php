@@ -60,11 +60,37 @@ if (!function_exists('get_nickname')) {
      */
     function get_nickname($uid = 0)
     {
+        static $list;
         // 获取当前登录用户名
         if (!($uid && is_numeric($uid))) {
             return session('user_auth.nickname');
         }
-        return model('admin/Admin')->where('id',$uid)->value('nickname');
+        // 获取缓存数据
+        if (empty($list)) {
+            $list = cache('sys_user_nickname_list');
+        }
+        // 查找用户信息
+        $key = "u{$uid}";
+        if (isset($list[$key])) {
+            // 已缓存，直接使用
+            $name = $list[$key];
+        } else {
+            $info =  model('admin/Admin')->field('nickname')->find($uid);
+            if ($info !== false && $info->nickname) {
+                $nickname = $info->nickname;
+                $name = $list[$key] = $nickname;
+                /* 缓存用户 */
+                $count = count($list);
+                $max   = config('user_max_cache');
+                while ($count-- > $max) {
+                    array_shift($list);
+                }
+                cache('sys_user_nickname_list', $list,null,'admin_admin');
+            } else {
+                $name = '';
+            }
+        }
+        return $name;
     }
 }
 
@@ -134,9 +160,10 @@ if (!function_exists('action_log')) {
             // 未定义日志规则，记录操作url
             $data['remark'] = '操作url：'.$_SERVER['REQUEST_URI'];
         }
-
         // 保存日志
-        model('admin/Log')->insert($data);
+        if(false==model('admin/Log')->validate(true)->isUpdate(false)->save($data)){
+            return '行为日志写入失败：'.model('admin/Log')->getError();
+        }
 
         if(!empty($action_info['rule'])){
             // 解析行为

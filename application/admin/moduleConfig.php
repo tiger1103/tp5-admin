@@ -31,7 +31,7 @@ return [
         '2' => [
             'pid'  => '1',
             'title' => '系统管理',
-            'icon' => '&#xe62e;',
+            'icon' => '&#xe63c;',
             'url'   =>'systemConfig'
         ],
         '3' => [
@@ -94,6 +94,65 @@ return [
             'icon'  => '',
             'url'   => 'admin/Log/index',
         ],
+        '13'=>[
+            'pid'   => '12',
+            'title' => '日志详情',
+            'icon'  => '',
+            'url'   => 'admin/Log/details',
+        ],
+        '14'=>[
+            'pid'   => '12',
+            'title' => '删除日志',
+            'icon'  => '',
+            'url'   => 'admin/Log/delete',
+        ],
+        '15'=>[
+            'pid'   => '2',
+            'title' => '行为管理',
+            'icon'  => '',
+            'url'   => 'admin/Action/index',
+        ],
+        '16'=>[
+            'pid'   => '15',
+            'title' => '新增行为',
+            'icon'  => '',
+            'url'   => 'admin/Action/add',
+        ],
+        '17'=>[
+            'pid'   => '15',
+            'title' => '行为状态',
+            'icon'  => '',
+            'url'   => 'admin/Action/setStatus',
+        ],
+        '18'=>[
+            'pid'   => '15',
+            'title' => '删除行为',
+            'icon'  => '',
+            'url'   => 'admin/Action/delete',
+        ],
+        '19'=>[
+            'pid'   => '15',
+            'title' => '修改行为',
+            'icon'  => '',
+            'url'   => 'admin/Action/edit',
+        ],
+        '20'=>[
+            'pid'   => '1',
+            'title' => '系统权限',
+            'icon'  => '&#xe62b;',
+            'url'   => 'roleAccess',
+        ],
+        '21'=>[
+            'pid'   => '20',
+            'title' => '管理员管理',
+            'icon'  => '',
+            'url'   => 'admin/Access/index',
+        ],
+        '22'=>[
+            'pid'   => '20',
+            'title' => '用户组管理',
+            'icon'  => '',
+            'url'   => 'admin/Group/index',
+        ],
     ],
-
 ];

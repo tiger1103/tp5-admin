@@ -106,4 +106,21 @@ class Module extends Base
         }
         return $menu_list;
     }
+
+    /**
+     * 获取所有模块的名称和标题
+     * @return mixed
+     */
+    public static function getModule()
+    {
+        $modules = cache('modules');
+        if (!$modules) {
+            $modules = self::where('status', '>=', 0)->order('id')->column('name,title');
+            // 非开发模式，缓存数据
+            if (config('develop_mode') == 0) {
+                cache('modules', $modules,null,'admin_modules');
+            }
+        }
+        return $modules;
+    }
 }

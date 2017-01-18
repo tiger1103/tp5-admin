@@ -32,6 +32,7 @@ class Log extends Base
         return Instance::getInstance('table','AdminCreater')
             ->setPageTitle('系统日志') // 设置页面标题
             ->setBreadTree(['首页','系统管理','日志管理'])//设置面包树
+            ->addTopButton('delete',['eve'=>'target'])//顶部按钮
             ->addColumns([ // 批量添加数据列
                 ['id', '编号'],
                 ['title', '行为名称'],
@@ -41,7 +42,10 @@ class Log extends Base
                 ['create_time', '执行时间', 'datetime', '', 'Y-m-d H:i:s'],
                 ['right_button', '操作', 'btn']
             ])
-            ->addRightButton('custom', ['icon' => 'Hui-iconfont Hui-iconfont-yanjing', 'title' => '详情','class'=>'btn btn-success radius size-MINI', 'href' => url('details', ['id' => '__id__'])])
+            ->addRightButton('custom', ['icon' => 'Hui-iconfont Hui-iconfont-yanjing',
+                'title' => '详情','class'=>'btn btn-success radius size-MINI','eve'=>'pop',
+                'url' => url('details', ['id' => '__id__'])])//查看详情
+            ->addRightButton('delete',['eve'=>'target'])//删除
             ->setRowList($data_list) // 设置表格数据
             ->setPages($page) // 设置分页数据
             ->fetch(); // 渲染模板

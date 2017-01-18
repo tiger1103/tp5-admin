@@ -86,7 +86,7 @@
             </td>
             <{/if}>
             <?php foreach ($columns as $column) :?>
-            <td>
+            <td class="<{$column['class']|default=''}>">
                 <{$row[$column['name']]|default=''}>
             </td>
             <?php endforeach; ?>
@@ -94,7 +94,7 @@
         <{/volist}>
         <{empty name="row_list"}>
         <tr class="text-c">
-            <td colspan="<{:count($row_list)+1}>">
+            <td colspan="<{:count($columns)+1}>" class="<{$column['class']|default=''}>">
                 <i class="fa fa-database"></i> 暂时没有数据<br>
             </td>
         </tr>

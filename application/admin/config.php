@@ -88,4 +88,6 @@ return [
         'var_page'  => 'page',
         'list_rows' => 10,
     ],
+    // 最大缓存用户数
+    'user_max_cache' => 1000,
 ];

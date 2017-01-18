@@ -118,7 +118,10 @@ class Module extends Base
             $res = model('AuthRule')->updateRule($config_info['admin_menu'],$config_info['info']['name']);
             if($res['status']){
                 // 记录行为
-                action_log('module_update', 'admin_module', $id, UID,$config_info['info']['title']);
+                if(true!==$return = action_log('module_update', 'admin_module', $id, UID,$config_info['info']['title'])){
+                    $this->error($return);
+                    return false;
+                }
                 $this->success($res['msg'],'index');
             }else{
                 $this->error($res['msg']);
