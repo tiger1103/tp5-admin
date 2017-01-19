@@ -15,4 +15,12 @@ class Group extends Base
      * @var string 表名
      */
     protected $table = '__ADMIN_AUTH_GROUP__';
+
+    protected $autoWriteTimestamp = true;
+
+    protected function setSortAttr($value){
+        return intval($value);
+    }
+
+
 }

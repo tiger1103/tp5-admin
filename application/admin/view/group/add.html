@@ -1,0 +1,165 @@
+<{extend name="public:base" /}>
+<{block name="otherCss"}>
+<link rel="stylesheet" type="text/css" href="__ADMIN__/hui/h-ui.admin/css/style.css" />
+<{/block}>
+<{block name="content"}>
+<article class="page-container">
+    <form action="<{:url('add')}>" method="post" class="form form-horizontal" id="form-admin-role-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">父级用户组：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="pid" >
+                        <option value="0">顶级部门</option>
+                        <{volist name="group_list" id="group"}>
+                        <option value="<{$group.id}>"><{$group.title_show}></option>
+                        <{/volist}>
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户组名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" name="title">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">排序：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" style="width:80px;" value="" placeholder="" id="" name="sort">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">权限设置：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <{volist name="menus" id="menu"}>
+                <div class="permission-list mb-15">
+                    <h4 class="c-white pl-10 bg-color-bb"><{$menu.title}></h4>
+                    <dl class="permission-list">
+                        <?php if(isset($menu['_child'])): ?>
+                        <{notempty name="menu._child"}>
+                        <{volist name="menu._child" id="first_child"}>
+                        <?php $url = strtolower($first_child['url']); ?>
+                        <dt>
+                            <label>
+                                <input type="checkbox" value="<{:isset($rules[$url])?$rules[$url]:''}>" name="menus[]" id="user-Character-<{$first_child.id}>">
+                                <{$first_child.title}>
+                            </label>
+                        </dt>
+                        <?php if(isset($first_child['_child'])): ?>
+                        <{notempty name="first_child._child"}>
+                        <dd>
+                            <{volist name="first_child._child" id="second_child"}>
+                            <?php $url = strtolower($second_child['url']); ?>
+                            <dl class="cl permission-list2">
+                                <dt>
+                                    <label>
+                                        <input type="checkbox" value="<{:isset($rules[$url])?$rules[$url]:''}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>">
+                                        <{$second_child.title}>
+                                    </label>
+                                </dt>
+                                <?php if(isset($second_child['_child'])): ?>
+                                <{notempty name="second_child._child"}>
+                                <dd>
+                                    <{volist name="second_child._child" id="third_child"}>
+                                    <?php $url = strtolower($third_child['url']); ?>
+                                    <label>
+                                        <input type="checkbox" value="<{:isset($rules[$url])?$rules[$url]:''}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>-<{$third_child.id}>">
+                                        <{$third_child.title}>
+                                    </label>
+                                    <{/volist}>
+                                </dd>
+                                <{/notempty}>
+                                <?php endif; ?>
+                            </dl>
+                        <{/volist}>
+                        </dd>
+                        <{/notempty}>
+                        <?php endif; ?>
+                        <{/volist}>
+                        <{/notempty}>
+                        <?php endif; ?>
+                    </dl>
+                </div>
+                <{/volist}>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <button type="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+            </div>
+        </div>
+    </form>
+</article>
+<{/block}>
+<{block name="otherJs"}>
+<script type="text/javascript" src="__JS__/lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/validate-methods.js"></script>
+<script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/messages_zh.min.js"></script>
+<script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/jquery.form.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".permission-list dt input:checkbox").click(function(){
+            $(this).closest('dt').next().find("input:checkbox").prop("checked",$(this).prop("checked"));
+            $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",$(this).prop("checked"));
+        });
+        $(".permission-list2 dd input:checkbox").click(function(){
+            var l =$(this).parent().parent().find("input:checked").length;
+            var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+            if($(this).prop("checked")){
+                $(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+                $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+            }
+            else{
+                if(l==0){
+                    $(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+                }
+                if(l2==0){
+                    $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+                }
+            }
+        });
+
+        $("#form-admin-role-add").validate({
+            rules:{
+                pid:{
+                    required:true
+                },
+                title:{
+                    required:true
+                },
+                sort:{
+                    digits:true
+                }
+            },
+            messages:{
+                pid:{
+                    required:'请选择父级用户组'
+                },
+                title:{
+                    required:'分组名称不能为空'
+                },
+                sort:{
+                    digits:'排序必须是整数数字'
+                }
+            },
+            onkeyup:false,
+            focusCleanup:false,
+            success:"valid",
+            submitHandler:function(form){
+                var index = parent.layer.getFrameIndex(window.name);
+                $(form).ajaxSubmit({
+                    dataType:"text",
+                    success:function( jsondata ){
+                        console.log(jsondata);
+                    }
+                });
+
+                //parent.layer.close(index);
+            }
+        });
+    });
+</script>
+<{/block}>

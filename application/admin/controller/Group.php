@@ -36,9 +36,39 @@ class Group extends Base
                 ['update_time', '修改日期', 'datetime', '', 'Y-m-d H:i:s'],
                 ['right_button', '操作', 'btn']
             ])
-            ->addTopButtons(['add'=>['eve'=>'pop'],'enable'=>['eve'=>'target'],'disable'=>['eve'=>'target'],'delete'=>['eve'=>'target']]) // 批量添加顶部按钮
+            ->addTopButtons(['add'=>['eve'=>'pop','pop-title'=>'添加用户组'],'enable'=>['eve'=>'target'],'disable'=>['eve'=>'target'],'delete'=>['eve'=>'target']]) // 批量添加顶部按钮
             ->addRightButtons(['edit'=>['eve'=>'pop'],'delete'=>['eve'=>'target']]) // 批量添加右侧按钮
             ->setRowList($group_list) // 设置表格数据
             ->fetch();
+    }
+
+    public function add(){
+        // 保存数据
+        if ($this->request->isPost()) {
+            $data = $this->request->post();
+            $menus = $data['menus'];
+
+            halt($menus);
+            $group_model = model('Group');
+            // 添加数据
+            if (false===$role = $group_model->allowField(true)->isUpdate(false)->validate(true)->save($data)){
+                halt($group_model->getError());
+            }
+            halt('未验证');
+        }
+        //获取菜单
+        $menus = model('Module')->getAllMenu();
+        //权限规则
+        $rules = model('AuthRule')->column('id,name','name');
+        //用户组
+        $group_list = model('Group')->where('status',1)->order('sort asc,id asc')->column('id,pid,title,status,sort');
+        // 转换成树状列表
+        $tree = new Tree();
+        $group_list = $tree->toFormatTree($group_list);
+
+        $this->assign('menus',$menus);//菜单列表
+        $this->assign('rules',$rules);
+        $this->assign('group_list',$group_list);//用户组
+        return $this->fetch();
     }
 }
