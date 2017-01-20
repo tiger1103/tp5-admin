@@ -4,15 +4,16 @@
 <{/block}>
 <{block name="content"}>
 <article class="page-container">
-    <form action="<{:url('add')}>" method="post" class="form form-horizontal" id="form-admin-role-add">
+    <form action="<{:url('edit')}>" method="post" class="form form-horizontal" id="form-admin-role-add">
+        <input type="hidden" name="id" value="<{$group.id}>" />
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">父级用户组：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="pid" >
                         <option value="0">顶级部门</option>
-                        <{volist name="group_list" id="group"}>
-                        <option value="<{$group.id}>"><{$group.title_show}></option>
+                        <{volist name="group_list" id="groups"}>
+                        <option value="<{$groups.id}>" <{if condition="$groups['id'] eq $group['pid']"}>selected="selected"<{/if}> ><{$groups.title_show}></option>
                         <{/volist}>
                     </select>
 				</span>
@@ -21,19 +22,19 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户组名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" name="title">
+                <input type="text" class="input-text" value="<{$group.title}>" placeholder="" name="title">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">状态：</label>
             <div class="formControls col-xs-8 col-sm-9 layui-form">
-                <input type="checkbox" name="status" lay-skin="switch" checked>
+                <input type="checkbox" name="status" lay-skin="switch" <{if condition="$group.status eq 1"}>checked<{/if}> >
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">排序：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" style="width:80px;" value="" placeholder="" id="" name="sort">
+                <input type="text" class="input-text" style="width:80px;" value="<{$group.sort}>" placeholder="" id="" name="sort">
             </div>
         </div>
         <div class="row cl">
@@ -54,7 +55,7 @@
                         ?>
                         <dt>
                             <label>
-                                <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>">
+                                <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>" <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
                                 <{$first_child.title}>
                             </label>
                         </dt>
@@ -71,7 +72,7 @@
                             <dl class="cl permission-list2">
                                 <dt>
                                     <label>
-                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>">
+                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>" <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
                                         <{$second_child.title}>
                                     </label>
                                 </dt>
@@ -86,7 +87,7 @@
                                         }
                                     ?>
                                     <label>
-                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>-<{$third_child.id}>">
+                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>-<{$third_child.id}>" <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
                                         <{$third_child.title}>
                                     </label>
                                     <{/volist}>
@@ -94,7 +95,7 @@
                                 <{/notempty}>
                                 <?php endif; ?>
                             </dl>
-                        <{/volist}>
+                            <{/volist}>
                         </dd>
                         <{/notempty}>
                         <?php endif; ?>

@@ -15,7 +15,7 @@ class Group extends Validate
 {
     //验证规则
     protected $rule = [
-        'pid' =>'require|number ',
+        'pid' =>'require|integer',
         'title'   =>'require',
         'sort'  =>'number',
     ];
@@ -23,7 +23,7 @@ class Group extends Validate
     //提示信息
     protected $message = [
         'pid.require'    => '所属用户组不能为空',
-        'pid.number'    => '所属用户组pid必须为数字',
+        'pid.integer'    => '所属用户组pid必须为数字',
         'title.require'      => '用户组名不能为空',
         'sort.number'   =>'排序必须是数字',
     ];

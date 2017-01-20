@@ -154,5 +154,17 @@ return [
             'icon'  => '',
             'url'   => 'admin/Group/index',
         ],
+        '23'=>[
+            'pid'   => '22',
+            'title' => '添加用户组',
+            'icon'  => '',
+            'url'   => 'admin/Group/add',
+        ],
+        '24'=>[
+            'pid'   => '22',
+            'title' => '修改用户组',
+            'icon'  => '',
+            'url'   => 'admin/Group/edit',
+        ],
     ],
 ];

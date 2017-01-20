@@ -660,8 +660,16 @@ class AdminCreater extends Instance
                         // 是否能匹配到条件
                         $_button_match = true;
                         foreach ($replace_right_button['map'] as $field => $item) {
-                            if (isset($row[$field]) && $row[$field] != $item) {
-                                $_button_match = false;
+                            if(isset($row[$field])){
+                              if(is_array($item)){
+                                  if(!in_array($row[$field],$item)){
+                                        $_button_match = false;
+                                  }
+                              }else{
+                                  if ($row[$field] != $item) {
+                                      $_button_match = false;
+                                  }
+                              }
                             }
                         }
                         if ($_button_match) {
@@ -678,8 +686,16 @@ class AdminCreater extends Instance
                         foreach($this->_extra_right_buttons as $extra_right_button){
                             $_button_match = true;
                             foreach ($extra_right_button['map'] as $field => $item) {
-                                if (isset($row[$field]) && $row[$field] != $item) {
-                                    $_button_match = false;
+                                if (isset($row[$field])) {
+                                    if(is_array($item)){
+                                        if(!in_array($row[$field],$item)){
+                                            $_button_match = false;
+                                        }
+                                    }else{
+                                        if ($row[$field] != $item) {
+                                            $_button_match = false;
+                                        }
+                                    }
                                 }
                             }
                             if ($_button_match) {
