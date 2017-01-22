@@ -18,7 +18,9 @@ return [
         'app\\common\\behavior\\InitConfig',
     ],
     // 模块初始化
-    'module_init'  => [],
+    'module_init'  => [
+        'app\\common\\behavior\\InitModule',
+    ],
     // 操作开始执行
     'action_begin' => [],
     // 视图内容过滤

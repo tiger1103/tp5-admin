@@ -7,10 +7,41 @@ $(function(){
             var $this = $(this);
             switch ($this.attr('eve')){
                 case 'target':
-                    var index = layer.load();
                     var url = $this.attr('url');
-                    location.href = url;
-                    layer.close(index);
+                    if($this.attr('target-form')=='ids'){
+                        var checkbox = $this.closest('.page-container').find('table>tbody input[name="ids[]"]:checked');
+                        if(checkbox.length==0){
+                            layer.alert('请选择要操作的数据',{icon:0,title:'提示'});
+                            return;
+                        }
+                        var ids = [];
+                        checkbox.each(function(i,v){
+                            ids[i] = v.id;
+                        });
+                        if($this.attr('target-action')=='delete'){
+                            layer.confirm('你确定要删除？',{icon:3},function(index){
+                                layer.load();
+                                url +='/ids/'+ids.join(',');
+                                location.href = url;
+                                layer.close(index);
+                            });
+                            return;
+                        }
+                        layer.load();
+                        url +='/ids/'+ids.join(',');
+                        location.href = url;
+                    }else{
+                        if($this.attr('target-action')=='delete') {
+                            layer.confirm('你确定要删除？', {icon: 3}, function (index) {
+                                layer.load();
+                                location.href = url;
+                                layer.close(index);
+                            });
+                            return;
+                        }
+                        layer.load();
+                        location.href = url;
+                    }
                     break;
                 case 'pop':
                     var w=800,h=($(window).height() - 50),title,url;
@@ -29,15 +60,13 @@ $(function(){
                     });
                     break;
             }
-
         });
 
         //状态设置
         form().on('switch(status)',function(data){
-            
-            console.log(data.elem); //得到checkbox原始DOM对象
-            console.log(data.elem.checked); //开关是否开启，true或者false
-            console.log(data.value); //开关value值，也可以通过data.elem.value得到
+            layer.load();
+            var url = baseUrl+'/setStatus/ids/'+data.elem.id+'/action/'+(data.elem.checked?'enable':'disable');
+            location.href = url;
         });
     });
 });

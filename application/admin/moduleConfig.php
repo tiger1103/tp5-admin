@@ -166,5 +166,41 @@ return [
             'icon'  => '',
             'url'   => 'admin/Group/edit',
         ],
+        '25'=>[
+            'pid'   => '22',
+            'title' => '用户组状态设置',
+            'icon'  => '',
+            'url'   => 'admin/Group/setStatus',
+        ],
+        '26'=>[
+            'pid'   => '22',
+            'title' => '删除用户组',
+            'icon'  => '',
+            'url'   => 'admin/Group/delete',
+        ],
+        '27'=>[
+            'pid'   => '21',
+            'title' => '添加员管理',
+            'icon'  => '',
+            'url'   => 'admin/Access/add',
+        ],
+        '28'=>[
+            'pid'   => '21',
+            'title' => '修改员管理',
+            'icon'  => '',
+            'url'   => 'admin/Access/edit',
+        ],
+        '29'=>[
+            'pid'   => '21',
+            'title' => '设置员管理状态',
+            'icon'  => '',
+            'url'   => 'admin/Access/setStatus',
+        ],
+        '30'=>[
+            'pid'   => '21',
+            'title' => '删除员管理',
+            'icon'  => '',
+            'url'   => 'admin/Access/delete',
+        ],
     ],
 ];

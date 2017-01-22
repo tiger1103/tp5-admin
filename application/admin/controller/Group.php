@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 
 use app\common\creater\Instance;
+use util\ArrayTools;
 use util\Tree;
 
 class Group extends Base
@@ -146,5 +147,84 @@ class Group extends Base
             ]
         );
         return $this->fetch();
+    }
+
+    /**
+     * 设置状态
+     */
+    public function setStatus(){
+        $ids = input('ids');
+        $action = input('action');
+        if($ids==''||$action==''){
+            return $this->error('参数错误');
+        }
+        if(strpos($ids,',')){
+            $id = explode(',',$ids);
+        }
+        //判断是否处理了超级管理员组
+        if(in_array($ids,config('SUPER_ADMIN_ID'))||(isset($id)&&!empty(array_intersect($id,config('SUPER_ADMIN_ID'))))){
+            return $this->error('超级管理员组不可设置');
+        }
+        $group = model('Group');
+        if(isset($id)){
+            //批量设置
+            $title = $group->where(['id'=>['in',$id]])->column('title');
+            if($group->where(['id'=>['in',$id]])->setField('status',$action=='enable'?1:0)!==false){
+                // 记录行为
+                if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', 0, UID,implode('、',$title))){
+                    return $this->error($return);
+                }
+                return $this->success('状态修改成功','index');
+            }
+        }else{
+            //单条设置
+            $title =  $group->where('id',$ids)->value('title');
+            if($group->where('id',$ids)->setField('status',$action=='enable'?1:0)){
+                // 记录行为
+                if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', $ids, UID,$title)){
+                    return $this->error($return);
+                }
+                return $this->success('状态修改成功','index');
+            }
+        }
+        return $this->error('状态修改失败');
+    }
+
+    /**
+     * 删除用户组
+     */
+    public function delete(){
+        $ids = input('ids');
+        if($ids==''){
+            return $this->error('参数错误');
+        }
+        $id = explode(',',$ids);
+
+        //判断是否处理了超级管理员组
+        if(!empty(array_intersect($id,config('SUPER_ADMIN_ID')))){
+            return $this->error('超级管理员组不可删除');
+        }
+        $group = model('Group');
+        //若有子级，删除子级。
+        $group_all = model('Group')->order('sort asc,id asc')->column('id,pid,title');
+        $all_id = [];//最终要删除数据的id
+        $all_title = [];//最终要删除数据的标题
+        foreach($id as $k=>$v){
+            $all_id[]=$v;
+            $all_title[]=$group_all[$v]['title'];
+            $son = ArrayTools::findSonByParentId($group_all,$v,'pid');
+            foreach ($son as $sk=>$sv){
+                $all_id[] = $sv['id'];
+                $all_title[] = $sv['title'];
+            }
+        }
+        if($group->where(['id'=>['in',$all_id]])->delete()!==false){
+            // 记录行为
+            if(true!==$return = action_log('group_delete','admin_auth_group', 0, UID,implode('、',$all_title))){
+                return $this->error($return);
+            }
+            return $this->success('删除成功','index');
+        }
+        return $this->error('删除失败');
     }
 }

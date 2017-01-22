@@ -82,7 +82,7 @@
         <tr class="text-c">
             <{if condition="!$hide_checkbox"}>
             <td>
-                <input type="checkbox" value="{$data[$table_data_list_key]}" name="ids[]">
+                <input id="<{$row.id}>" type="checkbox" value="<{$row.id}>" name="ids[]">
             </td>
             <{/if}>
             <?php foreach ($columns as $column) :?>

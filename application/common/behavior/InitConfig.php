@@ -8,6 +8,7 @@
 
 namespace app\common\behavior;
 
+
 class InitConfig
 {
     public function run(&$params){

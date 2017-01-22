@@ -336,8 +336,8 @@ class AdminCreater extends Instance
                     'class'       => 'btn btn-success radius',
                     'target-form' => 'ids',
                     'url'        => url(
-                        $this->_module.'/'.$this->_controller.'/enable',
-                        ['table' => $table]
+                        $this->_module.'/'.$this->_controller.'/setStatus',
+                        ['action'=>'enable','table' => $table]
                     ),
                 ];
                 break;
@@ -351,8 +351,8 @@ class AdminCreater extends Instance
                     'class'       => 'btn btn-warning radius',
                     'target-form' => 'ids',
                     'url'        => url(
-                        $this->_module.'/'.$this->_controller.'/disable',
-                        ['table' => $table]
+                        $this->_module.'/'.$this->_controller.'/setStatus',
+                        ['action'=>'disable','table' => $table]
                     ),
                 ];
                 break;
@@ -376,6 +376,7 @@ class AdminCreater extends Instance
                     'icon'        => 'Hui-iconfont Hui-iconfont-del3',
                     'class'       => 'btn btn-danger radius',
                     'target-form' => 'ids',
+                    'target-action'=>'delete',
                     'url'        => url(
                         $this->_module.'/'.$this->_controller.'/delete',
                         ['table' => $table]
@@ -528,6 +529,7 @@ class AdminCreater extends Instance
                     'title' => '删除',
                     'icon'  => 'Hui-iconfont Hui-iconfont-del3',
                     'class' => 'btn btn-danger radius size-MINI',
+                    'target-action'=>'delete',
                     'url'  => url(
                         $this->_module.'/'.$this->_controller.'/delete',
                         [
@@ -774,10 +776,10 @@ class AdminCreater extends Instance
                         case 'switch': // 开关
                             switch ($row[$column['name']]) {
                                 case '0': // 关闭
-                                    $row[$column['name']] = '<span class="layui-form" title="开启/关闭"><input type="checkbox" table="'.$this->_table_name.'" id="'.$row['_primary_key_value'].'" name="'.$column['name'].'" lay-filter="status" lay-skin="switch"></span>';
+                                    $row[$column['name']] = '<span class="layui-form" title="开启/关闭"><input type="checkbox" table="'.$this->_table_name.'" id="'.$row['_primary_key_value'].'" name="'.$column['name'].'" lay-filter="'.$column['name'].'" lay-skin="switch"></span>';
                                     break;
                                 case '1': // 开启
-                                    $row[$column['name']] = '<span class="layui-form" title="开启/关闭"><input type="checkbox" table="'.$this->_table_name.'" id="'.$row['_primary_key_value'].'" name="'.$column['name'].'" lay-filter="status" lay-skin="switch" checked></span>';
+                                    $row[$column['name']] = '<span class="layui-form" title="开启/关闭"><input type="checkbox" table="'.$this->_table_name.'" id="'.$row['_primary_key_value'].'" name="'.$column['name'].'" lay-filter="'.$column['name'].'" lay-skin="switch" checked></span>';
                                     break;
                             }
                             break;

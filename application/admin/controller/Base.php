@@ -37,11 +37,5 @@ class Base extends Common
         return $aid;
     }
 
-    /**
-     * 设置状态
-     */
-    public function setStatus(){
-
-    }
 
 }
