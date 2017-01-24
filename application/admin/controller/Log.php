@@ -27,7 +27,6 @@ class Log extends Base
         $data_list = model('Log')->getAll($map, $order);
         // 分页数据
         $page = $data_list->render();
-
         // 使用Creater快速建立列表页面。
         return Instance::getInstance('table','AdminCreater')
             ->setPageTitle('系统日志') // 设置页面标题
@@ -39,7 +38,7 @@ class Log extends Base
                 ['username', '执行者'],
                 ['action_ip', '执行IP', 'callback', 'long2ip'],
                 ['module_title', '所属模块'],
-                ['create_time', '执行时间', 'datetime', '', 'Y-m-d H:i:s'],
+                ['create_time', '执行时间'],
                 ['right_button', '操作', 'btn']
             ])
             ->addRightButton('custom', ['icon' => 'Hui-iconfont Hui-iconfont-yanjing',

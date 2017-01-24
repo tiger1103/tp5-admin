@@ -48,7 +48,7 @@ class Manager extends Base
                 ['nickname', '姓名'],
                 ['group','所属部门'],
                 ['phone','手机号码'],
-                ['create_time', '创建日期', 'datetime', '', 'Y-m-d H:i:s'],
+                ['create_time', '创建日期'],
                 ['status', '状态', 'switch'],
                 ['right_button', '操作', 'btn']
             ])
@@ -71,14 +71,15 @@ class Manager extends Base
         // 使用Creater快速建立表单页面。
         return Instance::getInstance('form','AdminCreater')
         ->addFormItems([ // 批量添加表单项
-            ['text', 'username', '用户名', '必填，可由英文字母、数字组成'],
+            ['bmap','bm','地图标注','88bf9d5e3b73bf4fdb3a9524803a2dbc'],
+            /*['text', 'username', '用户名', '必填，可由英文字母、数字组成'],
             ['text', 'nickname', '昵称', '可以是中文'],
             ['select', 'group', '用户组', '', $group_list],
             ['text', 'email', '邮箱', ''],
             ['password', 'password', '密码', '必填，6-20位'],
             ['text', 'mobile', '手机号'],
             ['image', 'avatar', '头像'],
-            ['radio', 'status', '状态', '', ['禁用', '启用'], 1]
+            ['radio', 'status', '状态', '', ['禁用', '启用'], 1]*/
         ])
         ->fetch();
     }

@@ -22,6 +22,20 @@
         </div>
     </div>
     <{/notempty}>
+    <form action="<{$post_url|default=''}>" method="post" class="form form-horizontal" id="form-article-add">
+        <{empty name="form_items"}>
+        <div class="text-c">暂无数据</div>
+        <{else/}>
+            <{volist name="form_items" id="form"}>
+                <{switch name="form.type"}>
+                    <{case value="bmap"}>
+                        <{// 百度地图 }>
+                        <{include file="_form_items_path/bmap.html" type='' /}>
+                    <{/case}>
+                <{/switch}>
+            <{/volist}>
+        <{/empty}>
+    </form>
 </div>
 <{// 额外HTML代码 }>
 <{$extra_html|default=''}>
