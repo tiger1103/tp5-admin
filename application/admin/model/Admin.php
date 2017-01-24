@@ -17,6 +17,10 @@ class Admin extends Base
      * @var string 表名
      */
     protected $table = '__ADMIN_ADMIN__';
+
+    public function authGroupAccess(){
+        return $this->hasMany('AuthGroupAccess','uid','id')->field('uid,group_id');
+    }
     /**
      * 用户登录
      * @param $map
@@ -66,5 +70,17 @@ class Admin extends Base
            'mess'      =>$status>0?'登陆成功':'登陆失败'
        ];
         Db::name('admin_adminloginlog')->insert($data);
+    }
+
+    /**
+     * 获取管理员列表数据
+     * @param array $map
+     * @param string $order
+     * @param string field
+     * @return \think\paginator\Collection
+     */
+    public function getAll($map=[],$order='',$field='*'){
+        $data_list = self::where($map)->field($field)->order($order)->paginate();
+        return $data_list;
     }
 }

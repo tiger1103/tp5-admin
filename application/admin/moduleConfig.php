@@ -146,7 +146,7 @@ return [
             'pid'   => '20',
             'title' => '管理员管理',
             'icon'  => '',
-            'url'   => 'admin/Access/index',
+            'url'   => 'admin/Manager/index',
         ],
         '22'=>[
             'pid'   => '20',
@@ -182,25 +182,25 @@ return [
             'pid'   => '21',
             'title' => '添加员管理',
             'icon'  => '',
-            'url'   => 'admin/Access/add',
+            'url'   => 'admin/Manager/add',
         ],
         '28'=>[
             'pid'   => '21',
             'title' => '修改员管理',
             'icon'  => '',
-            'url'   => 'admin/Access/edit',
+            'url'   => 'admin/Manager/edit',
         ],
         '29'=>[
             'pid'   => '21',
             'title' => '设置员管理状态',
             'icon'  => '',
-            'url'   => 'admin/Access/setStatus',
+            'url'   => 'admin/Manager/setStatus',
         ],
         '30'=>[
             'pid'   => '21',
             'title' => '删除员管理',
             'icon'  => '',
-            'url'   => 'admin/Access/delete',
+            'url'   => 'admin/Manager/delete',
         ],
     ],
 ];

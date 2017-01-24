@@ -1,0 +1,36 @@
+<{extend name="$_admin_base_layout"/}>
+<{// 其它CSS引入及代码 }>
+<{block name="otherCss"}>
+    <{volist name="css_list" id="vo"}>
+        <link rel="stylesheet" href="__CSS__/{$vo}.css">
+    <{/volist}>
+    <{// 额外CSS代码 }>
+    <{$extra_css|default=''}>
+<{/block}>
+
+<{block name="title"}><title><{$page_title}></title><{/block}>
+
+<{block name="content"}>
+<div class="page-container">
+    <{//tab选项卡}>
+    <{notempty name="tab_nav"}>
+    <div id="tab-system" class="HuiTab">
+        <div class="tabBar cl">
+            <{volist name="tab_nav['tab_list']" id="tab"}>
+            <span <{eq name="tab_nav.curr_tab" value="$key"}>class="current"<{/eq}> onclick="location.href='<{$tab.url}>'" ><{$tab.title}></span>
+            <{/volist}>
+        </div>
+    </div>
+    <{/notempty}>
+</div>
+<{// 额外HTML代码 }>
+<{$extra_html|default=''}>
+<{/block}>
+<{//javascript引入及代码}>
+<{block name="otherJs"}>
+    <{volist name="js_list" id="vo"}>
+        <script type="text/javascript" src="__JS__/{$vo}.js"></script>
+    <{/volist}>
+    <{// 额外JS代码 }>
+    <{$extra_js|default=''}>
+<{/block}>

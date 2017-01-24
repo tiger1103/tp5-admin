@@ -19,11 +19,7 @@ class Group extends Base
      * 用户组管理
      */
     public function index(){
-        $map = [];
-        $group_list = model('Group')->where($map)->order('sort asc,id asc')->column('id,pid,title,status,sort,create_time,update_time');
-        // 转换成树状列表
-        $tree = new Tree();
-        $group_list = $tree->toFormatTree($group_list);
+        $group_list = model('Group')->groupList();
         // 使用Creater快速建立列表页面。
         return Instance::getInstance('table','AdminCreater')
             ->setPageTitle('用户组管理') // 设置页面标题
@@ -39,7 +35,7 @@ class Group extends Base
             ])
             ->addTopButtons(['add'=>['eve'=>'pop','pop-title'=>'添加用户组'],'enable'=>['eve'=>'target'],'disable'=>['eve'=>'target'],'delete'=>['eve'=>'target']]) // 批量添加顶部按钮
             ->addRightButtons(['edit'=>['eve'=>'pop','pop-title'=>'编辑用户组'],'delete'=>['eve'=>'target']]) // 批量添加右侧按钮
-            ->replaceRightButton(['id'=>config('SUPER_ADMIN_ID')],'<a title="超级管理员不可操作" icon="Hui-iconfont Hui-iconfont-suoding" class="btn btn-danger radius size-MINI" 
+            ->replaceRightButton(['id'=>config('SUPER_GROUP_ID')],'<a title="超级管理员不可操作" icon="Hui-iconfont Hui-iconfont-suoding" class="btn btn-danger radius size-MINI" 
                 url="javascript:void(0);" href="javascript:void(0);"><i class="Hui-iconfont Hui-iconfont-suoding"></i></a>')//替换右侧按钮
             ->setRowList($group_list) // 设置表格数据
             ->fetch();
@@ -60,6 +56,7 @@ class Group extends Base
             if (false===$role = $group_model->allowField(true)->isUpdate(false)->validate(true)->save($data)){
                 return $this->result(null,0,$group_model->getError());
             }
+            $this->clearCache();//删除缓存
             // 记录行为
             if(true!==$return = action_log('group_add', 'admin_auth_group', $group_model->id, UID,$data['title'])){
                 return $this->result(null,0,$return);
@@ -71,11 +68,7 @@ class Group extends Base
         //权限规则
         $rules = model('AuthRule')->column('id,name','name');
         //用户组
-        $group_list = model('Group')->where('status',1)->order('sort asc,id asc')->column('id,pid,title,status,sort');
-        // 转换成树状列表
-        $tree = new Tree();
-        $group_list = $tree->toFormatTree($group_list);
-
+        $group_list = model('Group')->groupList(['status'=>1]);
         $this->assign('menus',$menus);//菜单列表
         $this->assign('rules',$rules);
         $this->assign('group_list',$group_list);//用户组
@@ -89,7 +82,7 @@ class Group extends Base
     public function edit(){
         $id = input('id');
         //检查id参数是否合法
-        $super_admin_id = config('SUPER_ADMIN_ID');
+        $super_admin_id = config('SUPER_GROUP_ID');
         array_unshift($super_admin_id,0);
         $id = intval($id);
         if(in_array($id,$super_admin_id)){
@@ -112,6 +105,7 @@ class Group extends Base
             if (false===$role = $group_model->allowField(true)->isUpdate(true)->validate(true)->save($data)){
                 return $this->result(null,0,$group_model->getError());
             }
+            $this->clearCache();//删除缓存
             // 记录行为
             if(true!==$return = action_log('group_edit', 'admin_auth_group', $id, UID,$old_title)){
                 return $this->result(null,0,$return);
@@ -162,7 +156,7 @@ class Group extends Base
             $id = explode(',',$ids);
         }
         //判断是否处理了超级管理员组
-        if(in_array($ids,config('SUPER_ADMIN_ID'))||(isset($id)&&!empty(array_intersect($id,config('SUPER_ADMIN_ID'))))){
+        if(in_array($ids,config('SUPER_GROUP_ID'))||(isset($id)&&!empty(array_intersect($id,config('SUPER_GROUP_ID'))))){
             return $this->error('超级管理员组不可设置');
         }
         $group = model('Group');
@@ -170,6 +164,7 @@ class Group extends Base
             //批量设置
             $title = $group->where(['id'=>['in',$id]])->column('title');
             if($group->where(['id'=>['in',$id]])->setField('status',$action=='enable'?1:0)!==false){
+                $this->clearCache();//删除缓存
                 // 记录行为
                 if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', 0, UID,implode('、',$title))){
                     return $this->error($return);
@@ -180,6 +175,7 @@ class Group extends Base
             //单条设置
             $title =  $group->where('id',$ids)->value('title');
             if($group->where('id',$ids)->setField('status',$action=='enable'?1:0)){
+                $this->clearCache();//删除缓存
                 // 记录行为
                 if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', $ids, UID,$title)){
                     return $this->error($return);
@@ -201,7 +197,7 @@ class Group extends Base
         $id = explode(',',$ids);
 
         //判断是否处理了超级管理员组
-        if(!empty(array_intersect($id,config('SUPER_ADMIN_ID')))){
+        if(!empty(array_intersect($id,config('SUPER_GROUP_ID')))){
             return $this->error('超级管理员组不可删除');
         }
         $group = model('Group');
@@ -219,6 +215,7 @@ class Group extends Base
             }
         }
         if($group->where(['id'=>['in',$all_id]])->delete()!==false){
+            $this->clearCache();//删除缓存
             // 记录行为
             if(true!==$return = action_log('group_delete','admin_auth_group', 0, UID,implode('、',$all_title))){
                 return $this->error($return);
@@ -226,5 +223,12 @@ class Group extends Base
             return $this->success('删除成功','index');
         }
         return $this->error('删除失败');
+    }
+
+    /**
+     * 删除缓存
+     */
+    private function clearCache(){
+        cache(null,'auth_group');
     }
 }

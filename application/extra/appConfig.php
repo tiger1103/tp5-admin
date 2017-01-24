@@ -7,5 +7,5 @@
  */
 
 return [
-    'ADMIN_BASE_LAYOUT' => APP_PATH.'admin/view/public/base.html',
+    'ADMIN_BASE_LAYOUT'   => APP_PATH.'admin/view/public/base.html',
 ];

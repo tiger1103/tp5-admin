@@ -16,10 +16,9 @@ class Base extends Common
 {
 
     public function _initialize(){
+        parent::_initialize();
         //判断登录
         defined('UID') or define('UID',$this->checkLogin());
-        // 后台公共模板
-        $this->assign('_admin_base_layout', config('appconfig.ADMIN_BASE_LAYOUT'));
     }
 
     /**

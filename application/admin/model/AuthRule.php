@@ -72,4 +72,36 @@ class AuthRule extends Base
         return ['status'=>true,'msg'=>'更新成功'];
     }
 
+    /**
+     * 获取路径名称
+     * @param int $id
+     * @param string $module
+     * @param string $controller
+     * @param string $action
+     * @return array|mixed
+     * @throws \think\Exception
+     */
+    public function getLocation($id=0,$module='',$controller='',$action=''){
+        $module      = $module?:request()->module();
+        $controller = $controller?:request()->controller();
+        $action     = $action?:request()->action();
+
+        $cache_name = 'location.'.$module.'_'.$controller.'_'.$action;
+        $location   = cache($cache_name);
+
+        if (!$location||config('APP_DEBUG')===true) {
+            if($id!=0){
+                $location = self::where('id',$id)->column('name,title');
+            }else{
+                $map['name'] = strtolower($module . '/' . $controller . '/' . $action);
+
+                $location = self::where($map)->column('name,title');
+            }
+            if (empty($location)) {
+                throw new \think\Exception('获取不到当前节点地址，可能未添加节点');
+            }
+            cache($cache_name, $location,'admin_menu');
+        }
+        return $location;
+    }
 }

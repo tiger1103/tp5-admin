@@ -8,7 +8,11 @@
 
 return [
     //超级管理员组ID
+    'SUPER_GROUP_ID'=>[1],
+    //超级管理员ID
     'SUPER_ADMIN_ID'=>[1],
+    //当前访问模块位置
+    'LOCATION'                   =>'admin',
     //默认数据过滤
     'default_filter' => 'trim',
     // 视图输出字符串内容替换

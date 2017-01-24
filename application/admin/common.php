@@ -272,3 +272,15 @@ if (!function_exists('execute_action')) {
         return $return;
     }
 }
+
+if (!function_exists('get_location')) {
+    /**
+     * 获取当前位置
+     * @return mixed
+     */
+    function get_location()
+    {
+        $location = model('AuthRule')->getLocation();
+        return $location;
+    }
+}

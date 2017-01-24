@@ -88,6 +88,7 @@ class AdminCreater extends Instance
      */
     public function _initialize()
     {
+        parent::_initialize();
         $this->_module     = $this->request->module();
         $this->_controller = $this->request->controller();
         $this->_action     = $this->request->action();
