@@ -6,6 +6,9 @@
     <{/volist}>
     <{// 额外CSS代码 }>
     <{$extra_css|default=''}>
+    <{//默认css文件}>
+    <link rel="stylesheet" href="__COMMON__/css/creater/form.css">
+    <link rel="stylesheet" href="__JS__/lib/icheck/skins/all.css">
 <{/block}>
 
 <{block name="title"}><title><{$page_title}></title><{/block}>
@@ -30,7 +33,15 @@
                 <{switch name="form.type"}>
                     <{case value="bmap"}>
                         <{// 百度地图 }>
-                        <{include file="_form_items_path/bmap.html" type='' /}>
+                        <{include file="../application/common/creater/form/items/bmap.html" type='' /}>
+                    <{/case}>
+                    <{case value="checkbox"}>
+                        <{// 复选框 }>
+                        <{include file="../application/common/creater/form/items/checkbox.html" type='' /}>
+                    <{/case}>
+                    <{case value="ckeditor"}>
+                        <{// ckeditor编辑器 }>
+                        <{include file="../application/common/creater/form/items/ckeditor.html" type='' /}>
                     <{/case}>
                 <{/switch}>
             <{/volist}>
@@ -42,9 +53,34 @@
 <{/block}>
 <{//javascript引入及代码}>
 <{block name="otherJs"}>
+    <{notempty name="_ckeditor"}>
+    <script src="__JS__/lib/ckeditor/ckeditor.js"></script>
+    <{/notempty}>
     <{volist name="js_list" id="vo"}>
         <script type="text/javascript" src="__JS__/{$vo}.js"></script>
     <{/volist}>
     <{// 额外JS代码 }>
     <{$extra_js|default=''}>
+    <{//默认js文件}>
+    <script type="text/javascript" src="__JS__/lib/icheck/icheck.min.js"></script>
+    <{if condition="!empty($form_items)"}>
+        <{volist name="form_items" id="form"}>
+            <{switch name="form.type"}>
+                <{case value="bmap"}>
+                <{// 百度地图 }>
+                <script type="text/javascript" src="__COMMON__/js/creater/bmap.js"></script>
+                <{/case}>
+
+                <{case value="checkbox"}>
+                <{// 复选框 }>
+                <script type="text/javascript" src="__COMMON__/js/creater/checkbox.js"></script>
+                <{/case}>
+
+                <{case value="ckeditor"}>
+                <{// ckeditor 编辑器}>
+                <script type="text/javascript" src="__COMMON__/js/creater/ckeditor.js"></script>
+                <{/case}>
+            <{/switch}>
+        <{/volist}>
+    <{/if}>
 <{/block}>

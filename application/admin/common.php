@@ -284,3 +284,18 @@ if (!function_exists('get_location')) {
         return $location;
     }
 }
+
+
+if (!function_exists('ck_js')) {
+    /**
+     * 返回ckeditor编辑器上传文件时需要返回的js代码
+     * @param string $callback 回调
+     * @param string $file_path 文件路径
+     * @param string $error_msg 错误信息
+     * @return string
+     */
+    function ck_js($callback = '', $file_path = '', $error_msg = '')
+    {
+        return "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($callback, '$file_path' , '$error_msg');</script>";
+    }
+}

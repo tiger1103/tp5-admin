@@ -236,4 +236,18 @@ return [
         'var_page'  => 'page',
         'list_rows' => 20,
     ],
+
+    //上传配置
+    // 文件上传路径
+    'upload_path'           => ROOT_PATH . 'public' . DS . 'uploads',
+    // 文件上传临时目录
+    'upload_temp_path'  => ROOT_PATH . 'public' . DS . 'uploads' . DS . 'temp' . DS,
+    //上传文件默认大小2M
+    'upload_file_size'     => 2,
+    //上传图片默认大小2M
+    'upload_image_size'     => 2,
+    //允许上传文件后缀
+    'upload_file_ext'       =>'doc,docx,xls,xlsx,ppt,pptx,pdf,wps,txt,rar,zip,gz,bz2,7z',
+    //允许上传图片后缀
+    'upload_image_ext'   =>'gif,jpg,jpeg,bmp,png',
 ];

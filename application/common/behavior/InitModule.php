@@ -19,7 +19,7 @@ class InitModule
         $request = \think\Request::instance();
         $base_url = [
             //公共资源目录
-            '__COMMON__' =>BASE_URL_PATH.'/static/commons',
+            '__COMMON__' =>BASE_URL_PATH.'/static/common',
             //带模块控制器的基本地址
             '__BASE_URL__'=>$request->baseFile().'?s='.$request->module().'/'.$request->controller()
         ];

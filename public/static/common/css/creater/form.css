@@ -1,0 +1,12 @@
+/* 百度地图 */
+.bmap{
+    width:100%;
+    height:500px;
+    border: 1px solid #ccc;
+}
+.searchResultPanel{
+    border:1px solid #C0C0C0;
+    width:150px;
+    height:auto;
+    display:none;
+}

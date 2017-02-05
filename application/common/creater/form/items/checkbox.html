@@ -1,0 +1,18 @@
+<div class="row cl <{$form[type].extra_class|default=''}>" id="form_group_<{$form[type].name}>">
+    <label class="form-label col-xs-4 col-sm-2"><{$form[type].title|htmlspecialchars}>：</label>
+    <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+        <{volist name="form[type].options" id="option"}>
+        <div class="check-box">
+            <input type="checkbox" name="<{$form[type].name}>[]" id="<{$form[type].name}><{$key}>" value="<{$key}>" <?php $key = (string)$key; ?> <{in name="key" value="$form[type].value|default=''"}>checked<{/in}> <{$form[type].extra_attr|default=''}> />
+            <label for="<{$form[type].name}><{$key}>" class="<{$form[type].extra_label_class|default=''}>"><{$option|htmlspecialchars}></label>
+        </div>
+        <{/volist}>
+        <{notempty name="form[type].tips"}>
+        <div class="c-999 f-12 lh-30"><{$form[type].tips|clear_js}></div>
+        <{/notempty}>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var checkboxClass = "<{$form[type].attr.checkboxClass|default='icheckbox_square-blue'}>";
+</script>
