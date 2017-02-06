@@ -71,9 +71,14 @@ class Manager extends Base
         // 使用Creater快速建立表单页面。
         return Instance::getInstance('form','AdminCreater')
         ->addFormItems([ // 批量添加表单项
-            //['bmap','bm','地图标注','88bf9d5e3b73bf4fdb3a9524803a2dbc','请标注地图坐标。','','曲靖市麒麟区龙潭公园'],
+            ['bmap','bm','地图标注','88bf9d5e3b73bf4fdb3a9524803a2dbc','请标注地图坐标。','','曲靖市麒麟区龙潭公园'],
             ['checkbox','city','所属城市','请选择城市',['gz' => '广州', 'sz' => '深圳', 'sh' => '上海'],['gz','sh'],['checkboxClass'=>'icheckbox_square-green']],
-            ['ckeditor','ckcontent','相关内容','请填写相关内容'],
+            ['ckeditor','ckcontent','相关内容','请填写相关内容','这个是默认值'],
+            ['date','gdate','日期','请选日期','2016-12-20','YYYY-MM-DD'],
+            ['daterange','sgdrang,egdtang','日期范围','请选择一个日期范围','2016-11-11,2016-12-12'],
+            ['datetime','gdatetime','日期时间','请选日期时间','2016-12-20 12:12:12'],
+            ['editormd','gmd','编辑内容','请填写内容','这个睡觉哦'],
+            ['file','gfile','文件上传','请上传文件'],
             /*['text', 'username', '用户名', '必填，可由英文字母、数字组成'],
             ['text', 'nickname', '昵称', '可以是中文'],
             ['select', 'group', '用户组', '', $group_list],

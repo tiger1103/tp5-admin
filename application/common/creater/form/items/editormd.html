@@ -1,0 +1,21 @@
+<{php}>
+    $upload_image_ext = explode(',', config("upload_image_ext"));
+    $upload_image_ext = json_encode($upload_image_ext);
+<{/php}>
+<div class="row cl <{$form[type].extra_class|default=''}>" id="form_group_<{$form[type].name}>">
+    <label class="form-label col-xs-4 col-sm-2" for="<{$form[type].name}>"><{$form[type].title|htmlspecialchars}>：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+        <div id="<{$form[type].name}>">
+            <textarea style="display:none;" class="js-editormd" data-image-formats='<{$upload_image_ext|default=""}>' data-watch="<{$form[type].watch|default=true}>" name="<{$form[type].name}>"><{$form[type].value|default=''}></textarea>
+        </div>
+        <{notempty name="form[type].tips"}>
+        <div class="c-999 f-12 lh-30"><{$form[type].tips|clear_js}></div>
+        <{/notempty}>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var editormds = {};
+    var editormd_mudule_path = "__JS__/lib/editormd/lib/";
+    var editormd_upload_url = '<{:url("admin/attachment/upload", ["dir" => "images", "from" => "editormd", "module" => request()->module()])}>';
+</script>

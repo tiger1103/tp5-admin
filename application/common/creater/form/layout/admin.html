@@ -4,11 +4,16 @@
     <{volist name="css_list" id="vo"}>
         <link rel="stylesheet" href="__CSS__/{$vo}.css">
     <{/volist}>
+    <{//插件CSS}>
+    <{notempty name="_css_files"}>
+        <{volist name="_css_files" id="css_file"}>
+        <link rel="stylesheet" href="<{$css_file}>"/>
+        <{/volist}>
+    <{/notempty}>
     <{// 额外CSS代码 }>
     <{$extra_css|default=''}>
     <{//默认css文件}>
     <link rel="stylesheet" href="__COMMON__/css/creater/form.css">
-    <link rel="stylesheet" href="__JS__/lib/icheck/skins/all.css">
 <{/block}>
 
 <{block name="title"}><title><{$page_title}></title><{/block}>
@@ -43,6 +48,26 @@
                         <{// ckeditor编辑器 }>
                         <{include file="../application/common/creater/form/items/ckeditor.html" type='' /}>
                     <{/case}>
+                    <{case value="date"}>
+                        <{//日期选择器}>
+                        <{include file="../application/common/creater/form/items/date.html" type='' /}>
+                    <{/case}>
+                    <{case value="daterange"}>
+                        <{// 日期范围 }>
+                        <{include file="../application/common/creater/form/items/daterange.html" type='' /}>
+                    <{/case}>
+                    <{case value="datetime"}>
+                        <{// 日期时间 }>
+                        <{include file="../application/common/creater/form/items/datetime.html" type='' /}>
+                    <{/case}>
+                    <{case value="editormd"}>
+                        <{// markdown编辑器 }>
+                        <{include file="../application/common/creater/form/items/editormd.html" type='' /}>
+                    <{/case}>
+                    <{case value="file"}>
+                        <{// 单文件上传 }>
+                        <{include file="../application/common/creater/form/items/file.html" type='' /}>
+                    <{/case}>
                 <{/switch}>
             <{/volist}>
         <{/empty}>
@@ -53,34 +78,15 @@
 <{/block}>
 <{//javascript引入及代码}>
 <{block name="otherJs"}>
-    <{notempty name="_ckeditor"}>
-    <script src="__JS__/lib/ckeditor/ckeditor.js"></script>
-    <{/notempty}>
     <{volist name="js_list" id="vo"}>
         <script type="text/javascript" src="__JS__/{$vo}.js"></script>
     <{/volist}>
     <{// 额外JS代码 }>
     <{$extra_js|default=''}>
-    <{//默认js文件}>
-    <script type="text/javascript" src="__JS__/lib/icheck/icheck.min.js"></script>
-    <{if condition="!empty($form_items)"}>
-        <{volist name="form_items" id="form"}>
-            <{switch name="form.type"}>
-                <{case value="bmap"}>
-                <{// 百度地图 }>
-                <script type="text/javascript" src="__COMMON__/js/creater/bmap.js"></script>
-                <{/case}>
-
-                <{case value="checkbox"}>
-                <{// 复选框 }>
-                <script type="text/javascript" src="__COMMON__/js/creater/checkbox.js"></script>
-                <{/case}>
-
-                <{case value="ckeditor"}>
-                <{// ckeditor 编辑器}>
-                <script type="text/javascript" src="__COMMON__/js/creater/ckeditor.js"></script>
-                <{/case}>
-            <{/switch}>
+    <{//插件js}>
+    <{notempty name="_js_files"}>
+        <{volist name="_js_files" id="js_file"}>
+            <script type="text/javascript" src="<{$js_file}>"></script>
         <{/volist}>
-    <{/if}>
+    <{/notempty}>
 <{/block}>

@@ -30,6 +30,63 @@ class Attachment extends Base
     }
 
     /**
+     * 处理ueditor上传
+     * @return string|\think\response\Json
+     */
+    private function ueditor(){
+        $action      = $this->request->get('action');
+        $config_file = '.'. config('public_static_path'). 'libs/ueditor/php/config.json';
+        $config      = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
+        switch ($action) {
+            /* 获取配置信息 */
+            case 'config':
+                $result = $config;
+                break;
+
+            /* 上传图片 */
+            case 'uploadimage':
+                /* 上传涂鸦 */
+            case 'uploadscrawl':
+                return $this->saveFile('images', 'ueditor');
+                break;
+
+            /* 上传视频 */
+            case 'uploadvideo':
+                return $this->saveFile('videos', 'ueditor');
+                break;
+
+            /* 上传附件 */
+            case 'uploadfile':
+                return $this->saveFile('files', 'ueditor');
+                break;
+
+            /* 列出图片 */
+            case 'listimage':
+                return $this->showFile('listimage', $config);
+                break;
+
+            /* 列出附件 */
+            case 'listfile':
+                return $this->showFile('listfile', $config);
+                break;
+            default:
+                $result = ['state' => '请求地址出错'];
+                break;
+        }
+
+        /* 输出结果 */
+        if (isset($_GET["callback"])) {
+            if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
+                return htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
+            } else {
+                return json(['state' => 'callback参数不合法']);
+            }
+        } else {
+            return json($result);
+        }
+    }
+
+    /**
      * 处理Jcrop图片裁剪
      */
     private function jcrop()
@@ -130,7 +187,6 @@ class Attachment extends Base
         // 附件类型限制
         $ext_limit = $dir == 'images' ? config('upload_image_ext') : config('upload_file_ext');
         $ext_limit = $ext_limit != '' ? parse_attr($ext_limit) : '';
-
         // 获取附件数据
         switch ($from) {
             case 'editormd':
@@ -339,6 +395,93 @@ class Attachment extends Base
                     return json(['status' => 0, 'class' => 'danger', 'info' => $file->getError()]);
             }
         }
+    }
+
+    /**
+     * 显示附件列表（ueditor）
+     * @param string $type 类型
+     * @param $config
+     * @return \think\response\Json
+     */
+    private function showFile($type = '', $config){
+        /* 判断类型 */
+        switch ($type) {
+            /* 列出附件 */
+            case 'listfile':
+                $allowFiles = $config['fileManagerAllowFiles'];
+                $listSize = $config['fileManagerListSize'];
+                $path = realpath(config('upload_path') .'/files/');
+                break;
+            /* 列出图片 */
+            case 'listimage':
+            default:
+                $allowFiles = $config['imageManagerAllowFiles'];
+                $listSize = $config['imageManagerListSize'];
+                $path = realpath(config('upload_path') .'/images/');
+        }
+        $allowFiles = substr(str_replace(".", "|", join("", $allowFiles)), 1);
+
+        /* 获取参数 */
+        $size = isset($_GET['size']) ? htmlspecialchars($_GET['size']) : $listSize;
+        $start = isset($_GET['start']) ? htmlspecialchars($_GET['start']) : 0;
+        $end = $start + $size;
+
+        /* 获取附件列表 */
+        $files = $this->getfiles($path, $allowFiles);
+        if (!count($files)) {
+            return json(array(
+                "state" => "no match file",
+                "list" => array(),
+                "start" => $start,
+                "total" => count($files)
+            ));
+        }
+
+        /* 获取指定范围的列表 */
+        $len = count($files);
+        for ($i = min($end, $len) - 1, $list = array(); $i < $len && $i >= 0 && $i >= $start; $i--){
+            $list[] = $files[$i];
+        }
+
+        /* 返回数据 */
+        $result = array(
+            "state" => "SUCCESS",
+            "list"  => $list,
+            "start" => $start,
+            "total" => count($files)
+        );
+
+        return json($result);
+    }
+
+    /**
+     * 遍历获取目录下的指定类型的附件
+     * @param string $path 路径
+     * @param string $allowFiles 允许查看的类型
+     * @param array $files 文件列表
+     * @return array|null
+     */
+    public function getfiles($path = '', $allowFiles = '', &$files = array())
+    {
+        if (!is_dir($path)) return null;
+        if(substr($path, strlen($path) - 1) != '/') $path .= '/';
+        $handle = opendir($path);
+        while (false !== ($file = readdir($handle))) {
+            if ($file != '.' && $file != '..') {
+                $path2 = $path . $file;
+                if (is_dir($path2)) {
+                    $this->getfiles($path2, $allowFiles, $files);
+                } else {
+                    if (preg_match("/\.(".$allowFiles.")$/i", $file)) {
+                        $files[] = array(
+                            'url'=> str_replace("\\", "/", substr($path2, strlen($_SERVER['DOCUMENT_ROOT']))),
+                            'mtime'=> filemtime($path2)
+                        );
+                    }
+                }
+            }
+        }
+        return $files;
     }
 
     /**

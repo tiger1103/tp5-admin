@@ -1,0 +1,11 @@
+<div class="row cl <{$form[type].extra_class|default=''}>" id="form_group_<{$form[type].id}>">
+    <label class="form-label col-xs-4 col-sm-2" ><{$form[type].title|htmlspecialchars}>：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+        <input type="text" class="input-text js-datepicker laydate-icon" style="width:40%;" id="<{$form[type].id_from}>" name="<{$form[type].name_from}>" value="<{$form[type].value_from|default=''}>" data-date-format="<{$form[type].format ? $form[type].format : 'YYYY-MM-DD'}>" placeholder="<{$form[type].format}>" <{$form[type].extra_attr|default=''}> />
+        <span class="mr-10 ml-10"><i class="Hui-iconfont Hui-iconfont-slider-right"></i></span>
+        <input type="text" class="input-text js-datepicker laydate-icon" style="width:40%;" id="<{$form[type].id_to}>" name="<{$form[type].name_to}>" value="<{$form[type].value_to|default=''}>" data-date-format="<{$form[type].format ? $form[type].format : 'YYYY-MM-DD'}>" placeholder="<{$form[type].format}>" <{$form[type].extra_attr|default=''}> />
+        <{notempty name="form[type].tips"}>
+        <div class="c-999 f-12 lh-30"><{$form[type].tips|clear_js}></div>
+        <{/notempty}>
+    </div>
+</div>

@@ -43,7 +43,6 @@ class AdminCreater extends Instance
         'field_hide'      => '',    // 需要隐藏的表单项
         'field_values'    => '',    // 触发表单项的值
         '_js_files'       => [],    // 需要加载的js（合并输出）
-        '_js_init'        => [],    // 初始化的js（合并输出）
         '_css_files'      => [],    // 需要加载的css（合并输出）
     ];
 
@@ -359,7 +358,7 @@ class AdminCreater extends Instance
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'format'      => $format == '' ? 'yyyy-mm-dd' : $format,
+            'format'      => $format == '' ? 'YYYY-MM-DD' : $format,
             'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
         ];
@@ -415,7 +414,7 @@ class AdminCreater extends Instance
             'tips'        => $tips,
             'value_from'  => $value_from,
             'value_to'    => $value_to,
-            'format'      => $format == '' ? 'yyyy-mm-dd' : $format,
+            'format'      => $format == '' ? 'YYYY-MM-DD' : $format,
             'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
         ];
@@ -448,7 +447,7 @@ class AdminCreater extends Instance
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'format'      => $format == '' ? 'YYYY-MM-DD HH:mm' : $format,
+            'format'      => $format == '' ? 'YYYY-MM-DD hh:mm:ss' : $format,
             'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
         ];
@@ -1325,7 +1324,7 @@ class AdminCreater extends Instance
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'format'      => $format == '' ? 'HH:mm:ss' : $format,
+            'format'      => $format == '' ? 'hh:mm:ss' : $format,
             'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
         ];
@@ -1594,87 +1593,34 @@ class AdminCreater extends Instance
 
 
     /**
-     * 根据表单项类型，加载不同js和css文件，并合并
+     * 根据表单项类型，加载不同插件js|css
      * @param string $type 表单项类型
      */
-    private function loadMinify($type = '')
+    private function loadPlugin($type = '')
     {
         if ($type != '') {
             switch ($type) {
-                case 'colorpicker':
-                    $this->_vars['_js_files'][]  = 'colorpicker_js';
-                    $this->_vars['_css_files'][] = 'colorpicker_css';
-                    $this->_vars['_js_init'][]   = 'colorpicker';
+                case 'bmap':
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/bmap.js';
+                    break;
+                case 'checkbox':
+                    $this->_vars['_css_files'][] = '__JS__/lib/icheck/skins/all.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/icheck/icheck.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/checkbox.js';
                     break;
                 case 'ckeditor':
-                    $this->_vars['_ckeditor']  = '1';
-                    $this->_vars['_js_init'][] = 'ckeditor';
+                    $this->_vars['_js_files'][] = '__JS__/lib/ckeditor/ckeditor.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/ckeditor.js';
                     break;
                 case 'date':
                 case 'daterange':
-                    $this->_vars['_js_files'][]  = 'datepicker_js';
-                    $this->_vars['_css_files'][] = 'datepicker_css';
-                    $this->_vars['_js_init'][]   = 'datepicker';
-                    break;
                 case 'datetime':
-                case 'time':
-                    $this->_vars['_js_files'][]  = 'datetimepicker_js';
-                    $this->_vars['_css_files'][] = 'datetimepicker_css';
-                    $this->_vars['_js_init'][]   = 'datetimepicker';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/date.js';
                     break;
                 case 'editormd':
-                    $this->_vars['_js_files'][] = 'editormd_js';
-                    $this->_vars['_editormd']   = '1';
-                    break;
-                case 'file':
-                case 'files':
-                case 'image':
-                case 'images':
-                    $this->_vars['_js_files'][]  = 'webuploader_js';
-                    $this->_vars['_css_files'][] = 'webuploader_css';
-                    break;
-                case 'icon':
-                    $this->_vars['_icon'] = '1';
-                    break;
-                case 'jcrop':
-                    $this->_vars['_js_files'][]  = 'jcrop_js';
-                    $this->_vars['_css_files'][] = 'jcrop_css';
-                    break;
-                case 'linkage':
-                case 'linkages':
-                case 'select':
-                    $this->_vars['_js_files'][]  = 'select2_js';
-                    $this->_vars['_css_files'][] = 'select2_css';
-                    $this->_vars['_js_init'][]   = 'select2';
-                    break;
-                case 'masked':
-                    $this->_vars['_js_files'][] = 'masked_inputs_js';
-                    break;
-                case 'range':
-                    $this->_vars['_js_files'][]  = 'rangeslider_js';
-                    $this->_vars['_css_files'][] = 'rangeslider_css';
-                    $this->_vars['_js_init'][]   = 'rangeslider';
-                    break;
-                case 'sort':
-                    $this->_vars['_js_files'][]  = 'nestable_js';
-                    $this->_vars['_css_files'][] = 'nestable_css';
-                    break;
-                case 'tags':
-                    $this->_vars['_js_files'][]  = 'tags_js';
-                    $this->_vars['_css_files'][] = 'tags_css';
-                    $this->_vars['_js_init'][]   = 'tags-inputs';
-                    break;
-                case 'ueditor':
-                    $this->_vars['_ueditor'] = '1';
-                    break;
-                case 'wangeditor':
-                    $this->_vars['_js_files'][]  = 'wangeditor_js';
-                    $this->_vars['_css_files'][] = 'wangeditor_css';
-                    break;
-                case 'summernote':
-                    $this->_vars['_js_files'][]  = 'summernote_js';
-                    $this->_vars['_css_files'][] = 'summernote_css';
-                    $this->_vars['_js_init'][]   = 'summernote';
+                    $this->_vars['_css_files'][] = '__JS__/lib/editormd/css/editormd.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/editormd/editormd.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/editormd.js';
                     break;
             }
         } else {
@@ -1685,13 +1631,13 @@ class AdminCreater extends Instance
                         foreach ($item['options'] as &$group) {
                             foreach ($group as $key => $value) {
                                 if ($group[$key]['type'] != '') {
-                                    $this->loadMinify($group[$key]['type']);
+                                    $this->loadPlugin($group[$key]['type']);
                                 }
                             }
                         }
                     } else {
                         if ($item['type'] != '') {
-                            $this->loadMinify($item['type']);
+                            $this->loadPlugin($item['type']);
                         }
                     }
                 }
@@ -1757,8 +1703,8 @@ class AdminCreater extends Instance
         // 设置表单值
         $this->setFormValue();
 
-        // 处理不同表单类型加载不同js和css
-        $this->loadMinify();
+        // 处理不同表单类型加载不同插件的js和css
+        $this->loadPlugin();
 
         // 处理页面标题
         if ($this->_vars['page_title'] == '' && config('LOCATION') == 'admin') {
@@ -1784,17 +1730,11 @@ class AdminCreater extends Instance
         // 处理js和css合并的参数
         if (!empty($this->_vars['_js_files'])) {
             $this->_vars['_js_files'] = array_unique($this->_vars['_js_files']);
-            sort($this->_vars['_js_files']);
         }
         if (!empty($this->_vars['_css_files'])) {
             $this->_vars['_css_files'] = array_unique($this->_vars['_css_files']);
-            sort($this->_vars['_css_files']);
         }
-        if (!empty($this->_vars['_js_init'])) {
-            $this->_vars['_js_init'] = array_unique($this->_vars['_js_init']);
-            sort($this->_vars['_js_init']);
-            $this->_vars['_js_init'] = json_encode($this->_vars['_js_init']);
-        }
+
         // 实例化视图并渲染
         return parent::fetch($this->_template, $this->_vars, $replace, $config);
     }
