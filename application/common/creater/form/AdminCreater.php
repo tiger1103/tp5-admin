@@ -1622,6 +1622,25 @@ class AdminCreater extends Instance
                     $this->_vars['_js_files'][] = '__JS__/lib/editormd/editormd.min.js';
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/editormd.js';
                     break;
+                case 'file':
+                case 'files':
+                case 'image':
+                case 'images':
+                    $this->_vars['_css_files'][] = '__JS__/lib/webuploader/webuploader.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/webuploader/webuploader.min.js';
+                    if(in_array($type,['file','files'])){
+                        $this->_vars['_js_files'][] = '__COMMON__/js/creater/file.js';
+                    }else{
+                        $this->_vars['_js_files'][] = '__COMMON__/js/creater/image.js';
+                    }
+                    break;
+                case 'jcrop':
+                    $this->_vars['_css_files'][] = '__JS__/lib/jcrop/css/Jcrop.min.css';
+                    $this->_vars['_css_files'][] = '__JS__/lib/magnific-popup/magnific-popup.min.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/jcrop/js/Jcrop.min.js';
+                    $this->_vars['_js_files'][] = '__JS__/lib/magnific-popup/magnific-popup.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/jcrop.js';
+                    break;
             }
         } else {
             if ($this->_vars['form_items']) {

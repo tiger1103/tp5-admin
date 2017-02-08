@@ -1,24 +1,30 @@
 <div class="row cl <{$form[type].extra_class|default=''}>" id="form_group_<{$form[type].name}>">
     <label class="form-label col-xs-4 col-sm-2" for="<{$form[type].name}>"><{$form[type].title|htmlspecialchars}>：</label>
-    <div class="formControls col-xs-8 col-sm-9 js-upload-file">
-        <ul class="list-group uploader-list" id="file_list_<{$form[type].name}>">
+    <div class="formControls col-xs-8 col-sm-9 js-upload-image">
+        <div id="file_list_<{$form[type].name}>" class="uploader-list">
             <{notempty name="form[type].value"}>
-            <li class="list-group-item file-item">
-                <span class="btn radius size-MINI" title="删除"><i class="Hui-iconfont Hui-iconfont-close2 remove-file"></i></span>
-                <{$form[type].value|get_file_name}>
-            </li>
+            <{volist name="form['value']|explode=',',###" id="vo"}>
+            <div class="file-item thumbnail">
+                <a class="img-link" href="javascript:;" data-url="<{$vo|get_file_path}>" >
+                    <img src="<{$vo|get_thumb}>" width="100">
+                </a>
+                <i class="Hui-iconfont Hui-iconfont-close2 remove-picture" title="删除" ></i>
+            </div>
+            <{/volist}>
             <{/notempty}>
-        </ul>
+        </div>
+        <div class="clearfix"></div>
         <input type="hidden" name="<{$form[type].name}>" data-multiple="false" data-size="<{$form[type]['size']|default=0}>" data-ext='<{$form[type]["ext"]|default=""}>'
                id="<{$form[type].name}>" value="<{$form[type].value|default=''}>">
-        <div id="picker_<{$form[type].name}>">上传单个文件</div>
+        <div id="picker_<{$form[type].name}>">上传单张图片</div>
         <{notempty name="form[type].tips"}>
         <div class="c-999 f-12 lh-30"><{$form[type].tips|clear_js}></div>
         <{/notempty}>
     </div>
 </div>
 
+
 <script type="text/javascript">
     var WebUploader_swf = '__JS__/lib/webuploader/Uploader.swf';
-    var file_upload_url = '<{:url("admin/attachment/upload", ["dir" => "files", "module" => request()->module()])}>';
+    var image_upload_url = '<{:url("admin/attachment/upload", ["dir" => "images", "module" => request()->module()])}>';
 </script>

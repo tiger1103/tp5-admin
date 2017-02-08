@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 
+use think\File;
 use think\Image;
 use app\admin\model\Attachment as AttachmentModel;
 
@@ -143,7 +144,7 @@ class Attachment extends Base
             // 保存图片
             $file = new File($new_file_path);
             $file_info = [
-                'uid'    => session('user_auth.uid'),
+                'uid'    => session('user_auth.id'),
                 'name'   => $file_name,
                 'mime'   => $image->mime(),
                 'path'   => 'uploads/images/' . $dir_name . '/' . $file_name,

@@ -15,7 +15,6 @@ if (!function_exists('time_format')) {
      * 时间戳格式化
      * @param int $time
      * @return string 完整的时间显示
-     * @author jry <598821125@qq.com>
      */
     function time_format($time = NULL, $format = 'Y-m-d H:i')
     {
@@ -56,7 +55,6 @@ if (!function_exists('clear_js')) {
     /**
      * 过滤js内容
      * @param string $str 要过滤的字符串
-     * @author 蔡伟明 <314013107@qq.com>
      * @return mixed|string
      */
     function clear_js($str = '')
@@ -64,5 +62,55 @@ if (!function_exists('clear_js')) {
         $search ="/<script[^>]*?>.*?<\/script>/si";
         $str = preg_replace($search, '', $str);
         return $str;
+    }
+}
+
+if (!function_exists('get_file_name')) {
+    /**
+     * 根据附件id获取文件名
+     * @param string $id 附件id
+     * @return string
+     */
+    function get_file_name($id = '')
+    {
+        $name = model('admin/attachment')->getFileName($id);
+        if (!$name) {
+            return '没有找到文件';
+        }
+        return $name;
+    }
+}
+
+
+if (!function_exists('get_file_path')) {
+    /**
+     * 获取附件路径
+     * @param int $id 附件id
+     * @return string
+     */
+    function get_file_path($id = 0)
+    {
+        $path = model('admin/attachment')->getFilePath($id);
+        if (!$path) {
+            return BASE_URL_PATH.'/static/admin/images/none.png';
+        }
+        return BASE_URL_PATH.'/'. $path;
+    }
+}
+
+
+if (!function_exists('get_thumb')) {
+    /**
+     * 获取图片缩略图路径
+     * @param int $id 附件id
+     * @return string
+     */
+    function get_thumb($id = 0)
+    {
+        $path = model('admin/attachment')->getThumbPath($id);
+        if (!$path) {
+            return BASE_URL_PATH.'/static/admin/images/none.png';
+        }
+        return BASE_URL_PATH.'/'. $path;
     }
 }

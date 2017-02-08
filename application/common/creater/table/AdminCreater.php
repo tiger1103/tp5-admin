@@ -42,6 +42,9 @@ class AdminCreater extends Instance
      */
     private $_replace_right_buttons = [];
 
+    /**
+     * @var array 额外的右键菜单
+     */
     private $_extra_right_buttons = [];
     /**
      * @var string 插件名称
