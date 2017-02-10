@@ -5,7 +5,7 @@
             <{notempty name="form[type].value"}>
             <{volist name="form[type]['value']|explode=',',###" id="vo"}>
             <div class="file-item thumbnail">
-                <a class="img-link" data-url="<{$vo|get_file_path}>" href="javascript:;">
+                <a class="img-link" href="<{$vo|get_file_path}>" >
                     <img src="<{$vo|get_thumb}>" width="100">
                 </a>
                 <i class="Hui-iconfont Hui-iconfont-close2 remove-picture" data-id="<{$vo}>" title="删除"></i>

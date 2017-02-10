@@ -1,0 +1,15 @@
+<div class="row cl col-md-<{$_layout[$form[type].name]|default='12'}> <{$form[type].extra_class|default=''}>" id="form_group_<{$form[type].name}>">
+    <label class="form-label col-xs-4 col-sm-2" for="<{$form[type].name}>"><{$form[type].title|htmlspecialchars}>：</label>
+    <div class="formControls col-xs-8 col-sm-9">
+        <script id="<{$form[type].name}>" class="js-ueditor" name="<{$form[type].name}>" type="text/plain"><{$form[type].value|default=''}></script>
+        <{notempty name="form[type].tips"}>
+        <div class="c-999 f-12 lh-30"><{$form[type].tips|clear_js}></div>
+        <{/notempty}>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // ueditor编辑器集合
+    var ueditors    = {};
+    var ueditor_upload_url = '<{:url("admin/attachment/upload", ["dir" => "images", "from" => "ueditor", "module" => request()->module()])}>';
+</script>

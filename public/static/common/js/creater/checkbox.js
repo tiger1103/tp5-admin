@@ -3,7 +3,7 @@
  */
 
 $(function(){
-    $('.skin-minimal input').iCheck({
+    $('.skin-minimal-checkbox input').iCheck({
         checkboxClass: checkboxClass,
         increaseArea: '20%'
     });

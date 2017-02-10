@@ -78,12 +78,27 @@ class Manager extends Base
             //['daterange','sgdrang,egdtang','日期范围','请选择一个日期范围','2016-11-11,2016-12-12'],
             //['datetime','gdatetime','日期时间','请选日期时间','2016-12-20 12:12:12'],
             //['editormd','gmd','编辑内容','请填写内容','这个睡觉哦'],
-            ['file','gfile','文件上传','请上传文件','2'],
-            ['files','gfiles','文件上传','请上传文件','2,3'],
-            ['hidden','ghide','默认值'],
-            ['image','gimg','单图上传','请上传图片','10'],
-            ['images','gimgs','多图上传','请上传图片','9,10'],
-            ['jcrop','gjcrop','图片裁剪','对图片进行裁剪'],
+            //['file','gfile','文件上传','请上传文件','2'],
+            //['files','gfiles','文件上传','请上传文件','2,3'],
+            //['hidden','ghide','默认值'],
+            //['image','gimg','单图上传','请上传图片','10'],
+            //['images','gimgs','多图上传','请上传图片','9,10'],
+            //['jcrop','gjcrop','图片裁剪','对图片进行裁剪','15'],
+            //['select','gscity','请选择城市','请选择城市tips',['gz' => '广州', 'sz' => '深圳', 'sh' => '上海'],'gz,sh','multiple'],
+            //['sort','gsort','排序','请拖动排序',['gz' => '广州', 'sz' => '深圳', 'sh' => '上海']],
+            //['static','gstatic','姓名','请填写姓名','这是一个静态文本'],
+            //['switch','gswitch','开关','状态设置','1','disabled'],
+            //['tags','gtags','标签','请填写标签',['php','java']],
+            //['text','gtext','用户名','请填写用户名','administrator',['<i class="Hui-iconfont Hui-iconfont-user"></i>','.00']],
+            //['time','gttime','时间','请选择时间','15:36'],
+            //['textarea','gtextarea','摘要','请填写摘要','默认值'],
+            //['array','garray','摘要','请填写摘要',"qj:曲靖\nkm:昆明"],
+            //['ueditor','gueditor','内容','请输入内容','默认内容'],
+            //['wangeditor','gwangedit','内容相关','请输入内容','默认内容'],
+            //['radio','gradio','性别','请选择性别',['nan'=>'男','nv'=>'女','sc'=>'保密'],'nv',['radioClass'=>'iradio_square-pink']],
+            //['linkage','glinkage','联动下拉框','请选择省市',['gd' => '广东', 'gx' => '广西'],'gx', url('get_city'), 'city'],
+            //['select','city','联动关联','请选择城市',['sz'=>'深圳tmp','gz'=>'广州tmp'],'sz'],
+            ['linkages','citys', '选择所在城市', '', 'test',3,8],
             /*['text', 'username', '用户名', '必填，可由英文字母、数字组成'],
             ['text', 'nickname', '昵称', '可以是中文'],
             ['select', 'group', '用户组', '', $group_list],
@@ -94,6 +109,16 @@ class Manager extends Base
             ['radio', 'status', '状态', '', ['禁用', '启用'], 1]*/
         ])
         ->fetch();
+    }
+
+    public function get_city(){
+        $arr['code'] = '1'; //判断状态
+        $arr['msg'] = '请求成功'; //回传信息
+        $arr['list'] = [
+            ['key' => 'gz', 'value' => '广州'],
+            ['key' => 'sz', 'value' => '深圳'],
+        ]; //数据
+        return json($arr);
     }
 
 }

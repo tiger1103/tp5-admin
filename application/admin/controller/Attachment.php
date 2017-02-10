@@ -36,7 +36,7 @@ class Attachment extends Base
      */
     private function ueditor(){
         $action      = $this->request->get('action');
-        $config_file = '.'. config('public_static_path'). 'libs/ueditor/php/config.json';
+        $config_file = BASE_PATH. '/static/admin/js/lib/ueditor/php/config.json';
         $config      = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
             /* 获取配置信息 */
@@ -207,6 +207,7 @@ class Attachment extends Base
             $file_path = BASE_URL_PATH.'/'. $file_exists['path'];
             switch ($from) {
                 case 'wangeditor':
+                    config('app_trace',false);
                     return $file_path;
                     break;
                 case 'ueditor':

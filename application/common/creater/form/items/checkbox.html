@@ -1,10 +1,11 @@
 <div class="row cl <{$form[type].extra_class|default=''}>" id="form_group_<{$form[type].name}>">
     <label class="form-label col-xs-4 col-sm-2"><{$form[type].title|htmlspecialchars}>：</label>
-    <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+    <div class="formControls col-xs-8 col-sm-9 skin-minimal-checkbox">
         <{volist name="form[type].options" id="option"}>
         <div class="check-box">
-            <input type="checkbox" name="<{$form[type].name}>[]" id="<{$form[type].name}><{$key}>" value="<{$key}>" <?php $key = (string)$key; ?> <{in name="key" value="$form[type].value|default=''"}>checked<{/in}> <{$form[type].extra_attr|default=''}> />
-            <label for="<{$form[type].name}><{$key}>" class="<{$form[type].extra_label_class|default=''}>"><{$option|htmlspecialchars}></label>
+            <input type="checkbox" name="<{$form[type].name}>[]" id="<{$form[type].name}><{$i}>" value="<{$key}>" <?php $key = (string)$key; ?>
+            <{in name="key" value="$form[type].value|default=''"}>checked<{/in}> <{$form[type].extra_attr|default=''}> />
+            <label for="<{$form[type].name}><{$i}>" class="<{$form[type].extra_label_class|default=''}>"><{$option|htmlspecialchars}></label>
         </div>
         <{/volist}>
         <{notempty name="form[type].tips"}>

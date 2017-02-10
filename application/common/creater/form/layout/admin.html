@@ -88,6 +88,62 @@
                         <{// 图片裁剪 }>
                         <{include file="../application/common/creater/form/items/jcrop.html" type='' /}>
                     <{/case}>
+                    <{case value="select"}>
+                        <{// 下拉菜单 }>
+                        <{include file="../application/common/creater/form/items/select.html" type='' /}>
+                    <{/case}>
+                    <{case value="select2"}>
+                        <{// 下拉多选 }>
+                        <{include file="../application/common/creater/form/items/select2.html" type='' /}>
+                    <{/case}>
+                    <{case value="sort"}>
+                        <{// 排序 }>
+                        <{include file="../application/common/creater/form/items/sort.html" type='' /}>
+                    <{/case}>
+                    <{case value="static"}>
+                        <{// 静态文本 }>
+                        <{include file="../application/common/creater/form/items/static.html" type='' /}>
+                    <{/case}>
+                    <{case value="switch"}>
+                        <{// 开关 }>
+                        <{include file="../application/common/creater/form/items/switch.html" type='' /}>
+                    <{/case}>
+                    <{case value="tags"}>
+                        <{// 标签 }>
+                        <{include file="../application/common/creater/form/items/tags.html" type='' /}>
+                    <{/case}>
+                    <{case value="text"}>
+                        <{// 单行文本 }>
+                        <{include file="../application/common/creater/form/items/text.html" type='' /}>
+                    <{/case}>
+                    <{case value="time"}>
+                        <{// 时间 }>
+                        <{include file="../application/common/creater/form/items/time.html" type='' /}>
+                    <{/case}>
+                    <{case value="textarea|array"}>
+                        <{// 文本框|数组 }>
+                        <{include file="../application/common/creater/form/items/textarea.html" type='' /}>
+                    <{/case}>
+                    <{case value="ueditor"}>
+                        <{// 百度编辑器 }>
+                        <{include file="../application/common/creater/form/items/ueditor.html" type='' /}>
+                    <{/case}>
+                    <{case value="wangeditor"}>
+                        <{// wang编辑器 }>
+                        <{include file="../application/common/creater/form/items/wangeditor.html" type='' /}>
+                    <{/case}>
+                    <{case value="radio"}>
+                        <{// 单选 }>
+                        <{include file="../application/common/creater/form/items/radio.html" type='' /}>
+                    <{/case}>
+                    <{case value="linkage"}>
+                        <{// 联动下拉框 }>
+                        <{include file="../application/common/creater/form/items/linkage.html" type='' /}>
+                    <{/case}>
+                    <{case value="linkages"}>
+                        <{// 多级联动下拉框 }>
+                        <{include file="../application/common/creater/form/items/linkages.html" type='' /}>
+                    <{/case}>
                 <{/switch}>
             <{/volist}>
         <{/empty}>

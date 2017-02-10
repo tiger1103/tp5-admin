@@ -52,7 +52,7 @@ $(function(){
         uploader.on( 'fileQueued', function( file ) {
             var $li = $(
                     '<div id="' + file.id + '" class="file-item js-gallery thumbnail">' +
-                    '<a class="img-link" href="javascript:;">'+
+                    '<a class="img-link" href="">'+
                     '<img>' +
                     '</a>'+
                     '<div class="info">' + file.name + '</div>' +
@@ -108,7 +108,7 @@ $(function(){
             }
 
             $('<div class="'+response.class+'"></div>').text(response.info).appendTo( $li );
-            $li.find('a.img-link').attr('data-url', response.path);
+            $li.find('a.img-link').attr('href', response.path);
         });
 
         // 文件上传失败，显示上传出错。
@@ -163,20 +163,12 @@ $(function(){
             $(this).closest('.file-item').remove();
         });
         // 查看大图
-        $(this).delegate('.img-link','click',function(){
-            var img = '<img src="'+$(this).data('url')+'" />';
-            layui.use('layer',function(){
-                var layer = layui.layer;
-                layer.open({
-                    type: 1,
-                    maxWidth:800,
-                    title: false,
-                    closeBtn: true,
-                    skin: 'layui-layer-nobg', //没有背景色
-                    shadeClose: true,
-                    content: img
-                });
-            });
+        $(this).magnificPopup({
+            delegate: 'a.img-link',
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
         });
     });
 });

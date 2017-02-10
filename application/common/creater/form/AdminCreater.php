@@ -1143,39 +1143,6 @@ class AdminCreater extends Instance
 
 
     /**
-     * 添加Summernote编辑器
-     * @param string $name 表单项名
-     * @param string $title 标题
-     * @param string $tips 提示
-     * @param string $default 默认值
-     * @param string $width 编辑器宽度
-     * @param int $height 编辑器高度
-     * @param string $extra_class
-     * @return $this|array
-     */
-    public function addSummernote($name = '', $title = '', $tips = '', $default = '', $width = '100%', $height = 350, $extra_class = '')
-    {
-        $item = [
-            'type'        => 'summernote',
-            'name'        => $name,
-            'title'       => $title,
-            'tips'        => $tips,
-            'value'       => $default,
-            'width'       => $width,
-            'height'      => $height,
-            'extra_class' => $extra_class,
-        ];
-
-        if ($this->_is_group) {
-            return $item;
-        }
-
-        $this->_vars['form_items'][] = $item;
-        return $this;
-    }
-
-
-    /**
      * 添加开关
      * @param string $name 表单项名
      * @param string $title 标题
@@ -1189,7 +1156,7 @@ class AdminCreater extends Instance
      * @param string $extra_class 额外css类名
      * @return $this|array
      */
-    public function addSwitch($name = '', $title = '', $tips = '', $default = '', $attr = [], $extra_attr = '', $extra_class = '')
+    public function addSwitch($name = '', $title = '', $tips = '', $default = '', $extra_attr = '', $extra_class = '')
     {
         $item = [
             'type'        => 'switch',
@@ -1197,7 +1164,6 @@ class AdminCreater extends Instance
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'attr'        => $attr,
             'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
             'extra_label_class' => $extra_attr == 'disabled' ? 'css-input-disabled' : '',
@@ -1324,7 +1290,7 @@ class AdminCreater extends Instance
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'format'      => $format == '' ? 'hh:mm:ss' : $format,
+            'format'      => $format == '' ? 'hh:mm' : $format,
             'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
         ];
@@ -1604,9 +1570,14 @@ class AdminCreater extends Instance
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/bmap.js';
                     break;
                 case 'checkbox':
+                case 'radio':
                     $this->_vars['_css_files'][] = '__JS__/lib/icheck/skins/all.css';
                     $this->_vars['_js_files'][] = '__JS__/lib/icheck/icheck.min.js';
-                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/checkbox.js';
+                    if($type=='checkbox'){
+                        $this->_vars['_js_files'][] = '__COMMON__/js/creater/checkbox.js';
+                    }else{
+                        $this->_vars['_js_files'][] = '__COMMON__/js/creater/radio.js';
+                    }
                     break;
                 case 'ckeditor':
                     $this->_vars['_js_files'][] = '__JS__/lib/ckeditor/ckeditor.js';
@@ -1616,6 +1587,11 @@ class AdminCreater extends Instance
                 case 'daterange':
                 case 'datetime':
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/date.js';
+                    break;
+                case 'time':
+                    $this->_vars['_css_files'][] = '__JS__/lib/timepicki/css/timepicki.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/timepicki/js/timepicki.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/time.js';
                     break;
                 case 'editormd':
                     $this->_vars['_css_files'][] = '__JS__/lib/editormd/css/editormd.css';
@@ -1628,6 +1604,8 @@ class AdminCreater extends Instance
                 case 'images':
                     $this->_vars['_css_files'][] = '__JS__/lib/webuploader/webuploader.css';
                     $this->_vars['_js_files'][] = '__JS__/lib/webuploader/webuploader.min.js';
+                    $this->_vars['_css_files'][] = '__JS__/lib/magnific-popup/magnific-popup.min.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/magnific-popup/magnific-popup.min.js';
                     if(in_array($type,['file','files'])){
                         $this->_vars['_js_files'][] = '__COMMON__/js/creater/file.js';
                     }else{
@@ -1640,6 +1618,41 @@ class AdminCreater extends Instance
                     $this->_vars['_js_files'][] = '__JS__/lib/jcrop/js/Jcrop.min.js';
                     $this->_vars['_js_files'][] = '__JS__/lib/magnific-popup/magnific-popup.min.js';
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/jcrop.js';
+                    break;
+                case 'linkage':
+                case 'linkages':
+                case 'select':
+                case 'select2':
+                    $this->_vars['_css_files'][] = '__JS__/lib/select2/select2.min.css';
+                    $this->_vars['_css_files'][] = '__JS__/lib/select2/select2-bootstrap.min.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/select2/select2.full.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/select2.js';
+                    if($type=='linkage'){
+                        $this->_vars['_js_files'][] = '__COMMON__/js/creater/linkage.js';
+                    }
+                    break;
+                case 'sort':
+                    $this->_vars['_css_files'][] = '__JS__/lib/jquery-nestable/jquery.nestable.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/jquery-nestable/jquery.nestable.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/sort.js';
+                    break;
+                case 'switch':
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/switch.js';
+                    break;
+                case 'tags':
+                    $this->_vars['_css_files'][] = '__JS__/lib/jquery-tags-input/jquery.tagsinput.min.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/jquery-tags-input/jquery.tagsinput.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/tags.js';
+                    break;
+                case 'ueditor':
+                    $this->_vars['_js_files'][] = '__JS__/lib/ueditor/ueditor.config.js';
+                    $this->_vars['_js_files'][] = '__JS__/lib/ueditor/ueditor.all.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/ueditor.js';
+                    break;
+                case 'wangeditor':
+                    $this->_vars['_css_files'][] = '__JS__/lib/wang-editor/css/wangEditor.min.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/wang-editor/js/wangEditor.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/wangeditor.js';
                     break;
             }
         } else {
@@ -1745,7 +1758,6 @@ class AdminCreater extends Instance
             $this->_vars['field_values'] = array_filter($this->_vars['field_values'], 'strlen');
             $this->_vars['field_values'] = implode(',', array_unique($this->_vars['field_values']));
         }
-
         // 处理js和css合并的参数
         if (!empty($this->_vars['_js_files'])) {
             $this->_vars['_js_files'] = array_unique($this->_vars['_js_files']);
@@ -1753,7 +1765,6 @@ class AdminCreater extends Instance
         if (!empty($this->_vars['_css_files'])) {
             $this->_vars['_css_files'] = array_unique($this->_vars['_css_files']);
         }
-
         // 实例化视图并渲染
         return parent::fetch($this->_template, $this->_vars, $replace, $config);
     }
