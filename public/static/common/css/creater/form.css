@@ -274,7 +274,6 @@
     overflow-y: auto;
 }
 /***********************/
-
 .block-header {
     padding: 15px 20px;
     -webkit-transition: opacity 0.2s ease-out;
@@ -445,4 +444,137 @@ div.tagsinput span.tag a {
 }
 .input-group {
     border-collapse: separate;
+}
+
+.select-box-linkage{
+    display: inline-block;
+}
+.alert {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 2px;
+    border: none;
+}
+.alert p {
+    margin-bottom: 5px !important;
+}
+.alert-success {
+    background-color: #e0f5e9;
+    color: #34a263;
+    -webkit-box-shadow: 0 2px #cdefdb;
+    box-shadow: 0 2px #cdefdb;
+}
+.alert-success hr {
+    border-top-color: #cdefdb;
+}
+.alert-success .alert-link {
+    color: #287b4b;
+}
+.alert-info {
+    background-color: #edf6fd;
+    color: #43a3e5;
+    -webkit-box-shadow: 0 2px #d6ebfa;
+    box-shadow: 0 2px #d6ebfa;
+}
+.alert-info hr {
+    border-top-color: #d6ebfa;
+}
+.alert-info .alert-link {
+    color: #1e8cd7;
+}
+.alert-warning {
+    background-color: #fdf3e5;
+    color: #efa231;
+    -webkit-box-shadow: 0 2px #fbe8cd;
+    box-shadow: 0 2px #fbe8cd;
+}
+.alert-warning hr {
+    border-top-color: #fbe8cd;
+}
+.alert-warning .alert-link {
+    color: #dc8911;
+}
+.alert-danger {
+    background-color: #f9eae8;
+    color: #c54736;
+    -webkit-box-shadow: 0 2px #f4d8d4;
+    box-shadow: 0 2px #f4d8d4;
+}
+.alert-danger hr {
+    border-top-color: #f4d8d4;
+}
+.alert-danger .alert-link {
+    color: #9d392b;
+}
+
+.block > .nav-tabs {
+    background-color: #f9f9f9;
+    border-bottom: none;
+    height:46px;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.block > .nav-tabs > li {
+    margin-bottom: 0;
+}
+.nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+}
+.nav > li {
+    position: relative;
+    display: block;
+}
+
+.block > .nav-tabs > li > a:hover {
+    color: #5c90d2;
+    background-color: transparent;
+    border-color: transparent;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+.block > .nav-tabs > li > a {
+    margin-right: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: #646464;
+    font-weight: 600;
+    border-radius: 0;
+}
+.nav-tabs > li > a:hover {
+    border-color: #eee #eee #ddd;
+}
+.nav > li > a:focus, .nav > li > a:hover {
+    text-decoration: none;
+    background-color: #eee;
+}
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+}
+.nav > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.tab-content > .active {
+    display: block;
+}
+.tab-content > .tab-pane {
+    display: none;
 }

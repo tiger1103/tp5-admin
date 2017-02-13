@@ -20,14 +20,21 @@
 
 <{block name="content"}>
 <div class="page-container">
+    <{notempty name="page_tips"}>
+    <div class="text-l va-m alert alert-<{$tips_type}> alert-dismissable">
+       <{$page_tips}>
+    </div>
+    <{/notempty}>
     <{//tab选项卡}>
     <{notempty name="tab_nav"}>
-    <div id="tab-system" class="HuiTab">
-        <div class="tabBar cl">
+    <div class="block">
+        <ul class="nav nav-tabs">
             <{volist name="tab_nav['tab_list']" id="tab"}>
-            <span <{eq name="tab_nav.curr_tab" value="$key"}>class="current"<{/eq}> onclick="location.href='<{$tab.url}>'" ><{$tab.title}></span>
+            <li <{eq name="tab_nav.curr_tab" value="$key"}>class="active"<{/eq}> >
+            <a href="<{$tab.url}>"><{$tab.title}></a>
+            </li>
             <{/volist}>
-        </div>
+        </ul>
     </div>
     <{/notempty}>
     <form action="<{$post_url|default=''}>" method="post" class="form form-horizontal" id="form-article-add">
@@ -144,9 +151,50 @@
                         <{// 多级联动下拉框 }>
                         <{include file="../application/common/creater/form/items/linkages.html" type='' /}>
                     <{/case}>
+                    <{case value="masked"}>
+                        <{// 格式文本 }>
+                        <{include file="../application/common/creater/form/items/masked.html" type='' /}>
+                    <{/case}>
+                    <{case value="number"}>
+                        <{// 数字 }>
+                        <{include file="../application/common/creater/form/items/number.html" type='' /}>
+                    <{/case}>
+                    <{case value="password"}>
+                        <{// 密码 }>
+                        <{include file="../application/common/creater/form/items/password.html" type='' /}>
+                    <{/case}>
+                    <{case value="range"}>
+                        <{// 范围 }>
+                        <{include file="../application/common/creater/form/items/range.html" type='' /}>
+                    <{/case}>
+                    <{case value="group"}>
+                        <{// 分组 }>
+                        <{include file="../application/common/creater/form/items/group.html" type='' /}>
+                    <{/case}>
                 <{/switch}>
             <{/volist}>
         <{/empty}>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <{php}>if(isset($btn_hide) && !in_array('submit', $btn_hide)):<{/php}>
+                <button class="btn btn-primary radius <{eq name="ajax_submit" value="true"}>ajax-post<{/eq}>" target-form="form-builder" type="submit">
+                <i class="Hui-iconfont">&#xe632;</i>
+                <{$btn_title['submit']|default='提交'}>
+                </button>
+                <{php}>endif;<{/php}>
+
+                <{empty name="Think.get._pop"}>
+                <{php}>if(isset($btn_hide) && !in_array('back', $btn_hide)):<{/php}>
+                <button class="btn btn-default radius" type="button" onclick="closeTip();">
+                    <i class="Hui-iconfont">&#xe66b;</i>
+                    <{$btn_title['back']|default='返回'}>
+                </button>
+                <{php}>endif;<{/php}>
+                <{/empty}>
+                <{// 额外按钮}>
+                <{$btn_extra|default=''}>
+            </div>
+        </div>
     </form>
 </div>
 <{// 额外HTML代码 }>
@@ -165,4 +213,10 @@
             <script type="text/javascript" src="<{$js_file}>"></script>
         <{/volist}>
     <{/notempty}>
+    <script type="text/javascript">
+        function closeTip(){
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    </script>
 <{/block}>

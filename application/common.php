@@ -188,3 +188,23 @@ if (!function_exists('get_level_pid')) {
         return Db::name($table)->where($id_field, $id)->value($pid_field);
     }
 }
+
+
+if (!function_exists('format_linkage')) {
+    /**
+     * 格式化联动数据
+     * @param array $data 数据
+     * @return string
+     */
+    function format_linkage($data = [])
+    {
+        $list = [];
+        foreach ($data as $key => $value) {
+            $list[] = [
+                'key'   => $key,
+                'value' => $value
+            ];
+        }
+        return $list;
+    }
+}

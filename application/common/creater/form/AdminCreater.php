@@ -591,7 +591,6 @@ class AdminCreater extends Instance
         if ($this->_is_group) {
             return $item;
         }
-
         $this->_vars['form_items'][] = $item;
         return $this;
     }
@@ -1629,6 +1628,8 @@ class AdminCreater extends Instance
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/select2.js';
                     if($type=='linkage'){
                         $this->_vars['_js_files'][] = '__COMMON__/js/creater/linkage.js';
+                    }elseif($type=='linkages'){
+                        $this->_vars['_js_files'][] = '__COMMON__/js/creater/linkages.js';
                     }
                     break;
                 case 'sort':
@@ -1654,12 +1655,23 @@ class AdminCreater extends Instance
                     $this->_vars['_js_files'][] = '__JS__/lib/wang-editor/js/wangEditor.min.js';
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/wangeditor.js';
                     break;
+                case 'ked':
+                    $this->_vars['_js_files'][] = '__JS__/lib/masked-inputs/jquery.maskedinput.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/masked.js';
+                    break;
+                case 'range':
+                    $this->_vars['_css_files'][] = '__JS__/lib/ion-rangeslider/css/ion.rangeSlider.min.css';
+                    $this->_vars['_css_files'][] = '__JS__/lib/ion-rangeslider/css/ion.rangeSlider.skinHTML5.min.css';
+                    $this->_vars['_js_files'][] = '__JS__/lib/ion-rangeslider/js/ion.rangeSlider.min.js';
+                    $this->_vars['_js_files'][] = '__COMMON__/js/creater/range.js';
+                    break;
             }
         } else {
             if ($this->_vars['form_items']) {
                 foreach ($this->_vars['form_items'] as &$item) {
                     // 判断是否为分组
                     if ($item['type'] == 'group') {
+                        $this->_vars['_js_files'][] = '__COMMON__/js/creater/group.js';
                         foreach ($item['options'] as &$group) {
                             foreach ($group as $key => $value) {
                                 if ($group[$key]['type'] != '') {
