@@ -122,22 +122,31 @@
 <script type="text/javascript">
     $(function(){
         $(".permission-list dt input:checkbox").click(function(){
-            $(this).closest('dt').next().find("input:checkbox").prop("checked",$(this).prop("checked"));
-            $(this).closest(".permission-list2").parent().prev().find("input:checkbox").prop("checked",$(this).prop("checked"));
+            var $this = $(this);
+            $this.closest('dt').next().find("input:checkbox").prop("checked",$this.prop("checked"));
+            if($this.prop('checked')){
+                $this.closest(".permission-list2").parent().prev().find("input:checkbox").prop("checked",$this.prop("checked"));
+            }else{
+                var l = $this.closest('dd').children().children('dt').children().children(':checked').length;
+                if(l==0){
+                    $this.closest(".permission-list2").parent().prev().find("input:checkbox").prop("checked",false);
+                }
+            }
         });
         $(".permission-list2 dd input:checkbox").click(function(){
-            var l =$(this).parent().parent().find("input:checked").length;
-            var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
-            if($(this).prop("checked")){
-                $(this).closest("dl").find("dt input:checkbox").prop("checked",true);
-                $(this).closest(".permission-list2").parent().prev().find("input:checkbox").prop("checked",true);
+            var $this = $(this);
+            if($this.prop("checked")){
+                $this.closest("dl").find("dt input:checkbox").prop("checked",true);
+                $this.closest(".permission-list2").parent().prev().find("input:checkbox").prop("checked",true);
             }
             else{
+                var l =$this.parent().parent().find("input:checked").length;
                 if(l==0){
-                    $(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+                    $this.closest("dl").find("dt input:checkbox").prop("checked",false);
                 }
+                var l2 =$this.parent().parent().parent().closest('dd').children('dl').children('dt').children().children(":checked").length;
                 if(l2==0){
-                    $(this).closest(".permission-list2").parent().prev().find("input:checkbox").prop("checked",false);
+                    $this.closest(".permission-list2").parent().prev().find("input:checkbox").prop("checked",false);
                 }
             }
         });
