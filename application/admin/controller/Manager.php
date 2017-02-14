@@ -101,11 +101,11 @@ class Manager extends Base
             //['radio','gradio','性别','请选择性别',['nan'=>'男','nv'=>'女','sc'=>'保密'],'nv',['radioClass'=>'iradio_square-pink']],
             //['linkage','glinkage','联动下拉框','请选择省市',['gd' => '广东', 'gx' => '广西'],'gx', url('get_city'), 'city'],
             //['select','city','联动关联','请选择城市',['sz'=>'深圳tmp','gz'=>'广州tmp'],'sz'],
-            ['linkages','citys', '选择所在城市', '请选择所在城市。', 'test',3,8],
-            ['masked','gmasked','日期','请填写日期','9999-99-99','2017-01-02'],
-            ['number','gnumber','尺寸','请填写尺寸',10,8,12,2],
-            ['password','gpwd','密码','请输入密码','123456'],
-            ['range','grangee','范围','请选择范围','100;600',['min' => 0, 'max' => 999,'grid' => 'true','double' => 'true']],
+            //['linkages','citys', '选择所在城市', '请选择所在城市。', 'test',3,8],
+            //['masked','gmasked','日期','请填写日期','9999-99-99','2017-01-02'],
+            //['number','gnumber','尺寸','请填写尺寸',10,8,12,2],
+            //['password','gpwd','密码','请输入密码','123456'],
+            //['range','grangee','范围','请选择范围','100;600',['min' => 0, 'max' => 999,'grid' => 'true','double' => 'true']],
             /*['text', 'username', '用户名', '必填，可由英文字母、数字组成'],
             ['text', 'nickname', '昵称', '可以是中文'],
             ['select', 'group', '用户组', '', $group_list],
@@ -131,6 +131,10 @@ class Manager extends Base
                 'tab1' => ['title' => '标题1', 'url' => url('add', ['group' => 'tab1'])],
                 'tab2' => ['title' => '标题2', 'url' => url('add', ['group' => 'tab2'])],
             ],  'tab1')*/
+        ->addSelect('city', '城市', '', ['gz' => '广州', 'sz' => '深圳', 'sh' => '上海'])
+            ->addText('zipcode', '邮编')
+            ->addText('mobile', '电话')
+            ->setTrigger('city', 'gz', 'zipcode,mobile')
         ->fetch();
     }
 

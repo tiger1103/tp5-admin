@@ -37,7 +37,7 @@
         </ul>
     </div>
     <{/notempty}>
-    <form action="<{$post_url|default=''}>" method="post" class="form form-horizontal" id="form-article-add">
+    <form action="<{$post_url|default=''}>" method="post" class="form form-horizontal form-builder row" name="form-builder">
         <{empty name="form_items"}>
         <div class="text-c">暂无数据</div>
         <{else/}>
@@ -174,7 +174,7 @@
                 <{/switch}>
             <{/volist}>
         <{/empty}>
-        <div class="row cl">
+        <div class="row cl col-md-12">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
                 <{php}>if(isset($btn_hide) && !in_array('submit', $btn_hide)):<{/php}>
                 <button class="btn btn-primary radius <{eq name="ajax_submit" value="true"}>ajax-post<{/eq}>" target-form="form-builder" type="submit">
@@ -214,6 +214,112 @@
         <{/volist}>
     <{/notempty}>
     <script type="text/javascript">
+        var triggers = <{$field_triggers|default=[]|json_encode}>;//触发器集合
+        var field_hide = '<{$field_hide|default=""}>'; // 需要隐藏的字段
+        var field_values =  '<{$field_values|default=""}>';//触发对象
+        var ueditors    = {};//ueditor编辑器集合
+        var wangeditors = {};//wangeditors编辑器集合
+        var editormds = {};//markdown编辑器集合
+        $(function(){
+            // 表单项依赖触发
+            if (triggers != '') {
+                /* 依赖显示 */
+                // 先隐藏依赖项
+                var $field_hide   = field_hide.split(',') || [];
+                var $field_values = field_values.split(',') || [];
+                for (var index in $field_hide) {
+                    $('#form_group_'+$field_hide[index]).addClass('form_group_hide');
+                }
+
+                var $form_builder = $('.form-builder');
+
+                $.each(triggers, function (trigger, content) {
+                    $form_builder.delegate('[name='+ trigger +']', 'change', function (event, init) {
+                        var $trigger = $(this);
+                        var $value   = $trigger.val();
+
+                        $(content).each(function () {
+                            var $self = $(this);
+                            var $values  = $self[0].split(',') || [];
+                            var $targets = $self[1].split(',') || [];
+
+                            // 如果触发的元素是单选，且没有选中则设置值为空
+                            if ($trigger.attr('type') == 'radio' && $trigger.is(':checked') == false) {
+                                $value = '';
+                            }
+                            if ($.inArray($value, $values) >= 0) {
+                                // 符合指定的值，显示对应的表单项
+                                for (var index in $targets) {
+                                    // 如果不是该对象自身直接创建的属性（也就是该属//性是原型中的属性），则跳过显示
+                                    if (!$targets.hasOwnProperty(index)) {
+                                        continue;
+                                    }
+                                    $('#form_group_'+$targets[index]).removeClass('form_group_hide');
+                                }
+                            } else {
+                                for (var item in $targets) {
+                                    if (!$targets.hasOwnProperty(item)) {
+                                        continue;
+                                    }
+
+                                    if ($.type(ueditors) == 'object' && ueditors[$targets[item]] != undefined) {
+                                        // 清除百度编辑器内容
+                                        ueditors[$targets[item]].ready(function(){
+                                            ueditors[$targets[item]].execCommand("cleardoc");
+                                        });
+                                    } else if ($.type(wangeditors) == 'object' && wangeditors[$targets[item]] != undefined) {
+                                        // 清除wang编辑器内容
+                                        wangeditors[$targets[item]].clear();
+                                    } else if ($.type(editormds) == 'object' && editormds[$targets[item]] != undefined) {
+                                        // 清除markdown编辑器内容
+                                        if (init) {
+                                            continue;
+                                        } else {
+                                            editormds[$targets[item]].clear();
+                                        }
+                                    }
+
+                                    // 隐藏表单项
+                                    var $form_item = $('#form_group_'+$targets[item]).addClass('form_group_hide');
+
+                                    // 清除表单内容
+                                    if ($form_item.find("[name='"+$targets[item]+"']").attr('type') == 'radio') {
+                                        $form_item.find("[name='"+$targets[item]+"']:checked").prop('checked', false).trigger("change");
+                                    } else if ($form_item.find("[name='"+$targets[item]+"[]']").attr('type') == 'checkbox') {
+                                        $form_item.find("[name='"+$targets[item]+"[]']:checked").prop('checked', false).trigger("change");
+                                    } else {
+                                        $form_item.find("[name^='"+$targets[item]+"']").val(null).trigger("change");
+                                    }
+
+                                    // 清除上传文件
+                                    $form_item.find('#file_list_'+$targets[item]).empty();
+
+                                    // 清空标签
+                                    if ($form_item.find('.js-tags-input').length) {
+                                        $form_item.find('.js-tags-input').importTags('');
+                                    }
+                                }
+                            }
+                        });
+                    });
+
+                    // 有默认值时触发
+                    var trigger_value = '';
+                    if ($form_builder.find('[name='+ trigger +']').attr('type') == 'radio') {
+                        trigger_value = $form_builder.find('[name='+ trigger +']:checked').val() || '';
+                        if (trigger_value != '' && $.inArray(trigger_value, $field_values) >= 0) {
+                            var $radio_id = $('.form-builder [name='+ trigger +']:checked').attr('id');
+                            $('.form-builder #'+$radio_id).trigger("change", ['1']);
+                        }
+                    } else {
+                        trigger_value = $form_builder.find('[name='+ trigger +']').val() || '';
+                        if (trigger_value != '' && $.inArray(trigger_value, $field_values) >= 0) {
+                            $('.form-builder [name='+ trigger +']').trigger("change");
+                        }
+                    }
+                });
+            }
+        });
         function closeTip(){
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);

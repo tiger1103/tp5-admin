@@ -578,3 +578,7 @@ div.tagsinput span.tag a {
 .tab-content > .tab-pane {
     display: none;
 }
+
+.form_group_hide {
+    display: none;
+}
