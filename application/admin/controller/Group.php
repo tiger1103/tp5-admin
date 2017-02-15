@@ -229,6 +229,6 @@ class Group extends Base
      * 删除缓存
      */
     private function clearCache(){
-        cache(null,'auth_group');
+        cache(null,get_cache_tag('auth_group'));
     }
 }

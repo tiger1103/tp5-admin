@@ -102,7 +102,7 @@ class Module extends Base
                     }
                 }
             }
-            cache('MENU_LIST', $menu_list, null,'admin_menu');  // 缓存配置
+            cache('MENU_LIST', $menu_list, null,get_cache_tag('admin_menu'));  // 缓存配置
         }
         return $menu_list;
     }
@@ -118,7 +118,7 @@ class Module extends Base
             $modules = self::where('status', '>=', 0)->order('id')->column('name,title');
             // 非开发模式，缓存数据
             if (config('develop_mode') == 0) {
-                cache('modules', $modules,null,'admin_modules');
+                cache('modules', $modules,null,get_cache_tag('admin_modules'));
             }
         }
         return $modules;

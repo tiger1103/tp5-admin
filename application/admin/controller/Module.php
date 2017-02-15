@@ -113,7 +113,7 @@ class Module extends Base
             $this->error($module->getError());
         }else{
             //清除菜单缓存
-            cache(null,'admin_menu');
+            cache(null,get_cache_tag('admin_menu'));
             //更新权限规则信息
             $res = model('AuthRule')->updateRule($config_info['admin_menu'],$config_info['info']['name']);
             if($res['status']){

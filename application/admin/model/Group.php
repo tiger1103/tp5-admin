@@ -54,7 +54,7 @@ class Group extends Base
             // 转换成树状列表
             $tree = new Tree();
             $group_list = $tree->toFormatTree($group_list);
-            cache('group_list',$group_list,null,'auth_group');
+            cache('group_list',$group_list,null,get_cache_tag('auth_group'));
         }
         return $group_list;
     }

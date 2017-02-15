@@ -208,3 +208,18 @@ if (!function_exists('format_linkage')) {
         return $list;
     }
 }
+
+
+if(!function_exists('get_cache_tag')){
+    /**
+     * 获取缓存标签名称
+     * @param string $tag
+     * @return string
+     */
+    function get_cache_tag($tag=''){
+        if($tag!=''){
+            return config('appConfig.CACHE_TAG')[strtoupper($tag)][0];
+        }
+        return '';
+    }
+}

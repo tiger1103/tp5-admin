@@ -37,7 +37,7 @@
         </ul>
     </div>
     <{/notempty}>
-    <form action="<{$post_url|default=''}>" method="post" class="form form-horizontal form-builder row" name="form-builder">
+    <form action="<{$post_url|default=''}>" method="post" id="form-submit-data-custom" class="form form-horizontal form-builder row" name="form-builder">
         <{empty name="form_items"}>
         <div class="text-c">暂无数据</div>
         <{else/}>
@@ -319,6 +319,36 @@
                     }
                 });
             }
+
+            $("#form-submit-data-custom").validate({
+                rules:<{$form_validate.rules|json_encode=JSON_UNESCAPED_UNICODE}>,
+                messages:<{$form_validate.messages|json_encode=JSON_UNESCAPED_UNICODE}>,
+                onkeyup:false,
+                focusCleanup:false,
+                success:"valid",
+                submitHandler:function(form) {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    if ($(':submit').hasClass('ajax-post')) {
+                        //ajax提交
+                        $(form).ajaxSubmit({
+                            dataType: "json",
+                            success: function (jsondata) {
+                                if (jsondata.code == 1) {
+                                    layer.msg(jsondata.msg);
+                                    setTimeout(function () {
+                                        parent.layer.close(index);
+                                        parent.location.reload();
+                                    }, 1500);
+                                } else {
+                                    layer.msg(jsondata.msg, {icon: 5, shift: 6});
+                                }
+                            }
+                        });
+                    } else {
+                        form.submit();
+                    }
+                }
+            });
         });
         function closeTip(){
             var index = parent.layer.getFrameIndex(window.name);

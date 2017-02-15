@@ -85,7 +85,7 @@ if (!function_exists('get_nickname')) {
                 while ($count-- > $max) {
                     array_shift($list);
                 }
-                cache('sys_user_nickname_list', $list,null,'admin_admin');
+                cache('sys_user_nickname_list', $list,null,get_cache_tag('admin_admin'));
             } else {
                 $name = '';
             }

@@ -73,7 +73,7 @@ class Manager extends Base
         ->setPageTitle('新增') // 设置页面标题
         //->setPageTips('这是页面提示信息', 'success')
             ->setUrl(url('add'))
-        ->addFormItems([ // 批量添加表单项
+        //->addFormItems([ // 批量添加表单项
             //['bmap','bm','地图标注','88bf9d5e3b73bf4fdb3a9524803a2dbc','请标注地图坐标。','','曲靖市麒麟区龙潭公园'],
             //['checkbox','city','所属城市','请选择城市',['gz' => '广州', 'sz' => '深圳', 'sh' => '上海'],['gz','sh'],['checkboxClass'=>'icheckbox_square-green']],
            //['ckeditor','ckcontent','相关内容','请填写相关内容','这个是默认值'],
@@ -114,8 +114,8 @@ class Manager extends Base
             ['text', 'mobile', '手机号'],
             ['image', 'avatar', '头像'],
             ['radio', 'status', '状态', '', ['禁用', '启用'], 1]*/
-        ])
-            ->addGroup(
+        //])
+            /*->addGroup(
                 [
                     '微信支付' =>[
                         ['text', 'wx_appid', 'APPID', '微信支付请输入appid'],
@@ -126,15 +126,24 @@ class Manager extends Base
                         ['text', 'al_appkey', 'APPKEY', '支付宝支付请输入appkey']
                     ]
                 ]
-            )
+            )*/
         /*->setTabNav([
                 'tab1' => ['title' => '标题1', 'url' => url('add', ['group' => 'tab1'])],
                 'tab2' => ['title' => '标题2', 'url' => url('add', ['group' => 'tab2'])],
             ],  'tab1')*/
-        ->addSelect('city', '城市', '', ['gz' => '广州', 'sz' => '深圳', 'sh' => '上海'])
+        ->addFormItems(
+            [
+                ['text','username','用户名','请填写用户名','',['<i class="Hui-iconfont Hui-iconfont-user"></i>']],
+                ['text','title','标题','请填写标题','',['<i class="Hui-iconfont Hui-iconfont-hetong"></i>']],
+            ]
+        )
+        /*->addSelect('city', '城市', '', ['gz' => '广州', 'sz' => '深圳', 'sh' => '上海'])
             ->addText('zipcode', '邮编')
             ->addText('mobile', '电话')
-            ->setTrigger('city', 'gz', 'zipcode,mobile')
+            ->setTrigger('city', 'gz', 'zipcode,mobile')*/
+        ->setFormValidate(
+            ['username'=>['required'=>true,'number'=>true],'title'=>'required'],
+            ['username'=>['required'=>'用户名不能为空','number'=>'只能填写数字'],'title'=>'标题不能为空'])
         ->fetch();
     }
 

@@ -44,6 +44,7 @@ class AdminCreater extends Instance
         'field_values'    => '',    // 触发表单项的值
         '_js_files'       => [],    // 需要加载的js（合并输出）
         '_css_files'      => [],    // 需要加载的css（合并输出）
+        'form_validate'=>[],  //表单验证数据（规则及提示）
     ];
 
     /**
@@ -1555,6 +1556,20 @@ class AdminCreater extends Instance
         return $this;
     }
 
+    /**
+     * 设置表单验证规则及提示信息
+     * @param array $rules
+     * @param array $messages
+     * @return $this
+     */
+    public function setFormValidate($rules=[],$messages=[]){
+        $this->_vars['form_validate'] = [
+            'rules'=>$rules,
+            'messages'=>$messages
+        ];
+        $this->loadPlugin('validate');
+        return $this;
+    }
 
 
     /**
@@ -1664,6 +1679,12 @@ class AdminCreater extends Instance
                     $this->_vars['_css_files'][] = '__JS__/lib/ion-rangeslider/css/ion.rangeSlider.skinHTML5.min.css';
                     $this->_vars['_js_files'][] = '__JS__/lib/ion-rangeslider/js/ion.rangeSlider.min.js';
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/range.js';
+                    break;
+                case 'validate':
+                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/jquery.validate.min.js';
+                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/validate-methods.js';
+                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/messages_zh.min.js';
+                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/jquery.form.js';
                     break;
             }
         } else {

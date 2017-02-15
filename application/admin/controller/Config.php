@@ -9,7 +9,6 @@
 namespace app\admin\controller;
 
 use app\common\creater\Instance;
-use think\Cache;
 
 class Config extends Base
 {

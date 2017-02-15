@@ -40,7 +40,7 @@ class InitConfig
                     }
                 }
             }
-            cache('DB_CONFIG_DATA', $system_config,null,'admin_config');  // 缓存配置
+            cache('DB_CONFIG_DATA', $system_config,null,get_cache_tag('admin_config'));  // 缓存配置
         }
         config($system_config);
     }

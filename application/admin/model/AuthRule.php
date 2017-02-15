@@ -100,7 +100,7 @@ class AuthRule extends Base
             if (empty($location)) {
                 throw new \think\Exception('获取不到当前节点地址，可能未添加节点');
             }
-            cache($cache_name, $location,'admin_menu');
+            cache($cache_name, $location,get_cache_tag('admin_menu'));
         }
         return $location;
     }
