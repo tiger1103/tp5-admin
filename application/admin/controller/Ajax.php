@@ -9,10 +9,9 @@
 namespace app\admin\controller;
 
 
-use app\common\controller\Common;
 use think\Db;
 
-class Ajax extends Common
+class Ajax extends Base
 {
     /**
      * 获取联动数据

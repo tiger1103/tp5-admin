@@ -18,6 +18,10 @@ class Admin extends Base
      */
     protected $table = '__ADMIN_ADMIN__';
 
+    /**
+     * 关联用户组权限
+     * @return $this
+     */
     public function authGroupAccess(){
         return $this->hasMany('AuthGroupAccess','uid','id')->field('uid,group_id');
     }

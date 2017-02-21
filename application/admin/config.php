@@ -49,11 +49,12 @@ return [
         // 验证成功后是否重置
         'reset'    => true,
     ],
+
     //session配置
-    'session'                => [
-        'prefix'         => 'admin',
-        'type'           => '',
-        'auto_start'  => true,
+    'session'  => [
+        'prefix'  => 'admin',
+        'type'  => '',
+        'auto_start'  => true
     ],
 
     //cookie配置

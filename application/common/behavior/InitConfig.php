@@ -40,6 +40,9 @@ class InitConfig
                     }
                 }
             }
+            if(defined("SESSION_PATH")){
+                $system_config['session']['path'] = '2;'.SESSION_PATH;
+            }
             cache('DB_CONFIG_DATA', $system_config,null,get_cache_tag('admin_config'));  // 缓存配置
         }
         config($system_config);
