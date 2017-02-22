@@ -5,7 +5,6 @@ namespace app\admin\controller;
  * 后台默认控制器
  */
 use think\Controller;
-use think\Cookie;
 use think\Loader;
 use think\Response;
 
@@ -56,7 +55,6 @@ class Index extends Controller
      */
     public function logout(){
         session(null);//清除session
-        cookie(ini_get('session.name'),session_id(),['expire'=>-1,'path'=>"/",'prefix'=>'']);//清除session 的 cookie
         $this->success('退出登录成功','index/index');
     }
 
