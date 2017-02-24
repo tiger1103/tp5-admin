@@ -64,9 +64,29 @@ $(function(){
 
         //状态设置
         form().on('switch(status)',function(data){
-            layer.load();
+            var index = layer.load();
             var url = baseUrl+'/setStatus/ids/'+data.elem.id+'/action/'+(data.elem.checked?'enable':'disable');
-            location.href = url;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "json",
+                cache: false,
+                success:function(responseData){
+                    if(responseData.code==1){
+                        layer.msg(responseData.data);
+                    }else{
+                        layer.msg(responseData.data,{icon:5,shift:6});
+                    }
+                },
+                statusCode: {
+                    404: function() {
+                        layer.msg('请求失败',{icon:5,shift:6});
+                    }
+                },
+                complete:function(){
+                    layer.close(index);
+                }
+            });
         });
     });
 });

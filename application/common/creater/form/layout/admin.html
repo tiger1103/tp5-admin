@@ -321,8 +321,10 @@
             }
 
             $("#form-submit-data-custom").validate({
+                <{notempty name="form_validate" }>
                 rules:<{$form_validate.rules|json_encode=JSON_UNESCAPED_UNICODE}>,
                 messages:<{$form_validate.messages|json_encode=JSON_UNESCAPED_UNICODE}>,
+                <{/notempty}>
                 onkeyup:false,
                 focusCleanup:false,
                 success:"valid",
