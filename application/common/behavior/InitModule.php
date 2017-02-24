@@ -49,7 +49,7 @@ class InitModule
         $dir = "0123456789abcdefghijklmnopqrstuvwsyz";
         for($i =0;$i<strlen($dir);$i++){
             for($j=0;$j<strlen($dir);$j++){
-                $dir_name = $session_path.$dir[$i].DS.$dir[$j];
+                $dir_name = $session_path.DS.$dir[$i].DS.$dir[$j];
                 if(!file_exists($dir_name)){
                     mkdir($dir_name,0777,true);
                 }
