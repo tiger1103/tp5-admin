@@ -45,6 +45,7 @@ class AdminCreater extends Instance
         '_js_files'       => [],    // 需要加载的js（合并输出）
         '_css_files'      => [],    // 需要加载的css（合并输出）
         'form_validate'=>[],  //表单验证数据（规则及提示）
+        'token_open' =>false,//表单令牌默认关闭
     ];
 
     /**
@@ -60,6 +61,16 @@ class AdminCreater extends Instance
         parent::_initialize();
         $this->_template   = APP_PATH. 'common/creater/form/layout/admin.html';
         $this->_vars['post_url'] = $this->request->url(true);
+    }
+
+    /**
+     * 开启|关闭表单令牌
+     * @param bool $open
+     * @return $this
+     */
+    public function token_open($open=false){
+        $this->_vars['token_open'] = $open;
+        return $this;
     }
 
     /**
@@ -1679,12 +1690,6 @@ class AdminCreater extends Instance
                     $this->_vars['_css_files'][] = '__JS__/lib/ion-rangeslider/css/ion.rangeSlider.skinHTML5.min.css';
                     $this->_vars['_js_files'][] = '__JS__/lib/ion-rangeslider/js/ion.rangeSlider.min.js';
                     $this->_vars['_js_files'][] = '__COMMON__/js/creater/range.js';
-                    break;
-                case 'validate':
-                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/jquery.validate.min.js';
-                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/validate-methods.js';
-                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/messages_zh.min.js';
-                    $this->_vars['_js_files'][] = '__JS__/lib/jquery.validation/1.15.0/jquery.form.js';
                     break;
             }
         } else {

@@ -5,6 +5,7 @@
 <{block name="content"}>
 <article class="page-container">
     <form action="<{:url('edit')}>" method="post" class="form form-horizontal" id="form-admin-role-add">
+        <{:token()}>
         <input type="hidden" name="id" value="<{$group.id}>" />
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">父级用户组：</label>

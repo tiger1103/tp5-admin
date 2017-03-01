@@ -43,6 +43,7 @@ class InitModule
     }
 
     /**
+     * @param string $session_path session存储主路径
      * 创建session保存路径
      */
     private function createSessionDir($session_path){

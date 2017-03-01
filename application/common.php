@@ -223,3 +223,15 @@ if(!function_exists('get_cache_tag')){
         return '';
     }
 }
+
+if(!function_exists('encypt_password')){
+    /**
+     * 密码加密
+     * @param $password
+     * @param $salt
+     * @return string
+     */
+    function encypt_password($password,$salt){
+        return md5(md5($password).$salt);
+    }
+}

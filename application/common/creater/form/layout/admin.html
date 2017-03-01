@@ -38,6 +38,9 @@
     </div>
     <{/notempty}>
     <form action="<{$post_url|default=''}>" method="post" id="form-submit-data-custom" class="form form-horizontal form-builder row" name="form-builder">
+        <{if condition="$token_open"}>
+        <{:token()}>
+        <{/if}>
         <{empty name="form_items"}>
         <div class="text-c">暂无数据</div>
         <{else/}>
@@ -213,6 +216,11 @@
             <script type="text/javascript" src="<{$js_file}>"></script>
         <{/volist}>
     <{/notempty}>
+    <{//表单验证js插件引入}>
+    <script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/validate-methods.js"></script>
+    <script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/messages_zh.min.js"></script>
+    <script type="text/javascript" src="__JS__/lib/jquery.validation/1.15.0/jquery.form.js"></script>
     <script type="text/javascript">
         var triggers = <{$field_triggers|default=[]|json_encode}>;//触发器集合
         var field_hide = '<{$field_hide|default=""}>'; // 需要隐藏的字段
@@ -328,6 +336,9 @@
                 onkeyup:false,
                 focusCleanup:false,
                 success:"valid",
+                errorPlacement:function(error, element){
+                    $(element).parent().append(error);
+                },
                 submitHandler:function(form) {
                     var index = parent.layer.getFrameIndex(window.name);
                     if ($(':submit').hasClass('ajax-post')) {
@@ -336,13 +347,13 @@
                             dataType: "json",
                             success: function (jsondata) {
                                 if (jsondata.code == 1) {
-                                    layer.msg(jsondata.msg);
+                                    layer.msg(jsondata.data);
                                     setTimeout(function () {
                                         parent.layer.close(index);
                                         parent.location.reload();
                                     }, 1500);
                                 } else {
-                                    layer.msg(jsondata.msg, {icon: 5, shift: 6});
+                                    layer.msg(jsondata.data, {icon: 5, shift: 6});
                                 }
                             }
                         });
