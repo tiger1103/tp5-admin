@@ -746,7 +746,6 @@ class AdminCreater extends Instance
                             list($_table_name, $_name) = explode('.', $_name);
                         }
                     }
-
                     switch ($column['type']) {
                         case 'link': // 链接
                             if ($column['default'] != '') {

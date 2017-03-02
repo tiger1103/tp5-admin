@@ -31,9 +31,13 @@ class Admin extends Base
      * @return int
      */
     protected function setStatusAttr($value){
-        if($value=='on')
-            return 1;
-        return 0;
+        if(is_string($value)){
+            if($value=='on')
+                return 1;
+            else if($value=='off')
+                return 0;
+        }
+        return $value;
     }
 
 
