@@ -256,7 +256,6 @@ class AdminCreater extends Instance
     /**
      * 设置额外代码
      * @param string $extra_html 额外代码
-     * @author 蔡伟明 <314013107@qq.com>
      * @return $this
      */
     public function setExtraHtml($extra_html = '')
@@ -268,7 +267,6 @@ class AdminCreater extends Instance
     /**
      * 设置额外JS代码
      * @param string $extra_js 额外JS代码
-     * @author 蔡伟明 <314013107@qq.com>
      * @return $this
      */
     public function setExtraJs($extra_js = '')

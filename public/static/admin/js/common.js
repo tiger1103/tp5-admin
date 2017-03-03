@@ -76,6 +76,10 @@ $(function(){
                         layer.msg(responseData.data);
                     }else{
                         layer.msg(responseData.data,{icon:5,shift:6});
+                        window.setTimeout(function(){
+                            data.elem.checked= data.elem.checked?false:true;
+                            form().render('checkbox'); //更新
+                        },300);
                     }
                 },
                 statusCode: {
