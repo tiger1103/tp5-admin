@@ -347,13 +347,13 @@
                             dataType: "json",
                             success: function (jsondata) {
                                 if (jsondata.code == 1) {
-                                    layer.msg(jsondata.data);
+                                    layer.msg(jsondata.msg);
                                     setTimeout(function () {
                                         parent.layer.close(index);
                                         parent.location.reload();
                                     }, 1500);
                                 } else {
-                                    layer.msg(jsondata.data, {icon: 5, shift: 6});
+                                    layer.msg(jsondata.msg, {icon: 5, shift: 6});
                                 }
                             }
                         });

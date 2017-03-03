@@ -73,7 +73,7 @@ class Manager extends Base
             }
             // 添加数据
             if (false===$result = $admin_modle->allowField(true)->isUpdate(false)->validate(true)->save($data)){
-                return $this->result($admin_modle->getError(),0);
+                return $this->result(null,0,$admin_modle->getError());
             }
             $uid = $admin_modle->id;
             $group_access_data = [];//用户及用户组关联数据
@@ -87,7 +87,7 @@ class Manager extends Base
             if(true!==$return = action_log('admin_add', 'admin_admin', $uid, UID,$data['username'])){
                 return $this->result(null,0,$return);
             }
-            return $this->result('管理员添加成功',1);
+            return $this->result(null,1,'管理员添加成功');
         }
         //获取用户组
         $group_list = model('Group')->groupList(['status'=>1]);
@@ -115,6 +115,9 @@ class Manager extends Base
         ->fetch();
     }
 
+    /**
+     * 修改管理员信息
+     */
     public function edit(){
         $id = input('id',0,'intval');
         $admin_modle = model('Admin');
@@ -133,7 +136,7 @@ class Manager extends Base
             }
             // 修改用户数据
             if (false===$result = $admin_modle->allowField(true)->isUpdate(true)->validate('Admin.edit')->save($data,['id'=>$id])){
-                return $this->result($admin_modle->getError(),0);
+                return $this->result(null,0,$admin_modle->getError());
             }
             $group_access_data = [];//用户及用户组关联数据
             foreach($data['group'] as $k=>$v){
@@ -148,7 +151,7 @@ class Manager extends Base
             if(true!==$return = action_log('admin_edit', 'admin_admin', $id, UID,$data['username'])){
                 return $this->result(null,0,$return);
             }
-            return $this->result('管理员修改成功',1);
+            return $this->result(null,1,'管理员修改成功');
         }
         //获取用户信息
         $info = $admin_modle->find($id);
@@ -186,5 +189,82 @@ class Manager extends Base
             ->fetch();
     }
 
+    /**
+     * 设置管理员状态
+     */
+    public function setStatus(){
+        $ids = input('ids');
+        $action = input('action');
+        if($ids==''||$action==''){
+            return $this->error('参数错误');
+        }
+        if(strpos($ids,',')){
+            $id = explode(',',$ids);
+        }
+        //判断是否处理了超级管理员
+        if(in_array($ids,config('SUPER_ADMIN_ID'))||(isset($id)&&!empty(array_intersect($id,config('SUPER_ADMIN_ID'))))){
+            return $this->error('超级管理员不可设置');
+        }
+        $admin_model = model('Admin');
+        if(isset($id)){
+            //批量设置
+            $username = $admin_model->where(['id'=>['in',$id]])->column('username');
+            if($admin_model->where(['id'=>['in',$id]])->setField('status',$action=='enable'?1:0)!==false){
+                $this->clearCache();//删除缓存
+                // 记录行为
+                if(true!==$return = action_log($action=='enable'?'admin_enable':'admin_disable','admin_admin', 0, UID,implode('、',$username))){
+                    return $this->error($return);
+                }
+                return $this->success('状态修改成功');
+            }
+        }else{
+            //单条设置
+            $username =  $admin_model->where('id',$ids)->value('username');
+            if($admin_model->where('id',$ids)->setField('status',$action=='enable'?1:0)){
+                $this->clearCache();//删除缓存
+                // 记录行为
+                if(true!==$return = action_log($action=='enable'?'admin_enable':'admin_disable','admin_admin', $ids, UID,$username)){
+                    return $this->error($return);
+                }
+                return $this->success('状态修改成功');
+            }
+        }
+        return $this->error('状态修改失败');
+    }
 
+
+    /**
+     * 删除管理员
+     */
+    public function delete(){
+        $ids = input('ids');
+        if($ids==''){
+            return $this->error('参数错误');
+        }
+        $id = explode(',',$ids);
+
+        //判断是否处理了超级管理员组
+        if(!empty(array_intersect($id,config('SUPER_ADMIN_ID')))){
+            return $this->error('超级管理员组不可删除');
+        }
+        $admin_model = model('Admin');
+        $username = $admin_model->where(['id'=>['in',$id]])->column('username');
+        if($admin_model->where(['id'=>['in',$id]])->delete()!==false){
+            $admin_model->authGroup()->where(['uid'=>['in',$id]])->delete();//删除用户与用户组的关联信息
+            $this->clearCache();//删除缓存
+            // 记录行为
+            if(true!==$return = action_log('admin_delete','admin_admin', 0, UID,implode('、',$username))){
+                return $this->error($return);
+            }
+            return $this->success('删除成功','index');
+        }
+        return $this->error('删除失败');
+    }
+
+    /**
+     * 删除缓存
+     */
+    private function clearCache(){
+        cache(null,get_cache_tag('admin_admin'));
+    }
 }

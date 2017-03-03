@@ -50,6 +50,10 @@ class Admin extends Base
         return $this->belongsToMany('AdminAuthGroup','__ADMIN_AUTH_GROUP_ACCESS__','group_id','uid');
     }
 
+    /**
+     * 用户与用户组关联信息
+     * @return $this
+     */
     public function authGroup(){
         return $this->hasMany('AuthGroupAccess','uid','id')->field('uid,group_id');
     }

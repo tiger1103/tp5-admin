@@ -150,14 +150,14 @@ class Group extends Base
         $ids = input('ids');
         $action = input('action');
         if($ids==''||$action==''){
-            return $this->result('参数错误',0);
+            return $this->error('参数错误');
         }
         if(strpos($ids,',')){
             $id = explode(',',$ids);
         }
         //判断是否处理了超级管理员组
         if(in_array($ids,config('SUPER_GROUP_ID'))||(isset($id)&&!empty(array_intersect($id,config('SUPER_GROUP_ID'))))){
-            return $this->result('超级管理员组不可设置',0);
+            return $this->error('超级管理员组不可设置');
         }
         $group = model('Group');
         if(isset($id)){
@@ -167,9 +167,9 @@ class Group extends Base
                 $this->clearCache();//删除缓存
                 // 记录行为
                 if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', 0, UID,implode('、',$title))){
-                    return $this->result($return,0);
+                    return $this->error($return);
                 }
-                return $this->result('状态修改成功',1);
+                return $this->success('状态修改成功');
             }
         }else{
             //单条设置
@@ -178,12 +178,12 @@ class Group extends Base
                 $this->clearCache();//删除缓存
                 // 记录行为
                 if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', $ids, UID,$title)){
-                    return $this->result($return,0);
+                    return $this->error($return);
                 }
-                return $this->result('状态修改成功',1);
+                return $this->success('状态修改成功');
             }
         }
-        return $this->result('状态修改失败',0);
+        return $this->error('状态修改失败');
     }
 
     /**
@@ -229,6 +229,6 @@ class Group extends Base
      * 删除缓存
      */
     private function clearCache(){
-        cache(null,get_cache_tag('auth_group'));
+        cache(null,get_cache_tag('admin_group'));
     }
 }

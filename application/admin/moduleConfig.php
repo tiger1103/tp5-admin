@@ -198,7 +198,7 @@ return [
         ],
         '30'=>[
             'pid'   => '21',
-            'title' => '删除员管理',
+            'title' => '删除管理员',
             'icon'  => '',
             'url'   => 'admin/Manager/delete',
         ],

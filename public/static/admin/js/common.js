@@ -73,9 +73,9 @@ $(function(){
                 cache: false,
                 success:function(responseData){
                     if(responseData.code==1){
-                        layer.msg(responseData.data);
+                        layer.msg(responseData.msg);
                     }else{
-                        layer.msg(responseData.data,{icon:5,shift:6});
+                        layer.msg(responseData.msg,{icon:5,shift:6});
                         window.setTimeout(function(){
                             data.elem.checked= data.elem.checked?false:true;
                             form().render('checkbox'); //更新
