@@ -119,6 +119,9 @@ if (!function_exists('action_log')) {
         }
         // 查询行为,判断是否执行
         $action_info = model('admin/Action')->where('module', $module)->getByName($action);
+        if(!$action_info){
+            return '该行为不存在，请先添加行为';
+        }
         if($action_info['status'] != 1){
             return '该行为被禁用或删除';
         }
@@ -212,7 +215,6 @@ if (!function_exists('parse_action')) {
         if(!$info || $info['status'] != 1){
             return false;
         }
-
         // 解析规则:table:$table|field:$field|condition:$condition|rule:$rule[|cycle:$cycle|max:$max][;......]
         $rule   = $info['rule'];
         $rule   = str_replace('{$self}', $self, $rule);
@@ -231,7 +233,6 @@ if (!function_exists('parse_action')) {
                 unset($return[$key]['cycle'],$return[$key]['max']);
             }
         }
-
         return $return;
     }
 }
@@ -250,7 +251,6 @@ if (!function_exists('execute_action')) {
         if(!$rules || empty($action_id) || empty($user_id)){
             return false;
         }
-
         $return = true;
         foreach ($rules as $rule){
             // 检查执行周期
@@ -260,11 +260,9 @@ if (!function_exists('execute_action')) {
             if($exec_count > $rule['max']){
                 continue;
             }
-
             // 执行数据库操作
             $field = $rule['field'];
             $res   = Db::name($rule['table'])->where($rule['condition'])->setField($field, array('exp', $rule['rule']));
-            halt($res);
             if(!$res){
                 $return = false;
             }

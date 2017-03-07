@@ -76,6 +76,11 @@ class Manager extends Base
                 return $this->result(null,0,$admin_modle->getError());
             }
             $uid = $admin_modle->id;
+            // 记录行为日志
+            if(true!==$return = action_log('admin_add', 'admin_admin', $uid, UID,$data['username'])){
+                $admin_modle->where(['id'=>$uid])->delete();
+                return $this->result(null,0,$return);
+            }
             $group_access_data = [];//用户及用户组关联数据
             foreach($data['group'] as $k=>$v){
                 $group_access_data[$k]['uid'] = $uid;
@@ -83,10 +88,6 @@ class Manager extends Base
             }
             //添加管理员及管理员组的关联数据
             $admin_modle->authGroup()->saveAll($group_access_data);
-            // 记录行为日志
-            if(true!==$return = action_log('admin_add', 'admin_admin', $uid, UID,$data['username'])){
-                return $this->result(null,0,$return);
-            }
             return $this->result(null,1,'管理员添加成功');
         }
         //获取用户组
@@ -120,6 +121,10 @@ class Manager extends Base
      */
     public function edit(){
         $id = input('id',0,'intval');
+        //判断是否处理了超级管理员
+        if(in_array($id,config('SUPER_ADMIN_ID'))){
+            return $this->error('系统管理员不可修改');
+        }
         $admin_modle = model('Admin');
         if($this->request->isPost()){
             $data = $this->request->post();
@@ -134,6 +139,10 @@ class Manager extends Base
             if(!isset($data['status'])){
                 $data['status'] = 'off';
             }
+            // 记录行为日志
+            if(true!==$return = action_log('admin_edit', 'admin_admin', $id, UID,$data['username'])){
+                return $this->result(null,0,$return);
+            }
             // 修改用户数据
             if (false===$result = $admin_modle->allowField(true)->isUpdate(true)->validate('Admin.edit')->save($data,['id'=>$id])){
                 return $this->result(null,0,$admin_modle->getError());
@@ -147,10 +156,6 @@ class Manager extends Base
             $admin_modle->authGroup()->where(['uid'=>$id])->delete();
             //添加管理员与管理员组的关联数据
             $admin_modle->authGroup()->saveAll($group_access_data);
-            // 记录行为日志
-            if(true!==$return = action_log('admin_edit', 'admin_admin', $id, UID,$data['username'])){
-                return $this->result(null,0,$return);
-            }
             return $this->result(null,1,'管理员修改成功');
         }
         //获取用户信息
@@ -203,29 +208,29 @@ class Manager extends Base
         }
         //判断是否处理了超级管理员
         if(in_array($ids,config('SUPER_ADMIN_ID'))||(isset($id)&&!empty(array_intersect($id,config('SUPER_ADMIN_ID'))))){
-            return $this->error('超级管理员不可设置');
+            return $this->error('系统管理员不可设置');
         }
         $admin_model = model('Admin');
         if(isset($id)){
             //批量设置
             $username = $admin_model->where(['id'=>['in',$id]])->column('username');
+            // 记录行为
+            if(true!==$return = action_log($action=='enable'?'admin_enable':'admin_disable','admin_admin', 0, UID,implode('、',$username))){
+                return $this->error($return);
+            }
             if($admin_model->where(['id'=>['in',$id]])->setField('status',$action=='enable'?1:0)!==false){
                 $this->clearCache();//删除缓存
-                // 记录行为
-                if(true!==$return = action_log($action=='enable'?'admin_enable':'admin_disable','admin_admin', 0, UID,implode('、',$username))){
-                    return $this->error($return);
-                }
                 return $this->success('状态修改成功');
             }
         }else{
             //单条设置
             $username =  $admin_model->where('id',$ids)->value('username');
+            // 记录行为
+            if(true!==$return = action_log($action=='enable'?'admin_enable':'admin_disable','admin_admin', $ids, UID,$username)){
+                return $this->error($return);
+            }
             if($admin_model->where('id',$ids)->setField('status',$action=='enable'?1:0)){
                 $this->clearCache();//删除缓存
-                // 记录行为
-                if(true!==$return = action_log($action=='enable'?'admin_enable':'admin_disable','admin_admin', $ids, UID,$username)){
-                    return $this->error($return);
-                }
                 return $this->success('状态修改成功');
             }
         }
@@ -243,19 +248,19 @@ class Manager extends Base
         }
         $id = explode(',',$ids);
 
-        //判断是否处理了超级管理员组
+        //判断是否删除系统管理员
         if(!empty(array_intersect($id,config('SUPER_ADMIN_ID')))){
-            return $this->error('超级管理员组不可删除');
+            return $this->error('系统管理员不可删除');
         }
         $admin_model = model('Admin');
         $username = $admin_model->where(['id'=>['in',$id]])->column('username');
+        // 记录行为
+        if(true!==$return = action_log('admin_delete','admin_admin', 0, UID,implode('、',$username))){
+            return $this->error($return);
+        }
         if($admin_model->where(['id'=>['in',$id]])->delete()!==false){
             $admin_model->authGroup()->where(['uid'=>['in',$id]])->delete();//删除用户与用户组的关联信息
             $this->clearCache();//删除缓存
-            // 记录行为
-            if(true!==$return = action_log('admin_delete','admin_admin', 0, UID,implode('、',$username))){
-                return $this->error($return);
-            }
             return $this->success('删除成功','index');
         }
         return $this->error('删除失败');

@@ -21,4 +21,20 @@ class Action extends Base
      */
     protected $autoWriteTimestamp = true;
 
+    /**
+     * 状态属性修改器
+     * @param $value
+     * @return int
+     */
+    protected function setStatusAttr($value){
+        if(is_string($value)){
+            if($value=='on')
+                return 1;
+            else if($value=='off')
+                return 0;
+        }
+        return $value;
+    }
+
+
 }

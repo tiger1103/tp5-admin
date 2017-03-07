@@ -27,7 +27,6 @@ return [
             'level' => 'system',
             'url'=>'system'
         ],
-
         '2' => [
             'pid'  => '1',
             'title' => '系统管理',
@@ -120,7 +119,7 @@ return [
         ],
         '17'=>[
             'pid'   => '15',
-            'title' => '行为状态',
+            'title' => '设置状态',
             'icon'  => '',
             'url'   => 'admin/Action/setStatus',
         ],
@@ -201,6 +200,18 @@ return [
             'title' => '删除管理员',
             'icon'  => '',
             'url'   => 'admin/Manager/delete',
+        ],
+        '31' => [
+            'pid'   => '2',
+            'title' => '登录日志',
+            'icon'  => '',
+            'url'   => 'admin/LoginLog/index',
+        ],
+        '32' => [
+            'pid'   => '31',
+            'title' => '删除日志',
+            'icon'  => '',
+            'url'   => 'admin/LoginLog/delete',
         ],
     ],
 ];

@@ -54,21 +54,21 @@ class Module extends Base
     /**
      * 更新模块信息
      * @param int $id 模块id
+     * @return mixed
      */
     public function update($id){
         $module = model('Module');
-        $name = $module->getFieldById($id, 'name');
-        $config_file = realpath(APP_PATH.strtolower($name)).'/'
+        $module_info = $module->where('id',$id)->find();
+        $config_file = realpath(APP_PATH.strtolower($module_info['name'])).'/'
             .$module->install_file();
         if (!$config_file) {
-            $this->result([],0,'不存在安装文件','json');
+            $this->error('不存在安装文件');
         }
         $config_info = include $config_file;
         $data = $config_info['info'];
         // 读取数据库已有配置
-        $db_moduel_config = $module->getFieldByName($name, 'config');
+        $db_moduel_config = $module_info['config'];
         $db_moduel_config = json_decode($db_moduel_config, true);
-
         // 处理模块配置
         if (isset($config_info['config'])&&!empty($config_file['config'])) {
             $temp_arr = $config_info['config'];
@@ -91,7 +91,6 @@ class Module extends Base
         } else {
             $data['config'] = '';
         }
-
         // 获取后台菜单
         if (isset($config_info['admin_menu'])&&!empty($config_info['admin_menu'])) {
             // 将key值赋给id
@@ -100,7 +99,6 @@ class Module extends Base
             }
             $data['admin_menu'] = json_encode($config_info['admin_menu']);
         }
-
         // 获取用户中心导航
         if (isset($config_info['user_nav'])&&!empty($config_info['user_nav'])) {
             $data['user_nav'] = json_encode($config_info['user_nav']);
@@ -108,23 +106,21 @@ class Module extends Base
             $data['user_nav'] = '';
         }
         $data['id'] = $id;
+        // 记录行为
+        if(true!==$return = action_log('module_update', 'admin_module', $id, UID,$config_info['info']['title'])){
+            return $this->error($return);
+        }
         if(false===$module->allowField(true)->validate(true)->isUpdate(true)->save($data)){
-            $this->result([],0,$module->getError(),'json');
-            $this->error($module->getError());
+            return $this->error($module->getError());
         }else{
             //清除菜单缓存
             cache(null,get_cache_tag('admin_menu'));
             //更新权限规则信息
             $res = model('AuthRule')->updateRule($config_info['admin_menu'],$config_info['info']['name']);
             if($res['status']){
-                // 记录行为
-                if(true!==$return = action_log('module_update', 'admin_module', $id, UID,$config_info['info']['title'])){
-                    $this->error($return);
-                    return false;
-                }
-                $this->success($res['msg'],'index');
+                return $this->success($res['msg'],'index');
             }else{
-                $this->error($res['msg']);
+                return $this->error($res['msg']);
             }
         }
     }

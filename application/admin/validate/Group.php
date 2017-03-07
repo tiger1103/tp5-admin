@@ -15,9 +15,9 @@ class Group extends Validate
 {
     //验证规则
     protected $rule = [
-        'pid' =>'require|integer|token',
+        'pid' =>'require|integer',
         'title'   =>'require',
-        'sort'  =>'number',
+        'sort'  =>'number|token',
     ];
 
     //提示信息

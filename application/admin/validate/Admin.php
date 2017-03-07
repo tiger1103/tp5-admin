@@ -15,11 +15,11 @@ class Admin extends Validate
 {
     //验证规则
     protected $rule = [
-        'username'  =>'require|unique:admin_admin|regex:^[a-zA-Z\d_]{1,64}$|token',
+        'username'  =>'require|unique:admin_admin|regex:^[a-zA-Z\d_]{1,64}$',
         'password'  =>'require',
         'nickname'  =>'require',
         'phone'       =>'require|unique:admin_admin|number',
-        'group'   =>'require',
+        'group'   =>'require|token',
     ];
 
     //提示信息

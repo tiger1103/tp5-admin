@@ -788,11 +788,11 @@ class AdminCreater extends Instance
                             switch ($row[$column['name']]) {
                                 case '0': // 禁用
                                     $status_info = isset($column['param'][0]) ? $column['param'][0] : '禁用';
-                                    $row[$column['name']] = '<span class="label radius">'.$status_info.'</span>';
+                                    $row[$column['name']] = '<span class="label radius'.(isset($column['param'][2])?(' '.$column['param'][2]):'').'">'.$status_info.'</span>';
                                     break;
                                 case '1': // 启用
                                     $status_info = isset($column['param'][1]) ? $column['param'][1] : '启用';
-                                    $row[$column['name']] = '<span class="label label-success radius">'.$status_info.'</span>';
+                                    $row[$column['name']] = '<span class="label '.(isset($column['param'][3])?$column['param'][3]:'label-success').' radius">'.$status_info.'</span>';
                                     break;
                             }
                             break;

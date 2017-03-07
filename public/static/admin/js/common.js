@@ -49,7 +49,7 @@ $(function(){
                     h = $this.attr('pop-height')?$this.attr('pop-height'):h;
                     title=$this.attr('pop-title')?$this.attr('pop-title'):$this.attr('title');
                     url=$this.attr('url');
-                    layer.open({
+                    var index= layer.open({
                         type: 2,
                         area: [w+'px', h +'px'],
                         fix: false, //不固定
@@ -58,6 +58,9 @@ $(function(){
                         title: title,
                         content: url
                     });
+                    if($this.attr('pop-full')){
+                        layer.full(index);
+                    }
                     break;
             }
         });

@@ -12,7 +12,7 @@ class Index extends Controller
 {
     /**
      * 登录
-     * @return mixed|Response|\think\response\Json|\think\response\Jsonp|\think\response\Redirect|\think\response\View|\think\response\Xml|void
+     * @return mixed|Response|\think\response\Json
      */
     public function index(){
         if($this->request->isPost()){

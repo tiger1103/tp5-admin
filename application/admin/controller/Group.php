@@ -56,11 +56,13 @@ class Group extends Base
             if (false===$role = $group_model->allowField(true)->isUpdate(false)->validate(true)->save($data)){
                 return $this->result(null,0,$group_model->getError());
             }
-            $this->clearCache();//删除缓存
+            $group_id = $group_model->id;
             // 记录行为
-            if(true!==$return = action_log('group_add', 'admin_auth_group', $group_model->id, UID,$data['title'])){
+            if(true!==$return = action_log('group_add', 'admin_auth_group', $group_id, UID,$data['title'])){
+                $group_model->where(['id'=>$group_id])->delete();
                 return $this->result(null,0,$return);
             }
+            $this->clearCache();//删除缓存
             return $this->result(null,1,'添加分组成功');
         }
         //获取菜单
@@ -77,7 +79,6 @@ class Group extends Base
 
     /**
      * 修改用户组
-     * @param $id
      */
     public function edit(){
         $id = input('id');
@@ -86,13 +87,8 @@ class Group extends Base
         array_unshift($super_admin_id,0);
         $id = intval($id);
         if(in_array($id,$super_admin_id)){
-            if($this->request->isAjax()){
-                return $this->result(null,0,'参数错误');
-            }else{
-                return $this->error('参数错误','add');
-            }
+            return $this->error('参数错误');
         }
-
         // 保存数据
         if ($this->request->isPost()) {
             $data = $this->request->post();
@@ -101,15 +97,15 @@ class Group extends Base
             }
             $group_model = model('Group');
             $old_title = $group_model->where('id',$id)->value('title');
+            // 记录行为
+            if(true!==$return = action_log('group_edit', 'admin_auth_group', $id, UID,$old_title)){
+                return $this->result(null,0,$return);
+            }
             // 修改数据
             if (false===$role = $group_model->allowField(true)->isUpdate(true)->validate(true)->save($data)){
                 return $this->result(null,0,$group_model->getError());
             }
             $this->clearCache();//删除缓存
-            // 记录行为
-            if(true!==$return = action_log('group_edit', 'admin_auth_group', $id, UID,$old_title)){
-                return $this->result(null,0,$return);
-            }
             return $this->result(null,1,'修改分组成功');
         }
 
@@ -163,23 +159,23 @@ class Group extends Base
         if(isset($id)){
             //批量设置
             $title = $group->where(['id'=>['in',$id]])->column('title');
+            // 记录行为
+            if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', 0, UID,implode('、',$title))){
+                return $this->error($return);
+            }
             if($group->where(['id'=>['in',$id]])->setField('status',$action=='enable'?1:0)!==false){
                 $this->clearCache();//删除缓存
-                // 记录行为
-                if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', 0, UID,implode('、',$title))){
-                    return $this->error($return);
-                }
                 return $this->success('状态修改成功');
             }
         }else{
             //单条设置
             $title =  $group->where('id',$ids)->value('title');
+            // 记录行为
+            if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', $ids, UID,$title)){
+                return $this->error($return);
+            }
             if($group->where('id',$ids)->setField('status',$action=='enable'?1:0)){
                 $this->clearCache();//删除缓存
-                // 记录行为
-                if(true!==$return = action_log($action=='enable'?'group_enable':'group_disable','admin_auth_group', $ids, UID,$title)){
-                    return $this->error($return);
-                }
                 return $this->success('状态修改成功');
             }
         }
@@ -214,12 +210,12 @@ class Group extends Base
                 $all_title[] = $sv['title'];
             }
         }
+        // 记录行为
+        if(true!==$return = action_log('group_delete','admin_auth_group', 0, UID,implode('、',$all_title))){
+            return $this->error($return);
+        }
         if($group->where(['id'=>['in',$all_id]])->delete()!==false){
             $this->clearCache();//删除缓存
-            // 记录行为
-            if(true!==$return = action_log('group_delete','admin_auth_group', 0, UID,implode('、',$all_title))){
-                return $this->error($return);
-            }
             return $this->success('删除成功','index');
         }
         return $this->error('删除失败');
