@@ -56,7 +56,7 @@
                         ?>
                         <dt>
                             <label>
-                                <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>" <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
+                                <input type="checkbox" value="<{$rules[$url]}>" name="menus[]"  <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
                                 <{$first_child.title}>
                             </label>
                         </dt>
@@ -73,7 +73,7 @@
                             <dl class="cl permission-list2">
                                 <dt>
                                     <label>
-                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>" <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
+                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]"  <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
                                         <{$second_child.title}>
                                     </label>
                                 </dt>
@@ -88,7 +88,7 @@
                                         }
                                     ?>
                                     <label>
-                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]" id="user-Character-<{$first_child.id}>-<{$second_child.id}>-<{$third_child.id}>" <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
+                                        <input type="checkbox" value="<{$rules[$url]}>" name="menus[]"  <{if condition="array_key_exists($rules[$url],$own_rules)"}>checked="checked"<{/if}> >
                                         <{$third_child.title}>
                                     </label>
                                     <{/volist}>

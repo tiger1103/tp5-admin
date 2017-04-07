@@ -22,12 +22,13 @@ class ArrayTools
      * @param $pid 父级id
      * @param string $fieldName 父idd的键名
      * @param string $id id的键名
+     * @param string $key 子级数组键名
      * @param string $filter 过滤键名
      * @param string $filterVal 过滤的值
      * @author yixiaohu
      * @return array
      */
-    public static function pushSonToParent($data,$pid,$fieldName='pid',$id='id',$filter='',$filterVal='')
+    public static function pushSonToParent($data,$pid,$fieldName='pid',$id='id',$key='son',$filter='',$filterVal='')
     {
         $menu = array();
         foreach($data as $k => $v)
@@ -36,11 +37,11 @@ class ArrayTools
             {
                 if($filter!=''){
                     if($v[$filter]==$filterVal){
-                        $v['son'] = self::pushSonToParent($data,$v[$id],$fieldName,$id,$filter,$filterVal);
+                        $v[$key] = self::pushSonToParent($data,$v[$id],$fieldName,$id,$key,$filter,$filterVal);
                         $menu[] =$v;
                     }
                 }else{
-                    $v['son'] = self::pushSonToParent($data,$v[$id],$fieldName,$id,$filter,$filterVal);
+                    $v[$key] = self::pushSonToParent($data,$v[$id],$fieldName,$id,$key,$filter,$filterVal);
                     $menu[] =$v;
                 }
             }
@@ -49,22 +50,48 @@ class ArrayTools
     }
 
     /**
+     * 将树形结构的数组转化为列表
+     * @param $tree 树形结构数组
+     * @param string $child 子级键名
+     * @return array
+     */
+    public static function TreeToList($tree, $child = '_child'){
+        $returnArr = [];
+        foreach($tree as $k=>$v){
+            $tmp = [];
+            if(isset($v[$child])){
+                $tmp = self::TreeToList($v[$child],$child);
+                unset($v[$child]);
+            }
+            $returnArr[] = $v;
+            $returnArr = array_merge($returnArr,$tmp);
+        }
+        return $returnArr;
+    }
+
+    /**
      * 有层级关系的数组,父级-》子级 排序
      * @param $data
      * @param int $pid 父级id值
-     * @param int $flg 排序标签
+     * @param int $level 层级数
      * @param string $fieldName 父id键名
      * @param string $id id键名
-     * @author yixiaohu
+     * @param string $levelName 层级名称
+     * @param string $title 标题名称
      * @return array
+     * @author yixiaohu
      */
-    public static function parentSonSort($data,$pid=0,$flg=1,$fieldName='pid',$id='id'){
+    public static function parentSonSort($data,$pid=0,$level=0,$fieldName='pid',$id='id',$levelName='flg',$title='title'){
         $arr = array();
         foreach($data as $k=>$v){
             if($pid==$v[$fieldName]){
-                $v['flg']=$flg;
+                $v[$levelName]=$level;
+                $title_prefix = str_repeat("&nbsp;", $level*4);
+                $title_prefix .= "┝ ";
+                $v['title_prefix'] = $level == 0 ? '' : $title_prefix;
+                $v['title_show'] = $level == 0 ? $v[$title] : $title_prefix.$v[$title];
                 $arr[]=$v;
-                $arr2=self::parentSonSort($data,$v[$id],$flg+1,$fieldName,$id);
+                $arr2=self::parentSonSort($data,$v[$id],$level+1,$fieldName,$id,$levelName);
                 $arr = array_merge($arr,$arr2);
             }
         }
@@ -165,6 +192,26 @@ class ArrayTools
                     $count -=1;
                 }
                 $count += self::getLastChildNum($arr,$v[$flgv],$flg,$flgv);
+            }
+        }
+        return $count;
+    }
+
+    /**
+     * 根据父id查所有子级数量
+     * @param array $arr 树形关系数组
+     * @param int $fid 父级id
+     * @param string $flg 父级id键名
+     * @param string $flgv 子id键名
+     * @author yixiaohu
+     * @return int
+     */
+    public static function getChildNum($arr,$fid=0,$flg='fid',$flgv='id'){
+        $count = 0;
+        foreach($arr as $k=>$v){
+            if($v[$flg]==$fid){
+                $count +=1;
+                $count += self::getChildNum($arr,$v[$flgv],$flg,$flgv);
             }
         }
         return $count;

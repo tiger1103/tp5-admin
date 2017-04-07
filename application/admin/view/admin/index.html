@@ -72,11 +72,11 @@
 <aside class="Hui-aside">
     <input runat="server" id="divScrollValue" type="hidden" value="" />
     <{volist name="_menu_list" id="_ns"}>
-    <div id="<{$_ns.name}>" class="menu_dropdown bk_2 <{if condition="$i gt 1"}>hide<{/if}>" >
+    <div id="<{$key}>" class="menu_dropdown bk_2 <{if condition="$i gt 1"}>hide<{/if}>" >
     <?php if(isset($_ns['_child'])): ?>
         <{notempty name="_ns._child"}>
         <{volist name="_ns._child" id="_ns_first" key="fkey"}>
-        <dl id="menu-<{$fkey}>-<{$_ns_first.id}>">
+        <dl>
             <dt><i class="Hui-iconfont"><{$_ns_first.icon}></i> <{$_ns_first.title}><i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <{present name="$_ns_first._child"}>
             <{notempty name="_ns_first._child"}>

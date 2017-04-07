@@ -9,6 +9,8 @@
 namespace app\admin\model;
 
 
+use util\ArrayTools;
+
 class AuthRule extends Base
 {
     /**
@@ -54,6 +56,7 @@ class AuthRule extends Base
     public function updateRule($data, $type){
         $data_rule = [];
         $i = 0;
+        $data = ArrayTools::TreeToList($data);
         foreach ($data as $value) {
             $data_rule[$i] = array(
                 'module' => $type,

@@ -11,7 +11,6 @@ namespace app\admin\controller;
 
 use app\common\creater\Instance;
 use util\ArrayTools;
-use util\Tree;
 
 class Group extends Base
 {
@@ -118,8 +117,7 @@ class Group extends Base
         //过滤禁用组
         $group_list = array_filter($group_list,function($v){return $v['status']==1;});
         // 转换成树状列表
-        $tree = new Tree();
-        $group_list = $tree->toFormatTree($group_list);
+        $group_list = ArrayTools::parentSonSort($group_list,0,0,'pid','id','level');
         //获取菜单
         $menus = model('Module')->getAllMenu();
         //权限规则

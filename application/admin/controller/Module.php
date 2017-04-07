@@ -93,10 +93,6 @@ class Module extends Base
         }
         // 获取后台菜单
         if (isset($config_info['admin_menu'])&&!empty($config_info['admin_menu'])) {
-            // 将key值赋给id
-            foreach ($config_info['admin_menu'] as $key => &$val) {
-                $val['id'] = (string)$key;
-            }
             $data['admin_menu'] = json_encode($config_info['admin_menu']);
         }
         // 获取用户中心导航

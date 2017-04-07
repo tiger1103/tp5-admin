@@ -7,7 +7,7 @@
  */
 
 namespace app\admin\model;
-use util\Tree;
+
 
 class Module extends Base
 {
@@ -82,25 +82,12 @@ class Module extends Base
         if (!$menu_list || config('APP_DEBUG') === true) {
             $con['status'] = 1;
             $system_module_list = $this->where($con)->order('sort asc, id asc')->column(true);
-            $tree = new tree();
             $menu_list = array();
-            foreach ($system_module_list as $key => &$module) {
-                $temp = $tree->list_to_tree(json_decode($module['admin_menu'], true));
+            foreach ($system_module_list as $key => $module) {
+                $temp = json_decode($module['admin_menu'], true);
                 $menu_list[$module['name']] = $temp[0];
                 $menu_list[$module['name']]['id']   = $module['id'];
                 $menu_list[$module['name']]['name'] = $module['name'];
-            }
-            // 如果模块顶级菜单配置了top字段则移动菜单至top所指的模块下边
-            foreach ($menu_list as $key => &$value) {
-                if (isset($value['top'])&&!empty($value['top'])) {
-                    if ($menu_list[$value['top']]) {
-                        $menu_list[$value['top']]['_child'] = array_merge(
-                            $menu_list[$value['top']]['_child'],
-                            $value['_child']
-                        );
-                        unset($menu_list[$key]);
-                    }
-                }
             }
             cache('MENU_LIST', $menu_list, null,get_cache_tag('admin_menu'));  // 缓存配置
         }
