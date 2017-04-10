@@ -80,7 +80,8 @@ class Admin extends Base
             $auth = array(
                 'id'                   => $res['id'],
                 'username'        => $res['username'],
-                'nickname'         =>$res['nickname']
+                'nickname'         =>$res['nickname'],
+                'group_id'          =>model('AuthGroupAccess')->getUserGroupId($res['id'])
             );
             session('user_auth', $auth);
             session('user_auth_sign', data_auth_sign($auth));

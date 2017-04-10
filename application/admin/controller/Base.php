@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+
 use app\common\controller\Common;
 
 
@@ -17,8 +18,14 @@ class Base extends Common
 
     public function _initialize(){
         parent::_initialize();
+        // 后台公共模板
+        $this->assign('_admin_base_layout', config('appConfig.ADMIN_BASE_LAYOUT'));
         //判断登录
         defined('UID') or define('UID',$this->checkLogin());
+        //判断权限
+        $authRule = model('AuthRule','logic');
+        $authRule->getUrl();
+        if(!$authRule->checkAuth()) $this->error('没有操作权限',url('admin/Admin/welcome'));
     }
 
     /**

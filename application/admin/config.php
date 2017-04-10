@@ -7,10 +7,24 @@
  */
 
 return [
+    //权限处理类配置
+    'AUTH' =>[
+        'auth_on' => 1, // 权限开关
+        'auth_type' => 1, // 认证方式，1为实时认证；2为登录认证。
+        'auth_group' => 'admin_auth_group', // 用户组数据表名
+        'auth_group_access' => 'admin_auth_group_access', // 用户-用户组关系表
+        'auth_rule' => 'admin_auth_rule', // 权限规则表
+        'auth_user' => 'admin_admin', // 用户信息表
+    ],
     //超级管理员组ID
     'SUPER_GROUP_ID'=>[1],
     //超级管理员ID
     'SUPER_ADMIN_ID'=>[1],
+    //无需检查权限的url
+    'NO_CHECK_URL'=>[
+        'admin/admin/index',
+        'admin/admin/welcome'
+    ],
     //当前访问模块位置
     'LOCATION'                   =>'admin',
     //默认数据过滤

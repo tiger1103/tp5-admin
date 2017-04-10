@@ -13,12 +13,6 @@ use think\Controller;
 
 class Common extends Controller
 {
-
-    public function _initialize(){
-        parent::_initialize();
-        // 后台公共模板
-        $this->assign('_admin_base_layout', config('appConfig.ADMIN_BASE_LAYOUT'));
-    }
     /**
      * 渲染插件模板
      * @param string $template 模板名称

@@ -29,4 +29,8 @@ class AuthGroupAccess extends Base
             'group_id'=>'管理员组id不能为空',
         ]
     ];
+
+    public function getUserGroupId($uid){
+        return $this->where('uid',$uid)->column('group_id');
+    }
 }
